@@ -2,11 +2,11 @@ import java.util.ArrayList;
 import java.awt.Point;
 import java.util.PriorityQueue;
 /*
-*       start        x       target
+*       start        s       target
 *         |----------|---------|
-*              g(x)      h(x)
+*              g(s)      h(s)
 *         |--------------------|
-*                   f(x) 
+*                  f(s) 
 */ 
 
 
@@ -14,7 +14,7 @@ public class AStar extends Node
 {
     private  Point start;
     private  Point target;
-    private  int NodeCount;
+    private  PriorityQueue fringe; 
     private  ArrayList<Point> neighbors; 
 
     AStar()

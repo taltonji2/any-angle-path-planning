@@ -1,11 +1,13 @@
 import java.util.ArrayList;
 import java.util.List;
-
+import java.awt.Point;
 
 public class Node implements Comparable<Node> 
 {
     public Node parent = null;
+    public Point point;
     public List<Edge> neighbors;
+    
 
     //heuristic value
     public Double h;
@@ -33,19 +35,20 @@ public class Node implements Comparable<Node>
 
     public static class Edge 
     {
-        Edge(int weight, Node node)
+        private Point point;
+        Edge(Point point, Node node)
         {
-              this.weight = weight;
+              this.point = point;
               this.node = node;
         }
 
-        public int weight;
+        public Point point = point;
         public Node node;
     }
 
     public void addBranch(int weight, Node node)
     {
-        Edge newEdge = new Edge(weight, node);
+        Edge newEdge = new Edge(point, node);
         neighbors.add(newEdge);
     }
 
