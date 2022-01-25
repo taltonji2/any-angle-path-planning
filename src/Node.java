@@ -1,3 +1,4 @@
+package src;
 import java.util.ArrayList;
 import java.util.List;
 import java.awt.Point;
@@ -20,6 +21,11 @@ public class Node implements Comparable<Node>
     //is encountered for the first time [Lines 1-1]. It sets the g-value of the start vertex to zero and
     //the parent of the start vertex to itself 
     public Double g = Double.MAX_VALUE; 
+
+    Node()
+    {
+        
+    }
 
     Node(Double h)
     {
