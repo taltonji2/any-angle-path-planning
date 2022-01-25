@@ -25,14 +25,12 @@ public class Node implements Comparable<Node>
         this.neighbors = new ArrayList<>();
     }
 
-    //allow overide to see target and start points
     @Override
     public int compareTo(Node n)
     {
         return Double.compare(this.f, n.f);
     }
 
-    //shortest grid path
     public static class Edge 
     {
         Edge(int weight, Node node)
