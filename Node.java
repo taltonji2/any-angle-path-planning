@@ -1,18 +1,25 @@
 import java.util.ArrayList;
 import java.util.List;
-import java.awt.Point;
-import java.util.PriorityQueue;
+
 
 public class Node implements Comparable<Node> 
 {
     public Node parent = null;
     public List<Edge> neighbors;
-    public Point h; 
-    
-    public Point f;
-    public Point g;
 
-    Node(Point h)
+    //heuristic value
+    public Double h;
+    
+    //f-value ƒ (s) = g(s) + h(s) for every vertex s, which is an estimate of
+    //the distance from the start vertex via vertex s to the goal vertex.
+    public Double f = Double.MAX_VALUE;  
+                                  
+    //sets the g-value of every vertex to infinity and the parent of every vertex to NULL when it
+    //is encountered for the first time [Lines 1-1]. It sets the g-value of the start vertex to zero and
+    //the parent of the start vertex to itself 
+    public Double g = Double.MAX_VALUE; 
+
+    Node(Double h)
     {
         this.h = h;
         this.neighbors = new ArrayList<>();
@@ -22,10 +29,7 @@ public class Node implements Comparable<Node>
     @Override
     public int compareTo(Node n)
     {
-        int x = Double.compare(this.f.getX(), n.f.getX());
-        int y = Double.compare(this.f.getY(), n.f.getY());
-        
-        return (x,y);
+        return Double.compare(this.f, n.f);
     }
 
     //shortest grid path
@@ -47,10 +51,8 @@ public class Node implements Comparable<Node>
         neighbors.add(newEdge);
     }
 
-    //h()
     public double calculateHeuristic(Node target) 
     {
-        //sequential measuring of distance between points to target.
         return this.h;
     }
 }

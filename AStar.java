@@ -1,5 +1,6 @@
 import java.util.ArrayList;
 import java.awt.Point;
+import java.util.PriorityQueue;
 /*
 *       start        x       target
 *         |----------|---------|
@@ -9,7 +10,7 @@ import java.awt.Point;
 */ 
 
 
-public class AStar 
+public class AStar extends Node
 {
     private  Point start;
     private  Point target;
