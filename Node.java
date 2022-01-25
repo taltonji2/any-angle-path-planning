@@ -1,5 +1,6 @@
 import java.util.ArrayList;
 import java.util.List;
+import java.awt.Point;
 
 public class Node implements Comparable<Node> 
 {
@@ -21,7 +22,12 @@ public class Node implements Comparable<Node>
     @Override
     public int compareTo(Node n)
     {
-        return Double.compare(this.f, n.f);
+        int x = Double.compare(this.f.getX(), n.f.getX());
+        int y = Double.compare(this.f.getY(), n.f.getY());
+        
+        return (x,y);
+         
+         
     }
 
     public static class Edge 
@@ -42,7 +48,8 @@ public class Node implements Comparable<Node>
         neighbors.add(newEdge);
     }
 
-  public double calculateHeuristic(Node target)
+    //h()
+    public double calculateHeuristic(Node target) 
     {
         return this.h;
     }

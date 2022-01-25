@@ -1,3 +1,5 @@
+import java.util.ArrayList;
+import java.awt.Point;
 /*
 *       start        x       target
 *         |----------|---------|
@@ -12,11 +14,11 @@ public class AStar
     private  Point start;
     private  Point target;
     private  int NodeCount;
-    private  Point[] graph; 
+    private  ArrayList<Point> neighbors; 
 
     AStar()
     {
-
+        this.neighbors = neighbors; 
     }
 }
 
