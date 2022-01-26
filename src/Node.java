@@ -42,14 +42,16 @@ public class Node implements Comparable<Node>
     public static class Edge 
     {
         private Point point;
+        public Node node;
         Edge(Point point, Node node)
         {
               this.point = point;
               this.node = node;
         }
-
-        public Point point = point;
-        public Node node;
+        public Point getPoint()
+        {
+            return point;
+        }
     }
 
     public void addBranch(int weight, Node node)

@@ -1,6 +1,2 @@
 {
-    "java.project.referencedLibraries": [
-        "lib/**/*.jar",
-        "c:\\GridWorldCode\\GridWorldCode\\gridworld.jar"
-    ]
 }

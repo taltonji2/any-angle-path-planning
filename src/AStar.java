@@ -13,14 +13,8 @@ import java.util.PriorityQueue;
 
 public class AStar extends Node
 {
-    private  Point start;
-    private  Point target;
-    private  PriorityQueue fringe; 
-    private  ArrayList<Point> neighbors; 
-
     AStar()
     {
-        this.neighbors = neighbors; 
     }
 }
 
