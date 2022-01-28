@@ -1,4 +1,4 @@
-package src;
+package ArtificialIntel.Algo;
 import java.util.ArrayList;
 import java.awt.Point;
 import java.util.PriorityQueue;

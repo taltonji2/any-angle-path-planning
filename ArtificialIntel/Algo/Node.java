@@ -1,4 +1,4 @@
-package src;
+package ArtificialIntel.Algo;
 import java.util.ArrayList;
 import java.util.List;
 import java.awt.Point;
@@ -8,7 +8,6 @@ public class Node implements Comparable<Node>
     public Node parent = null;
     public Point point;
     public List<Edge> neighbors;
-    
 
     //heuristic value
     public Double h;

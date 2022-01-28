@@ -1,4 +1,4 @@
-package src;
+package ArtificialIntel.Data;
 import java.io.*;
 
 class GridFileFormatException extends Exception{
@@ -13,79 +13,8 @@ class GridFileFormatException extends Exception{
     }
 }
 
-class Vertex{
-    protected int x;
-    protected int y;
-    Vertex(int x, int y){
-        this.x=x;
-        this.y=y;
-    }
-    int getX(){
-        return x;
-    }
-    int getY(){
-        return y;
-    }
-}
-
-//likely the class we will have as a node in the priority que
-class Cell extends Vertex{ 
-    Grid grid;
-
-    protected boolean bFree = true;
-    boolean IsFree(){
-        return bFree;
-    }
-    Cell(Grid grid, int x, int y, int free){
-        super(x, y);
-        this.grid = grid;
-        bFree = free == 0;
-    }
-    Cell(int x, int y, int free){
-        super(x, y);
-        bFree = free == 0;
-    }
-    boolean getFree(){
-        return bFree;
-    }
-
-    Cell north(){
-        int yNorth = y-1;
-        if(yNorth<0)
-            return null;
-        return grid.cells[x][yNorth];
-    }
-    Cell northEast(){
-        int yNorth = y-1;
-        int xEast = x+1;
-        if(yNorth<0 || xEast > grid.getWidth()-1)
-            return null;
-        return grid.cells[xEast][yNorth];
-    }
-    //add cartesian directionals
-}
-
-class Grid{
-    Cell [][] cells;
-    int getWidth(){
-        return cells.length;
-    }
-    int getHeight(){
-        return cells[0].length;
-    }
-    Grid(int width, int height){
-        cells = new Cell[width][height];
-    }
-    void add(Cell cell){
-        // convert the cell position identifiers to array index
-        int ix = cell.getX()-1;
-        int iy = cell.getY()-1;
-        cells[ix][iy] = cell;
-    }
-}
-
-class GridStorage {
-    static Grid restoreGrid(String fileName) throws IOException{
+public class GridStorage {
+    public static Grid restoreGrid(String fileName) throws IOException{
         Grid grid = null;
         BufferedReader bufferedReader = null;
         try {
@@ -128,6 +57,7 @@ class GridStorage {
         return grid;
     }
 
+    //reads grid txt file and restores integer pairs for start and target vertex
     static Pair<Integer,Integer> restoreIntegerPair(BufferedReader bufferedReader) 
         throws IOException, GridFileFormatException{
         Pair<Integer,Integer> pair = null;
@@ -146,6 +76,7 @@ class GridStorage {
         return pair;
     }
 
+    //reads grid txt file and restores the cells described
     static Cell restoreCell(BufferedReader bufferedReader) 
         throws IOException, GridFileFormatException{
         Cell cell = null;

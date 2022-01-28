@@ -24,7 +24,7 @@
  */
 
 //package javafx.util;
-package src;
+package ArtificialIntel.Data;
 
 
 import java.io.Serializable;

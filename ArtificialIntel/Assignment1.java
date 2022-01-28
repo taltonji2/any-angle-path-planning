@@ -1,16 +1,23 @@
-package src;
+package ArtificialIntel;
+
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Container;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
+import java.io.Console;
 import java.util.Random;
 
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+
+import ArtificialIntel.Data.Cell;
+import ArtificialIntel.Data.Grid;
+import ArtificialIntel.Data.GridStorage;
+
 /**
  *
  */
@@ -25,7 +32,6 @@ public class Assignment1
     Assignment1()
     {
         sizeTile = getInt( "How many pixels per square? [1 - 100]?" );
-
     }
     
     /**
@@ -36,7 +42,7 @@ public class Assignment1
         Assignment1 assignment1 = new Assignment1();
         Grid grid = assignment1.restoreGrid();
         assignment1.InitializeGUI(grid);
-
+        
         assignment1.paint(grid);
         assignment1.view();
     }
