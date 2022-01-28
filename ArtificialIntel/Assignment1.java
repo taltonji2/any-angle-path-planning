@@ -64,7 +64,7 @@ public class Assignment1
         Grid grid = null;
         try{
             String currentDirectory = System.getProperty("user.dir");
-            String fileName = currentDirectory + "\\" + "grid.txt";
+            String fileName = currentDirectory + "/" + "grid.txt";
             grid = GridStorage.restoreGrid(fileName);
         } catch(Exception ex){
             ex.printStackTrace();
