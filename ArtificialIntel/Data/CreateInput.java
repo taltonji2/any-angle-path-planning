@@ -3,6 +3,7 @@ package ArtificialIntel.Data;
 import java.io.File;  
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.Random;
 
 
 
@@ -12,15 +13,14 @@ public class CreateInput {
     int getNumOfGridFiles(){ return this.numOfGridFiles;}
     int rows = 50; 
     int columns = 100; 
-
-    //10% blocked
-    //90% unblocked
-
+    int numOfCells = rows * columns;
+    double numOfCellsBlocked = numOfCells * .10; //10% blocked
+    
     //check if has path with algo
     //if no valid path then regenerate random bocked.
 
     public static void main(String[] args) {
-        CreateInput createInput = new CreateInput(3,4);
+        CreateInput createInput = new CreateInput(50,100);
     }
 
     CreateInput(int rows, int columns) 
@@ -53,11 +53,24 @@ public class CreateInput {
         }
     }
 
+    private Vertex RandomPoint ()
+    {
+        Random rand = new Random();
+        int randIntX = rand.nextInt(100); //x
+        int randIntY = rand.nextInt(50); //y
+        Vertex v = new Vertex(randIntX, randIntY); 
+        return v;
+    }
+
     private void WriteToFile(String filename)
     {
         try {
             FileWriter myWriter = new FileWriter(filename);
-            myWriter.write("Files in Java might be tricky, but it is fun enough!");
+            Vertex v = RandomPoint();
+            myWriter.write(v.x + " " + v.y + "\n");
+            v = RandomPoint();
+            myWriter.write(v.x + " " + v.y + "\n");
+            myWriter.write(columns + " " + rows + "\n");
             myWriter.close();
             System.out.println("Successfully wrote to the file.");
           } catch (IOException e) {
@@ -66,4 +79,6 @@ public class CreateInput {
           }
     }
     
+    
+
 }
