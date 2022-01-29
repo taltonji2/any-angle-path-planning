@@ -37,7 +37,7 @@ public class Assignment1 implements KeyListener
     Assignment1()
     {
         sizeTile = getInt( "How many pixels per square? [1 - 100]?" );
-        agent = new Agent(0, 0);
+        agent = new Agent(2, 0);
     }
     
     /**
@@ -125,6 +125,10 @@ public class Assignment1 implements KeyListener
                 graphics.drawLine(x, y2, x, y);
             }
         }
+
+        // paints the agent circle in red
+        graphics.setColor(Color.RED);
+        graphics.fillOval(agent.getX() * sizeTile, agent.getY() * sizeTile, 5, 5);
 
     }
    

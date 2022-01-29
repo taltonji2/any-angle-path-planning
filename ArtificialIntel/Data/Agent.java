@@ -10,6 +10,8 @@ public class Agent extends Vertex{
     public Agent(int x, int y)
     {
         super(x, y);
+        System.out.println("X = " + x);
+        System.out.println("Y = " + y);
     }
 
     void north(Vertex v){
