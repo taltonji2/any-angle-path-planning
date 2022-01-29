@@ -17,21 +17,27 @@ import javax.swing.JOptionPane;
 import ArtificialIntel.Data.Cell;
 import ArtificialIntel.Data.Grid;
 import ArtificialIntel.Data.GridStorage;
+import ArtificialIntel.Data.Agent;
 
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 /**
  *
  */
-public class Assignment1 
+public class Assignment1 implements KeyListener
 {
     private int sizeTile;
     private Image image;
     private ImageIcon imageIcon;
     private JLabel jLabel;
     private JFrame jFrame;
+    public Agent agent; //should be displayed using a circle on the grid
+
     
     Assignment1()
     {
         sizeTile = getInt( "How many pixels per square? [1 - 100]?" );
+        agent = new Agent(0, 0);
     }
     
     /**
@@ -42,7 +48,6 @@ public class Assignment1
         Assignment1 assignment1 = new Assignment1();
         Grid grid = assignment1.restoreGrid();
         assignment1.InitializeGUI(grid);
-        
         assignment1.paint(grid);
         assignment1.view();
     }
@@ -54,6 +59,7 @@ public class Assignment1
         jLabel = new JLabel( imageIcon );
         jFrame = new JFrame( "Artificial Intel" );
         jFrame.setDefaultCloseOperation( JFrame.EXIT_ON_CLOSE );
+        jFrame.addKeyListener(this);
         Container container = jFrame.getContentPane();
         container.setLayout( new BorderLayout() );
         container.add( jLabel, BorderLayout.CENTER );
@@ -66,6 +72,8 @@ public class Assignment1
             String currentDirectory = System.getProperty("user.dir");
             String fileName = currentDirectory + "/" + "grid.txt";
             grid = GridStorage.restoreGrid(fileName);
+            agent.gridWidth = grid.getWidth();
+            agent.gridHeight = grid.getHeight();
         } catch(Exception ex){
             ex.printStackTrace();
         }
@@ -121,4 +129,36 @@ public class Assignment1
     }
    
     private void view() { jFrame.setVisible( true ); }
+
+    @Override
+    public void keyPressed(KeyEvent e) {
+        if (e.getKeyCode() == KeyEvent.VK_RIGHT)
+        {
+
+        }
+        if (e.getKeyCode() == KeyEvent.VK_LEFT)
+        {
+
+        }
+        if (e.getKeyCode() == KeyEvent.VK_UP)
+        {
+
+        }
+        if (e.getKeyCode() == KeyEvent.VK_DOWN)
+        {
+
+        }
+    }
+
+    @Override
+    public void keyReleased(KeyEvent e) {
+        // TODO Auto-generated method stub
+        
+    }
+
+    @Override
+    public void keyTyped(KeyEvent e) {
+        // TODO Auto-generated method stub
+        
+    }
 }
