@@ -39,7 +39,8 @@ public class CreateInput {
                 String currentDirectory = System.getProperty("user.dir");
                 String fileName = currentDirectory + "\\" + "resources\\" + "grid" + i + ".txt";
                 File myObj = new File(fileName);
-                WriteToFile(fileName);
+                int[][] abstractGrid = AbstractGrid();
+                WriteToFile(fileName, abstractGrid);
                 if (myObj.createNewFile())
                 {
                     System.out.println("File Created: " + myObj.getName());
@@ -58,11 +59,36 @@ public class CreateInput {
         Random rand = new Random();
         int randIntX = rand.nextInt(100); //x
         int randIntY = rand.nextInt(50); //y
-        Vertex v = new Vertex(randIntX, randIntY); 
-        return v;
+        Vertex vertex = new Vertex(randIntX, randIntY); 
+        return vertex;
     }
 
-    private void WriteToFile(String filename)
+    private void RandomBlockedCells (int[][] abstractGird) 
+    {         
+        for (int i = 0; i < this.numOfCellsBlocked; i++)
+        {
+            Vertex randomVertex = RandomPoint(); 
+            if (abstractGird[randomVertex.x][randomVertex.y] == 0)
+                abstractGird[randomVertex.x][randomVertex.y] = 1;
+            else {
+                while(abstractGird[randomVertex.x][randomVertex.y] != 0) 
+                {
+                    randomVertex = RandomPoint();   
+                }
+                abstractGird[randomVertex.x][randomVertex.y] = 1;  
+            }     
+        }
+    }
+
+    private int[][] AbstractGrid ()
+    {
+        int[][] abstractGrid = new int[this.columns][this.rows];
+        return abstractGrid; 
+    }
+
+    
+
+    private void WriteToFile(String filename, int[][] abstractGrid)
     {
         try {
             FileWriter myWriter = new FileWriter(filename);
@@ -71,6 +97,16 @@ public class CreateInput {
             v = RandomPoint();
             myWriter.write(v.x + " " + v.y + "\n");
             myWriter.write(columns + " " + rows + "\n");
+            
+            for( int i = 0; i < abstractGrid.length-1; i++)
+            {
+                for( int j = 0; j < abstractGrid[i].length-1; j++)
+                {
+                    myWriter.write(i + " " + j + abstractGrid[i][j] + "\n");
+                }
+            }
+            //loop through abstract grid and return indecies with their boolean value
+
             myWriter.close();
             System.out.println("Successfully wrote to the file.");
           } catch (IOException e) {
@@ -78,7 +114,7 @@ public class CreateInput {
             e.printStackTrace();
           }
     }
-    
-    
+
+
 
 }
