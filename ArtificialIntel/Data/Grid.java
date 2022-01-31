@@ -14,8 +14,10 @@ public class Grid{
     }
     void add(Cell cell){
         // convert the cell position identifiers to array index
-        int ix = cell.getX() - 1;
-        int iy = cell.getY() - 1;
+        //int ix = cell.getX() - 1;
+        //int iy = cell.getY() - 1;
+        int ix = cell.getX();
+        int iy = cell.getY();
         cells[ix][iy] = cell;
     }
     

@@ -3,6 +3,7 @@ package ArtificialIntel.Data;
 import java.io.File;  
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.HashSet;
 import java.util.Random;
 
 
@@ -11,8 +12,8 @@ import java.util.Random;
 public class CreateInput {
     int numOfGridFiles = 1;
     int getNumOfGridFiles(){ return this.numOfGridFiles;}
-    int rows = 50; 
-    int columns = 100; 
+    int columns = 100; //x
+    int rows = 50; //y
     int numOfCells = rows * columns;
     double numOfCellsBlocked = numOfCells * .10; //10% blocked
     
@@ -21,6 +22,7 @@ public class CreateInput {
 
     public static void main(String[] args) {
         CreateInput createInput = new CreateInput(50,100);
+        
     }
 
     CreateInput(int rows, int columns) 
@@ -36,11 +38,12 @@ public class CreateInput {
         for (int i = 0; i < n; i++)
         {
             try{
-                String currentDirectory = System.getProperty("user.dir");
-                String fileName = currentDirectory + "\\" + "resources\\" + "grid" + i + ".txt";
+                //String currentDirectory = System.getProperty("user.dir"); //pc
+                //String fileName = currentDirectory + "\\" + "resources\\" + "grid" + i + ".txt"; //pc
+                String fileName = "/Users/timothy/Any-Angle-Path-Planning/resources/" + "grid" + i + ".txt"; //mac
                 File myObj = new File(fileName);
-                int[][] abstractGrid = AbstractGrid();
-                WriteToFile(fileName, abstractGrid);
+                Grid grid = createGrid ();
+                WriteToFile(fileName, grid);
                 if (myObj.createNewFile())
                 {
                     System.out.println("File Created: " + myObj.getName());
@@ -54,59 +57,74 @@ public class CreateInput {
         }
     }
 
-    private Vertex RandomPoint ()
+    private Vertex RandomPoint (int columns, int rows)
     {
         Random rand = new Random();
-        int randIntX = rand.nextInt(100); //x
-        int randIntY = rand.nextInt(50); //y
+        int randIntX = rand.nextInt(columns); //x
+        int randIntY = rand.nextInt(rows); //y
         Vertex vertex = new Vertex(randIntX, randIntY); 
         return vertex;
     }
-
-    private void RandomBlockedCells (int[][] abstractGird) 
-    {         
-        for (int i = 0; i < this.numOfCellsBlocked; i++)
-        {
-            Vertex randomVertex = RandomPoint(); 
-            if (abstractGird[randomVertex.x][randomVertex.y] == 0)
-                abstractGird[randomVertex.x][randomVertex.y] = 1;
-            else {
-                while(abstractGird[randomVertex.x][randomVertex.y] != 0) 
-                {
-                    randomVertex = RandomPoint();   
-                }
-                abstractGird[randomVertex.x][randomVertex.y] = 1;  
-            }     
-        }
-    }
-
-    private int[][] AbstractGrid ()
+     
+    private Grid createGrid () 
     {
-        int[][] abstractGrid = new int[this.columns][this.rows];
-        return abstractGrid; 
+        Grid grid = new Grid(this.columns, this.rows);
+
+        int cellCount = 0;
+        for(int i = 0; i < this.columns; i++)
+            {
+                for(int j = 0; j < this.rows; j++)
+                {
+                    Cell cell =  new Cell(i, j, 0);
+
+                    while(cellCount < numOfCells){
+                        ++cellCount;
+                        grid.add(cell);   
+                        break;
+                    }
+                }
+            }
+
+        int count = 0;
+        while(count < 500)
+        {
+            Vertex v = RandomPoint(columns, rows);
+            if(v.y == 99)
+            {
+                continue;
+            }
+            if(v.x == 49)
+            {
+                continue;
+            }
+            if(grid.cells[v.x][v.y].bFree == true)
+            {
+                grid.cells[v.x][v.y].bFree = false;
+                count++; 
+            } 
+        }
+        return grid;
     }
 
     
+    
 
-    private void WriteToFile(String filename, int[][] abstractGrid)
+    private void WriteToFile(String filename, Grid grid)
     {
         try {
             FileWriter myWriter = new FileWriter(filename);
-            Vertex v = RandomPoint();
+            Vertex v = RandomPoint(columns, rows);
             myWriter.write(v.x + " " + v.y + "\n");
-            v = RandomPoint();
+            v = RandomPoint(columns, rows);
             myWriter.write(v.x + " " + v.y + "\n");
             myWriter.write(columns + " " + rows + "\n");
-            
-            for( int i = 0; i < abstractGrid.length-1; i++)
+            for(int i = 0; i < grid.cells.length; i++)
             {
-                for( int j = 0; j < abstractGrid[i].length-1; j++)
+                for(int j = 0; j < grid.cells[i].length; j++)
                 {
-                    myWriter.write(i + " " + j + abstractGrid[i][j] + "\n");
+                    myWriter.write(grid.cells[i][j].x + " " + grid.cells[i][j].y + " " + grid.cells[i][j].bFree + "\n");
                 }
             }
-            //loop through abstract grid and return indecies with their boolean value
-
             myWriter.close();
             System.out.println("Successfully wrote to the file.");
           } catch (IOException e) {
