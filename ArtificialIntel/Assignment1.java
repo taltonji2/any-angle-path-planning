@@ -70,7 +70,7 @@ public class Assignment1 implements KeyListener
         Grid grid = null;
         try{
             String currentDirectory = System.getProperty("user.dir");
-            String fileName = currentDirectory + "/" + "grid.txt";
+            String fileName = currentDirectory + "/resources/" + "grid0.txt";
             grid = GridStorage.restoreGrid(fileName);
             agent.gridWidth = grid.getWidth();
             agent.gridHeight = grid.getHeight();

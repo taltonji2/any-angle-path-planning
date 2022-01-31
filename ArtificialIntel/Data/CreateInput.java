@@ -38,9 +38,9 @@ public class CreateInput {
         for (int i = 0; i < n; i++)
         {
             try{
-                //String currentDirectory = System.getProperty("user.dir"); //pc
-                //String fileName = currentDirectory + "\\" + "resources\\" + "grid" + i + ".txt"; //pc
-                String fileName = "/Users/timothy/Any-Angle-Path-Planning/resources/" + "grid" + i + ".txt"; //mac
+                String currentDirectory = System.getProperty("user.dir"); //pc
+                String fileName = currentDirectory + "\\" + "resources\\" + "grid" + i + ".txt"; //pc
+                //String fileName = "/Users/timothy/Any-Angle-Path-Planning/resources/" + "grid" + i + ".txt"; //mac
                 File myObj = new File(fileName);
                 Grid grid = createGrid ();
                 WriteToFile(fileName, grid);
@@ -75,7 +75,7 @@ public class CreateInput {
             {
                 for(int j = 0; j < this.rows; j++)
                 {
-                    Cell cell =  new Cell(i, j, 0);
+                    Cell cell =  new Cell(i+1, j+1, 0);
 
                     while(cellCount < numOfCells){
                         ++cellCount;
@@ -106,9 +106,6 @@ public class CreateInput {
         return grid;
     }
 
-    
-    
-
     private void WriteToFile(String filename, Grid grid)
     {
         try {
@@ -122,7 +119,8 @@ public class CreateInput {
             {
                 for(int j = 0; j < grid.cells[i].length; j++)
                 {
-                    myWriter.write(grid.cells[i][j].x + " " + grid.cells[i][j].y + " " + grid.cells[i][j].bFree + "\n");
+                    int booleanInt = grid.cells[i][j].bFree ? 0 : 1;
+                    myWriter.write(grid.cells[i][j].x + " " + grid.cells[i][j].y + " " + booleanInt + "\n");
                 }
             }
             myWriter.close();

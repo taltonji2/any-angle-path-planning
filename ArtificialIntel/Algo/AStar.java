@@ -3,11 +3,11 @@ import java.util.ArrayList;
 import java.awt.Point;
 import java.util.PriorityQueue;
 /*
-*       start        s       target
+*       start       Node       target
 *         |----------|---------|
-*              g(s)      h(s)
+*              g(Node)      h(Node)
 *         |--------------------|
-*                  f(s) 
+*                  f() 
 */ 
 
 
@@ -16,6 +16,21 @@ public class AStar extends Node
     AStar()
     {
     }
+/* 
+    private int g(Node node)
+    {
+
+    }
+
+    private int h(Node node)
+    {
+        
+    }
+
+    private int f()
+    {
+        
+    } */
 }
 
 
