@@ -62,7 +62,7 @@ public class Assignment1 implements KeyListener
         jFrame.addKeyListener(this);
         Container container = jFrame.getContentPane();
         container.setLayout( new BorderLayout() );
-        container.add( jLabel, BorderLayout.CENTER );
+        container.add( jLabel, BorderLayout.PAGE_END );
         jFrame.pack();
     }
 
