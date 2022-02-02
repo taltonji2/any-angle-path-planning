@@ -21,15 +21,17 @@ public class GridStorage {
             FileReader reader = new FileReader(fileName);
              bufferedReader = new BufferedReader(reader);
  
-            Pair<Integer, Integer> pair = restoreIntegerPair(bufferedReader);
-            if(pair == null)
+            Pair<Integer, Integer> pairVertexFromFile = restoreIntegerPair(bufferedReader);
+            if(pairVertexFromFile == null)
                 throw new GridFileFormatException("missing vertex start");
-            Vertex vertexStart = new Vertex(pair.getKey(), pair.getValue());
+            Grid.start.x = pairVertexFromFile.getKey();
+            Grid.start.y = pairVertexFromFile.getValue();
 
-            pair = restoreIntegerPair(bufferedReader);
-            if(pair == null)
+            pairVertexFromFile = restoreIntegerPair(bufferedReader);
+            if(pairVertexFromFile == null)
                 throw new GridFileFormatException("missing vertex goal");
-            Vertex vertexGoal = new Vertex(pair.getKey(), pair.getValue());
+            Grid.goal.x = pairVertexFromFile.getKey();
+            Grid.goal.y = pairVertexFromFile.getValue();
 
             Pair<Integer, Integer> dimensions = restoreIntegerPair(bufferedReader);
 

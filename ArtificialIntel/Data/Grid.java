@@ -2,8 +2,8 @@ package ArtificialIntel.Data;
 
 public class Grid{
     public Cell [][] cells;
-    static Cell start;
-    static Cell goal; 
+    static Vertex start;
+    static Vertex goal; 
 
     public int getWidth(){
         return cells.length;
@@ -14,10 +14,17 @@ public class Grid{
     Grid(int width, int height){
         cells = new Cell[width][height];
     }
+
+    static void assignStart(Pair<Integer, Integer> startVertex)
+    {
+        Grid.start.x = startVertex.getKey();  
+        Grid.start.y = startVertex.getValue();  
+    }
+
     void add(Cell cell){
         // convert the cell position identifiers to array index
-        //int ix = cell.getX() - 1;
-        //int iy = cell.getY() - 1;
+        // int ix = cell.getX() - 1;
+        // int iy = cell.getY() - 1;
         int ix = cell.getX() - 1;
         int iy = cell.getY() - 1;
         cells[ix][iy] = cell;
