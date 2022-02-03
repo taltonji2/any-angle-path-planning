@@ -13,6 +13,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.JScrollPane;
 
 import ArtificialIntel.Data.Cell;
 import ArtificialIntel.Data.Grid;
@@ -62,7 +63,10 @@ public class Assignment1 implements KeyListener
         jFrame.addKeyListener(this);
         Container container = jFrame.getContentPane();
         container.setLayout( new BorderLayout() );
-        container.add( jLabel, BorderLayout.PAGE_END );
+        container.add( jLabel, BorderLayout.CENTER );
+
+       
+        
         jFrame.pack();
     }
 

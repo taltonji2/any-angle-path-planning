@@ -58,7 +58,7 @@ public class GridStorage {
 
         return grid;
     }
- */
+    */
     Grid grid = null;
     BufferedReader bufferedReader = null;
     try {
@@ -82,7 +82,7 @@ public class GridStorage {
 
         grid.start = vertexStart;
         grid.goal = vertexGoal; 
-         
+
         Cell cell = restoreCell(bufferedReader); 
         int cellCount = 0;
         while(cell != null){
