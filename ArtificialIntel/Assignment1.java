@@ -33,7 +33,6 @@ public class Assignment1 implements KeyListener
     private JLabel jLabel;
     private JFrame jFrame;
     public Agent agent; //should be displayed using a circle on the grid
-
     
     Assignment1()
     {
@@ -129,7 +128,6 @@ public class Assignment1 implements KeyListener
                 graphics.drawLine(x, y2, x, y);
             }
         }
-        
         graphics.setColor(Color.BLUE);
         graphics.fillOval(agent.getX() * sizeTile, agent.getY() * sizeTile, 5, 5);
 
@@ -146,22 +144,35 @@ public class Assignment1 implements KeyListener
 
     @Override
     public void keyPressed(KeyEvent e) {
+        Graphics graphics = image.getGraphics();
+        graphics.setColor(Color.white);
+        graphics.fillOval(agent.getX() * sizeTile, agent.getY() * sizeTile, 5, 5);
+        graphics.setColor(Color.BLUE);
         if (e.getKeyCode() == KeyEvent.VK_RIGHT)
         {
+            System.out.println("Pressed");
+            System.out.println(agent.x);
+            agent.x += 1;
 
         }
         if (e.getKeyCode() == KeyEvent.VK_LEFT)
         {
-
+            agent.x -= 1;
         }
         if (e.getKeyCode() == KeyEvent.VK_UP)
         {
-
+            agent.y -= 1;
         }
         if (e.getKeyCode() == KeyEvent.VK_DOWN)
         {
-
+            agent.y += 1;
         }
+        System.out.println(agent.x);
+        System.out.println(agent.getX());
+        graphics.fillOval(agent.getX() * sizeTile, agent.getY() * sizeTile, 5, 5);
+        System.out.println("Painted");
+        jFrame.setVisible(false);
+        jFrame.setVisible(true);
     }
 
     @Override

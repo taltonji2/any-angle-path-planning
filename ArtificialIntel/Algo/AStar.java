@@ -8,26 +8,29 @@ import java.util.PriorityQueue;
 *              g(Node)      h(Node)
 *         |--------------------|
 *                  f() 
-*/ 
+*/
+
+import ArtificialIntel.Data.Cell; 
 
 
 public class AStar extends Node
 {
+    Cell start, goal;
     AStar()
     {
     }
-/* 
+    /* 
     private int g(Node node)
     {
 
-    }
+    }*/
 
-    private int h(Node node)
+    private int h(Cell c)
     {
-        
+        return (int) (Math.sqrt(2) * Math.min(Math.abs(c.getX() - goal.getX()), Math.abs(c.getY() - goal.getY())) + Math.max(Math.abs(c.getX() - goal.getX()), Math.abs(c.getY() - goal.getY())) + Math.min(Math.abs(c.getX() - goal.getX()), Math.abs(c.getY() - goal.getY())));
     }
 
-    private int f()
+    /*private int f()
     {
         
     } */

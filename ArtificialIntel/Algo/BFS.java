@@ -5,9 +5,10 @@ import java.util.Iterator;
 import java.util.LinkedList;
 
 public class BFS {
-    
+    //to do: use cell instead of node
     private int num_nodes;   // # of nodes
     private ArrayList<ArrayList<Node2>> adj; //Adjacency Lists
+    
 
     BFS(int v)
     {
@@ -18,7 +19,7 @@ public class BFS {
     }
 
     // prints BFS traversal from a given source s
-    void doBFS(Node2 n)
+    boolean doBFS(Node2 start, Node2 goal)
     {
         // Mark all the vertices as not visited(By default
         // set as false)
@@ -29,28 +30,33 @@ public class BFS {
         LinkedList<Node2> queue = new LinkedList<Node2>();
   
         // Mark the current node as visited and enqueue it
-        visited[list.indexOf(n)]=true;
-        queue.add(n);
+        visited[list.indexOf(start)]=true;
+        queue.add(start);
   
         while (queue.size() != 0)
         {
             // Dequeue a vertex from queue and print it
-            n = queue.poll();
+            start = queue.poll();
+            if (start.equals(goal))
+            {
+                return true;
+            }
   
             // Get all adjacent vertices of the dequeued vertex s
             // If a adjacent has not been visited, then mark it
             // visited and enqueue it
-            Iterator<Node2> i = adj.get(list.indexOf(n)).listIterator();
+            Iterator<Node2> i = adj.get(list.indexOf(start)).listIterator();
             while (i.hasNext())
             {
-                n = i.next();
-                if (!visited[list.indexOf(n)])
+                start = i.next();
+                if (!visited[list.indexOf(start)])
                 {
-                    visited[list.indexOf(n)] = true;
-                    queue.add(n);
+                    visited[list.indexOf(start)] = true;
+                    queue.add(start);
                 }
             }
         }
+        return false;
     }
 
 }
