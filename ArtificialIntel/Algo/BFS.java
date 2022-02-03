@@ -5,19 +5,32 @@ import java.util.Iterator;
 import java.util.LinkedList;
 
 import ArtificialIntel.Data.Cell;
+import ArtificialIntel.Data.Grid;
 
 public class BFS {
     //to do: use cell instead of node
     private int num_nodes;   // # of nodes
     private ArrayList<ArrayList<Cell>> adj; //Adjacency Lists
-    
+    public Grid grid;
+    public Cell start, goal;
 
-    BFS(int v)
+    BFS(int v, Grid grid)
     {
         this.num_nodes = v;
+        this.grid = grid;
+        this.start = grid.cells[this.start.getX()][this.start.getY()];
+        this.goal = grid.cells[this.goal.getX()][this.goal.getY()];
         adj = new ArrayList<ArrayList<Cell>>();
         for (int i=0; i<this.num_nodes; ++i)
-            adj.set(i, new ArrayList<Cell>()); 
+            adj.set(i, new ArrayList<Cell>());
+        if (doBFS(this.start, this.goal))
+        {
+            System.out.println("Found");
+        } 
+        else
+        {
+            System.out.println("Not Found");
+        }
     }
 
     // prints BFS traversal from a given source s
@@ -42,6 +55,10 @@ public class BFS {
             if (start.equals(goal))
             {
                 return true;
+            }
+            if (!start.IsFree())
+            {
+                continue;
             }
   
             // Get all adjacent vertices of the dequeued vertex s
