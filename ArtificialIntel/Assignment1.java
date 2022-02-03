@@ -13,6 +13,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
 import ArtificialIntel.Data.Cell;
@@ -33,7 +34,8 @@ public class Assignment1 implements KeyListener
     private JLabel jLabel;
     private JFrame jFrame;
     public Agent agent; //should be displayed using a circle on the grid
-    
+    public Grid g;
+
     Assignment1()
     {
         sizeTile = getInt( "How many pixels per square? [1 - 100]?" );
@@ -91,8 +93,8 @@ public class Assignment1 implements KeyListener
    
     private void paint(Grid grid)
     {
+        g = grid;
         Graphics graphics = image.getGraphics();
-        
         // paint the cells
         graphics.setColor( Color.white );
         for ( int row = 0; row < grid.getHeight(); row++ )
@@ -166,7 +168,31 @@ public class Assignment1 implements KeyListener
             agent.y += 1;
         }
         graphics.fillOval(agent.getX() * sizeTile, agent.getY() * sizeTile, 5, 5);
-        System.out.println("Painted");
+
+        graphics.setColor( Color.white );
+        for ( int row = 0; row < g.getHeight(); row++ )
+        {
+            for ( int col = 0; col < g.getWidth(); col ++ )
+            {
+                Cell cell = g.cells[col][row];
+                if(cell.IsFree()){
+                    graphics.setColor( Color.white );
+                }
+                else{
+                    graphics.setColor( Color.gray );
+                }
+                graphics.fillRect( col * sizeTile, row * sizeTile, sizeTile, sizeTile );
+            }
+        }
+
+        graphics.setColor(Color.GREEN);
+        graphics.fillOval(g.start.x * sizeTile, g.start.y * sizeTile, 5, 5);
+
+        graphics.setColor(Color.RED);
+        graphics.fillOval(g.goal.x * sizeTile, g.goal.y * sizeTile, 5, 5);
+
+        jFrame.revalidate();
+        jFrame.repaint();
     }
 
     @Override
