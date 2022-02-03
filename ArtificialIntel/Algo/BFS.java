@@ -4,30 +4,32 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedList;
 
+import ArtificialIntel.Data.Cell;
+
 public class BFS {
     //to do: use cell instead of node
     private int num_nodes;   // # of nodes
-    private ArrayList<ArrayList<Node2>> adj; //Adjacency Lists
+    private ArrayList<ArrayList<Cell>> adj; //Adjacency Lists
     
 
     BFS(int v)
     {
         this.num_nodes = v;
-        adj = new ArrayList<ArrayList<Node2>>();
+        adj = new ArrayList<ArrayList<Cell>>();
         for (int i=0; i<this.num_nodes; ++i)
-            adj.set(i, new ArrayList<Node2>()); 
+            adj.set(i, new ArrayList<Cell>()); 
     }
 
     // prints BFS traversal from a given source s
-    boolean doBFS(Node2 start, Node2 goal)
+    boolean doBFS(Cell start, Cell goal)
     {
         // Mark all the vertices as not visited(By default
         // set as false)
-        ArrayList<Node2> list = new ArrayList<Node2>(); //list of all nodes in grid
+        ArrayList<Cell> list = new ArrayList<Cell>(); //list of all nodes in grid
         boolean visited[] = new boolean[num_nodes];
   
         // Create a queue for BFS
-        LinkedList<Node2> queue = new LinkedList<Node2>();
+        LinkedList<Cell> queue = new LinkedList<Cell>();
   
         // Mark the current node as visited and enqueue it
         visited[list.indexOf(start)]=true;
@@ -45,7 +47,7 @@ public class BFS {
             // Get all adjacent vertices of the dequeued vertex s
             // If a adjacent has not been visited, then mark it
             // visited and enqueue it
-            Iterator<Node2> i = adj.get(list.indexOf(start)).listIterator();
+            Iterator<Cell> i = adj.get(list.indexOf(start)).listIterator();
             while (i.hasNext())
             {
                 start = i.next();

@@ -12,7 +12,7 @@ public class Cell extends Vertex{
     //     this.grid = grid;
     //     bFree = free == 0;
     // }
-    Cell(int x, int y, int free){
+    protected Cell(int x, int y, int free){
         super(x, y);
         bFree = free == 0;
     }

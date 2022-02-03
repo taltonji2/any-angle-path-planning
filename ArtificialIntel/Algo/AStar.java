@@ -13,11 +13,12 @@ import java.util.PriorityQueue;
 import ArtificialIntel.Data.Cell; 
 
 
-public class AStar extends Node
+public class AStar extends Cell
 {
     Cell start, goal;
-    AStar()
+    AStar(int x, int y, int free)
     {
+        super(x, y, free);
     }
     /* 
     private int g(Node node)

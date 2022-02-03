@@ -150,8 +150,6 @@ public class Assignment1 implements KeyListener
         graphics.setColor(Color.BLUE);
         if (e.getKeyCode() == KeyEvent.VK_RIGHT)
         {
-            System.out.println("Pressed");
-            System.out.println(agent.x);
             agent.x += 1;
 
         }
@@ -167,12 +165,8 @@ public class Assignment1 implements KeyListener
         {
             agent.y += 1;
         }
-        System.out.println(agent.x);
-        System.out.println(agent.getX());
         graphics.fillOval(agent.getX() * sizeTile, agent.getY() * sizeTile, 5, 5);
         System.out.println("Painted");
-        jFrame.setVisible(false);
-        jFrame.setVisible(true);
     }
 
     @Override
