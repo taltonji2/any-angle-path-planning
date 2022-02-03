@@ -2,9 +2,9 @@ package ArtificialIntel.Data;
 
 public class Grid{
     public Cell [][] cells;
-    static Vertex start;
-    static Vertex goal; 
-
+    public Vertex start;
+    public Vertex goal; 
+    
     public int getWidth(){
         return cells.length;
     }
@@ -13,12 +13,6 @@ public class Grid{
     }
     Grid(int width, int height){
         cells = new Cell[width][height];
-    }
-
-    static void assignStart(Pair<Integer, Integer> startVertex)
-    {
-        Grid.start.x = startVertex.getKey();  
-        Grid.start.y = startVertex.getValue();  
     }
 
     void add(Cell cell){

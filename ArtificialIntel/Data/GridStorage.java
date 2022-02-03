@@ -69,7 +69,7 @@ public class GridStorage {
         if(pair == null)
             throw new GridFileFormatException("missing vertex start");
         Vertex vertexStart = new Vertex(pair.getKey(), pair.getValue());
-
+        
         pair = restoreIntegerPair(bufferedReader);
         if(pair == null)
             throw new GridFileFormatException("missing vertex goal");
@@ -79,6 +79,10 @@ public class GridStorage {
 
         grid = new Grid(dimensions.getKey(),dimensions.getValue());
 
+
+        grid.start = vertexStart;
+        grid.goal = vertexGoal; 
+         
         Cell cell = restoreCell(bufferedReader); 
         int cellCount = 0;
         while(cell != null){

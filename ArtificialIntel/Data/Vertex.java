@@ -2,10 +2,10 @@ package ArtificialIntel.Data;
 
 import java.util.Objects;
 
-class Vertex{
+public class Vertex{
     
-    protected int x;
-    protected int y;
+    public int x;
+    public int y;
 
     Vertex(int x, int y){
         this.x=x;

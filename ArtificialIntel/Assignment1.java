@@ -125,9 +125,16 @@ public class Assignment1 implements KeyListener
                 graphics.drawLine(x, y2, x, y);
             }
         }
-        // paints the agent circle in red
-        graphics.setColor(Color.RED);
+        
+        graphics.setColor(Color.BLUE);
         graphics.fillOval(agent.getX() * sizeTile, agent.getY() * sizeTile, 5, 5);
+
+        graphics.setColor(Color.GREEN);
+        graphics.fillOval(grid.start.x * sizeTile, grid.start.y * sizeTile, 5, 5);
+
+        graphics.setColor(Color.RED);
+        graphics.fillOval(grid.goal.x * sizeTile, grid.goal.y * sizeTile, 5, 5);
+
 
     }
    
