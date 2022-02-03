@@ -15,7 +15,7 @@ class GridFileFormatException extends Exception{
 
 public class GridStorage {
     public static Grid restoreGrid(String fileName) throws IOException{
-        Grid grid = null;
+        /* Grid grid = null;
         BufferedReader bufferedReader = null;
         try {
             FileReader reader = new FileReader(fileName);
@@ -58,7 +58,48 @@ public class GridStorage {
 
         return grid;
     }
+ */
+    Grid grid = null;
+    BufferedReader bufferedReader = null;
+    try {
+        FileReader reader = new FileReader(fileName);
+        bufferedReader = new BufferedReader(reader);
 
+        Pair<Integer, Integer> pair = restoreIntegerPair(bufferedReader);
+        if(pair == null)
+            throw new GridFileFormatException("missing vertex start");
+        Vertex vertexStart = new Vertex(pair.getKey(), pair.getValue());
+
+        pair = restoreIntegerPair(bufferedReader);
+        if(pair == null)
+            throw new GridFileFormatException("missing vertex goal");
+        Vertex vertexGoal = new Vertex(pair.getKey(), pair.getValue());
+
+        Pair<Integer, Integer> dimensions = restoreIntegerPair(bufferedReader);
+
+        grid = new Grid(dimensions.getKey(),dimensions.getValue());
+
+        Cell cell = restoreCell(bufferedReader); 
+        int cellCount = 0;
+        while(cell != null){
+            ++cellCount;
+            grid.add(cell);
+            cell = restoreCell(bufferedReader);
+        }
+        reader.close();
+
+    } catch (IOException e) {
+        e.printStackTrace();
+    } catch(GridFileFormatException e){
+        e.printStackTrace();
+    }
+    finally{
+        if(bufferedReader!=null)
+            bufferedReader.close();
+    }
+
+    return grid;
+    }
     //reads grid txt file and restores integer pairs for start and target vertex
     static Pair<Integer,Integer> restoreIntegerPair(BufferedReader bufferedReader) 
         throws IOException, GridFileFormatException{
