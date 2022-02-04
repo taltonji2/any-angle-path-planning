@@ -31,7 +31,7 @@ import java.awt.*;
 /**
  *
  */
-public class Assignment1 implements KeyListener
+public class Assignment1
 {
     private int sizeTile;
     private Image image;
@@ -76,7 +76,6 @@ public class Assignment1 implements KeyListener
         jFrame.add(scrollFrame);
         jFrame.setSize(1000,500); 
         jFrame.setDefaultCloseOperation( JFrame.EXIT_ON_CLOSE );
-        jFrame.addKeyListener(this);
     }
 
     protected Grid restoreGrid(){
@@ -138,9 +137,7 @@ public class Assignment1 implements KeyListener
                 graphics.drawLine(x, y2, x, y);
             }
         }
-        graphics.setColor(Color.BLUE);
-        graphics.fillOval(agent.getX() * sizeTile, agent.getY() * sizeTile, 5, 5);
-
+        
         graphics.setColor(Color.GREEN);
         graphics.fillOval(grid.start.x * sizeTile, grid.start.y * sizeTile, 5, 5);
 
@@ -152,66 +149,4 @@ public class Assignment1 implements KeyListener
    
     private void view() { jFrame.setVisible( true ); }
 
-    @Override
-    public void keyPressed(KeyEvent e) {
-        Graphics graphics = image.getGraphics();
-        graphics.setColor(Color.white);
-        graphics.fillOval(agent.getX() * sizeTile, agent.getY() * sizeTile, 5, 5);
-        graphics.setColor(Color.BLUE);
-        if (e.getKeyCode() == KeyEvent.VK_RIGHT)
-        {
-            agent.x += 1;
-
-        }
-        if (e.getKeyCode() == KeyEvent.VK_LEFT)
-        {
-            agent.x -= 1;
-        }
-        if (e.getKeyCode() == KeyEvent.VK_UP)
-        {
-            agent.y -= 1;
-        }
-        if (e.getKeyCode() == KeyEvent.VK_DOWN)
-        {
-            agent.y += 1;
-        }
-        graphics.fillOval(agent.getX() * sizeTile, agent.getY() * sizeTile, 5, 5);
-
-        graphics.setColor( Color.white );
-        for ( int row = 0; row < g.getHeight(); row++ )
-        {
-            for ( int col = 0; col < g.getWidth(); col ++ )
-            {
-                Cell cell = g.cells[col][row];
-                if(cell.IsFree()){
-                    graphics.setColor( Color.white );
-                }
-                else{
-                    graphics.setColor( Color.gray );
-                }
-                graphics.fillRect( col * sizeTile, row * sizeTile, sizeTile, sizeTile );
-            }
-        }
-
-        graphics.setColor(Color.GREEN);
-        graphics.fillOval(g.start.x * sizeTile, g.start.y * sizeTile, 5, 5);
-
-        graphics.setColor(Color.RED);
-        graphics.fillOval(g.goal.x * sizeTile, g.goal.y * sizeTile, 5, 5);
-
-        jFrame.revalidate();
-        jFrame.repaint();
-    }
-
-    @Override
-    public void keyReleased(KeyEvent e) {
-        // TODO Auto-generated method stub
-        
-    }
-
-    @Override
-    public void keyTyped(KeyEvent e) {
-        // TODO Auto-generated method stub
-        
-    }
 }
