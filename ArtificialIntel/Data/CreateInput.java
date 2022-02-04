@@ -21,7 +21,7 @@ public class CreateInput {
     //if no valid path then regenerate random bocked.
 
     public static void main(String[] args) {
-        CreateInput createInput = new CreateInput(50,100);
+        CreateInput createInput = new CreateInput(25,50);
         
     }
 
