@@ -8,7 +8,7 @@ public class Cell extends Vertex {
     
     protected boolean bFree = true;
     public Cell parent;
-    public double cost;
+    public double cost = Integer.MAX_VALUE;
     public ArrayList<Cell> neighbors = new ArrayList<Cell>();
     public boolean IsFree(){
         return bFree;

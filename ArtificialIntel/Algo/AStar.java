@@ -51,10 +51,12 @@ public class AStar
             graphics.fillOval(s.getX() * sizeTile, s.getY() * sizeTile, 5, 5);
             if (s.equals(goal))
             {
+                System.out.println("Found it!");
                 return true;
             }
             closed.add(s);
             for (Cell c : getNeighbors(s)) {
+                //System.out.println("Entering for-loop");
                 if (c.IsFree())
                 {
                     //System.out.println("Visiting (" + c.getX() + ", " + c.getY() + ")");
@@ -174,9 +176,9 @@ public class AStar
 
     public ArrayList<Cell> getNeighbors(Cell c)
     {
+        //System.out.println("Analyzing (" + c.getX() + ", " + c.getY() + ")");
         if (c.getX() >= 0 && c.getX() < 50 && c.getY() >= 0 && c.getX() < 50)
         {
-            System.out.println("c = (" + c.getX() + ", " + c.getY() + ")");
         if (c.getY() - 1 >= 0 && c.getX() - 1 >= 0)
         {
             c.neighbors.add(g.cells[c.getY() - 1][c.getX() - 1]);
@@ -212,11 +214,5 @@ public class AStar
         }
         return c.neighbors;
     }
-
-    /** (x - 1, y - 1)     
-     *  |_|_|
-     *   (c.x, c.y)
-     * | | |
-     */
 
 }
