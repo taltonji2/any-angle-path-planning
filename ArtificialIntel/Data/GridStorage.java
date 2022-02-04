@@ -79,9 +79,9 @@ public class GridStorage {
 
         grid = new Grid(dimensions.getKey(),dimensions.getValue());
 
-
-        grid.start = vertexStart;
-        grid.goal = vertexGoal; 
+        
+        grid.start = new Cell(vertexStart.getX(), vertexStart.getY(), 0);
+        grid.goal = new Cell(vertexGoal.getX(), vertexGoal.getY(), 0); 
 
         Cell cell = restoreCell(bufferedReader); 
         int cellCount = 0;

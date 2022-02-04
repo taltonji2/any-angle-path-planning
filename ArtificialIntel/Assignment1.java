@@ -19,6 +19,7 @@ import javax.swing.JScrollPane;
 import ArtificialIntel.Data.Cell;
 import ArtificialIntel.Data.Grid;
 import ArtificialIntel.Data.GridStorage;
+import ArtificialIntel.Algo.AStar;
 import ArtificialIntel.Data.Agent;
 
 import java.awt.event.KeyEvent;
@@ -28,11 +29,11 @@ import java.awt.event.KeyListener;
  */
 public class Assignment1 implements KeyListener
 {
-    private int sizeTile;
+    private static int sizeTile;
     private Image image;
     private ImageIcon imageIcon;
     private JLabel jLabel;
-    private JFrame jFrame;
+    private static JFrame jFrame;
     public Agent agent; //should be displayed using a circle on the grid
     public Grid g;
 
@@ -52,6 +53,13 @@ public class Assignment1 implements KeyListener
         assignment1.InitializeGUI(grid);
         assignment1.paint(grid);
         assignment1.view();
+        assignment1.doAStar();
+    }
+
+    public void doAStar()
+    {
+        AStar as = new AStar();
+        as.doAStar((Cell)g.start, (Cell)g.goal, g, sizeTile, jFrame);
     }
     
     protected void InitializeGUI(Grid grid){
@@ -138,7 +146,8 @@ public class Assignment1 implements KeyListener
 
         graphics.setColor(Color.RED);
         graphics.fillOval(grid.goal.x * sizeTile, grid.goal.y * sizeTile, 5, 5);
-
+        jFrame.revalidate();
+        jFrame.repaint();
 
     }
    
@@ -167,7 +176,8 @@ public class Assignment1 implements KeyListener
         {
             agent.y += 1;
         }
-        graphics.fillOval(agent.getX() * sizeTile, agent.getY() * sizeTile, 5, 5);
+        paint(g);
+        /* graphics.fillOval(agent.getX() * sizeTile, agent.getY() * sizeTile, 5, 5);
 
         graphics.setColor( Color.white );
         for ( int row = 0; row < g.getHeight(); row++ )
@@ -192,7 +202,8 @@ public class Assignment1 implements KeyListener
         graphics.fillOval(g.goal.x * sizeTile, g.goal.y * sizeTile, 5, 5);
 
         jFrame.revalidate();
-        jFrame.repaint();
+        jFrame.repaint(); */
+        System.out.println("Agent now at (" + agent.getX() + ", " + agent.getY() + ")");
     }
 
     @Override

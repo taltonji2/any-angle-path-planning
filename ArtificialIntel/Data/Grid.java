@@ -2,8 +2,8 @@ package ArtificialIntel.Data;
 
 public class Grid{
     public Cell [][] cells;
-    public Vertex start;
-    public Vertex goal; 
+    public Cell start;
+    public Cell goal; 
     
     public int getWidth(){
         return cells.length;
