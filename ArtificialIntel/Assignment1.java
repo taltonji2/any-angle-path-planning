@@ -3,6 +3,7 @@ package ArtificialIntel;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Container;
+import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
@@ -15,6 +16,7 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.plaf.basic.BasicSliderUI.ComponentHandler;
 
 import ArtificialIntel.Data.Cell;
 import ArtificialIntel.Data.Grid;
@@ -23,6 +25,9 @@ import ArtificialIntel.Data.Agent;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.*;
+
+
 /**
  *
  */
@@ -58,17 +63,20 @@ public class Assignment1 implements KeyListener
         int imageSize = Math.max(grid.getWidth(), grid.getHeight()) * sizeTile;
         image = new BufferedImage( imageSize, imageSize, BufferedImage.TYPE_INT_ARGB );
         imageIcon = new ImageIcon( image );
-        jLabel = new JLabel( imageIcon );
         jFrame = new JFrame( "Artificial Intel" );
+        
+        JLabel picLabel = new JLabel(new ImageIcon(image));
+        JPanel gridPanel = new JPanel();
+        gridPanel.setLayout(new BorderLayout());
+        gridPanel.add(picLabel, BorderLayout.WEST);
+
+        JScrollPane scrollFrame = new JScrollPane(gridPanel);
+        gridPanel.setAutoscrolls(true);
+        
+        jFrame.add(scrollFrame);
+        jFrame.setSize(1000,500); 
         jFrame.setDefaultCloseOperation( JFrame.EXIT_ON_CLOSE );
         jFrame.addKeyListener(this);
-        Container container = jFrame.getContentPane();
-        container.setLayout( new BorderLayout() );
-        container.add( jLabel, BorderLayout.CENTER );
-
-       
-        
-        jFrame.pack();
     }
 
     protected Grid restoreGrid(){
