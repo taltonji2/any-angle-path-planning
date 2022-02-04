@@ -1,9 +1,15 @@
 package ArtificialIntel.Data;
 
-public class Cell extends Vertex{ 
+import java.util.ArrayList;
+import java.util.Comparator;
+
+public class Cell extends Vertex { 
     //Grid grid;
     
     protected boolean bFree = true;
+    public Cell parent;
+    public double cost;
+    public ArrayList<Cell> neighbors = new ArrayList<Cell>();
     public boolean IsFree(){
         return bFree;
     }
@@ -18,6 +24,10 @@ public class Cell extends Vertex{
     }
     boolean getFree(){
         return bFree;
+    }
+    public void setCost(double c)
+    {
+        this.cost = c;
     }
     
 }
