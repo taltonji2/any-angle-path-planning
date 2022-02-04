@@ -3,7 +3,6 @@ package ArtificialIntel.Data;
 import java.io.File;  
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.HashSet;
 import java.util.Random;
 
 
@@ -12,8 +11,8 @@ import java.util.Random;
 public class CreateInput {
     int numOfGridFiles = 1;
     int getNumOfGridFiles(){ return this.numOfGridFiles;}
-    int columns = 100; //x
-    int rows = 50; //y
+    int columns = 50; //x
+    int rows = 25; //y
     int numOfCells = rows * columns;
     double numOfCellsBlocked = numOfCells * .10; //10% blocked
     
@@ -86,14 +85,14 @@ public class CreateInput {
             }
 
         int count = 0;
-        while(count < 500)
+        while(count < numOfCellsBlocked)
         {
             Vertex v = RandomPoint(columns, rows);
-            if(v.y == 99)
+            if(v.y == rows - 1)
             {
                 continue;
             }
-            if(v.x == 49)
+            if(v.x == columns - 1)
             {
                 continue;
             }
