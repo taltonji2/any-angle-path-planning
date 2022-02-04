@@ -55,12 +55,16 @@ public class AStar
                 return true;
             }
             closed.add(s);
-            for (Cell c : getNeighbors(s)) {
+            if (s.neighbors.isEmpty())
+            {
+                s.neighbors = getNeighbors(s);
+            }
+            for (Cell c : s.neighbors) {
                 //System.out.println("Entering for-loop");
                 if (c.IsFree())
                 {
                     //System.out.println("Visiting (" + c.getX() + ", " + c.getY() + ")");
-                    graphics.fillOval(s.getX() * sizeTile, s.getY() * sizeTile, 5, 5);
+                    graphics.fillOval(c.getX() * sizeTile, c.getY() * sizeTile, 5, 5);
                     jFrame.revalidate();
                     jFrame.repaint();
                     if (!fringe.contains(c))
@@ -111,6 +115,7 @@ public class AStar
         jFrame.revalidate();
         jFrame.repaint();
         }
+        System.out.println("Goal not reached :(");
         return false;
     }
 
@@ -176,41 +181,63 @@ public class AStar
 
     public ArrayList<Cell> getNeighbors(Cell c)
     {
-        //System.out.println("Analyzing (" + c.getX() + ", " + c.getY() + ")");
-        if (c.getX() >= 0 && c.getX() < 50 && c.getY() >= 0 && c.getX() < 50)
+        //Vertex v = vertex the agent is trying to move to
+        System.out.println(g.getHeight()); // = 25
+        System.out.println(g.getWidth()); // = 50
+        System.out.println(g.cells.length); //x value, width, = 50
+        System.out.println(g.cells[0].length); //y value, height = 25
+        System.out.println("Getting neighbors of c = (" + c.getX() + ", " + c.getY() + ")");
+        int y = c.y - 1;
+        if(y>=0 && c.x >= 0 && c.x < g.getWidth())
         {
-        if (c.getY() - 1 >= 0 && c.getX() - 1 >= 0)
-        {
-            c.neighbors.add(g.cells[c.getY() - 1][c.getX() - 1]);
+            System.out.println("Adding c = (" + c.getX() + ", " + y + ")");
+            c.neighbors.add(g.cells[c.x][y]);
         }
-        if (c.getY() - 1 >= 0 && c.getX() >= 0 && c.getX() < 50)
+        int x = c.x + 1;
+        if(x < g.getWidth() && c.y >= 0 && c.y < g.getHeight()) //x < 50
         {
-            c.neighbors.add(g.cells[c.getY() - 1][c.getX()]);
+            System.out.println("Adding c = (" + x + ", " + c.getY() + ")");
+            c.neighbors.add(g.cells[x][c.y]); //this is failing because c.y must be < 25 (g.height)
         }
-        if (c.getY() - 1 >= 0 && c.getX() + 1 < 50)
+        y = c.y + 1;
+        if (y < g.getHeight() && c.x >= 0 && c.x < g.getWidth())
         {
-            c.neighbors.add(g.cells[c.getY() - 1][c.getX() + 1]);
+            System.out.println("Adding c = (" + c.getX() + ", " + y + ")");
+            c.neighbors.add(g.cells[c.x][y]);
         }
-        if (c.getX() - 1 >= 0 && c.getY() >= 0 && c.getY() < 50)
+        x = c.x - 1;
+        if (x >= 0 && c.y >= 0 && c.y < g.getHeight())
         {
-            c.neighbors.add(g.cells[c.getY()][c.getX() - 1]);
+            System.out.println("Adding c = (" + x + ", " + c.getY() + ")");
+            c.neighbors.add(g.cells[x][c.y]);
         }
-        if (c.getX() + 1 < 50 && c.getY() >= 0 && c.getY() < 50)
+        y = c.y - 1;
+        x = c.x + 1;
+        if (y >= 0 && x < g.getWidth() && y < g.getHeight() && x >= 0)
         {
-            c.neighbors.add(g.cells[c.getY()][c.getX() + 1]);
+            System.out.println("Adding c = (" + x + ", " + y + ")");
+            c.neighbors.add(g.cells[x][y]);
         }
-        if (c.getY() + 1 < 50 && c.getX() - 1 >= 0)
+        y = c.y - 1;
+        x = c.x - 1;
+        if(y >= 0 && x < g.getWidth() && y < g.getHeight() && x >= 0)
         {
-            c.neighbors.add(g.cells[c.getY() + 1][c.getX() - 1]);
+            System.out.println("Adding c = (" + x + ", " + y + ")");
+            c.neighbors.add(g.cells[x][y]);
         }
-        if (c.getY() + 1 < 50 && c.getX() >= 0 && c.getX() < 50)
+        y = c.y + 1;
+        x = c.x + 1;
+        if(y >= 0 && x < g.getWidth() && y < g.getHeight() && x >= 0)
         {
-            c.neighbors.add(g.cells[c.getY() + 1][c.getX()]);
+            System.out.println("Adding c = (" + x + ", " + y + ")");
+            c.neighbors.add(g.cells[x][y]);
         }
-        if (c.getY() + 1 < 50 && c.getX() + 1 < 50)
+        y = c.y + 1;
+        x = c.x - 1;
+        if(y >= 0 && x < g.getWidth() && y < g.getHeight() && x >= 0)
         {
-            c.neighbors.add(g.cells[c.getY() + 1][c.getX() + 1]);
-        }
+            System.out.println("Adding c = (" + x + ", " + y + ")");
+            c.neighbors.add(g.cells[x][y]);
         }
         return c.neighbors;
     }
