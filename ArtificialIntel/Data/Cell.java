@@ -13,11 +13,6 @@ public class Cell extends Vertex {
     public boolean IsFree(){
         return bFree;
     }
-    // Cell(Grid grid, int x, int y, int free){
-    //     super(x, y);
-    //     this.grid = grid;
-    //     bFree = free == 0;
-    // }
     protected Cell(int x, int y, int free){
         super(x, y);
         bFree = free == 0;
@@ -29,5 +24,4 @@ public class Cell extends Vertex {
     {
         this.cost = c;
     }
-    
 }

@@ -101,7 +101,88 @@ public class GridStorage {
         if(bufferedReader!=null)
             bufferedReader.close();
     }
-
+    for (Cell[] ca: grid.cells) 
+    {
+        for (Cell c: ca)
+        {
+            c.neighbors.clear();
+            try {
+                c.neighbors.add(grid.cells[c.x][c.y + 1]);
+            } catch (Exception e) {
+                //TODO: handle exception
+            }
+            try {
+                c.neighbors.add(grid.cells[c.x][c.y - 1]);
+            } catch (Exception e) {
+                //TODO: handle exception
+            }
+            try {
+                c.neighbors.add(grid.cells[c.x + 1][c.y + 1]);
+            } catch (Exception e) {
+                //TODO: handle exception
+            }
+            try {
+                c.neighbors.add(grid.cells[c.x + 1][c.y - 1]);
+            } catch (Exception e) {
+                //TODO: handle exception
+            }
+            try {
+                c.neighbors.add(grid.cells[c.x - 1][c.y + 1]);
+            } catch (Exception e) {
+                //TODO: handle exception
+            }
+            try {
+                c.neighbors.add(grid.cells[c.x - 1][c.y - 1]);
+            } catch (Exception e) {
+                //TODO: handle exception
+            }
+            try {
+                c.neighbors.add(grid.cells[c.x + 1][c.y]);
+            } catch (Exception e) {
+                //TODO: handle exception
+            }
+            try {
+                c.neighbors.add(grid.cells[c.x - 1][c.y]);
+            } catch (Exception e) {
+                //TODO: handle exception
+            }
+            
+        }
+    }
+    grid.start.neighbors.clear();
+    try 
+    {
+        grid.start.neighbors.add(grid.cells[grid.start.x][grid.start.y + 1]);
+    } catch (Exception e) {}
+    try 
+    {
+        grid.start.neighbors.add(grid.cells[grid.start.x][grid.start.y - 1]);
+    } catch (Exception e) {}
+    try 
+    {
+        grid.start.neighbors.add(grid.cells[grid.start.x + 1][grid.start.y + 1]);
+    } catch (Exception e) {}
+    try 
+    {
+        grid.start.neighbors.add(grid.cells[grid.start.x + 1][grid.start.y - 1]);
+    } catch (Exception e) {}
+    try 
+    {
+        grid.start.neighbors.add(grid.cells[grid.start.x - 1][grid.start.y + 1]);
+    } catch (Exception e) {}
+    try 
+    {
+        grid.start.neighbors.add(grid.cells[grid.start.x - 1][grid.start.y - 1]);
+    } catch (Exception e) {}
+    try 
+    {
+        grid.start.neighbors.add(grid.cells[grid.start.x + 1][grid.start.y]);
+    } catch (Exception e) {}
+    try 
+    {
+        grid.start.neighbors.add(grid.cells[grid.start.x - 1][grid.start.y]);
+    } catch (Exception e) {}
+    System.out.println("Start cell neighbors: " + grid.start.neighbors.size());
     return grid;
     }
     //reads grid txt file and restores integer pairs for start and target vertex

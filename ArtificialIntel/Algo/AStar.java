@@ -46,7 +46,7 @@ public class AStar
         while (!fringe.isEmpty())
         {
             s = fringe.poll();
-            //System.out.println("Visiting (" + s.getX() + ", " + s.getY() + ")");
+            System.out.println("Visiting (" + s.getX() + ", " + s.getY() + ")");
             graphics.setColor(Color.ORANGE);
             graphics.fillOval(s.getX() * sizeTile, s.getY() * sizeTile, 5, 5);
             if (s.equals(goal))
@@ -54,16 +54,14 @@ public class AStar
                 System.out.println("Found it!");
                 return true;
             }
+            System.out.println("Goal not found yet");
             closed.add(s);
-            if (s.neighbors.isEmpty())
+            System.out.println(s.neighbors.size());
+            for (Cell c : s.neighbors) 
             {
-                s.neighbors = getNeighbors(s);
-            }
-            for (Cell c : s.neighbors) {
-                //System.out.println("Entering for-loop");
                 if (c.IsFree())
                 {
-                    //System.out.println("Visiting (" + c.getX() + ", " + c.getY() + ")");
+                    System.out.println("Visiting neighbor (" + c.getX() + ", " + c.getY() + ")");
                     graphics.fillOval(c.getX() * sizeTile, c.getY() * sizeTile, 5, 5);
                     jFrame.revalidate();
                     jFrame.repaint();
@@ -177,69 +175,6 @@ public class AStar
     {
         return h(start) + g(start);
         
-    }
-
-    public ArrayList<Cell> getNeighbors(Cell c)
-    {
-        //Vertex v = vertex the agent is trying to move to
-        System.out.println(g.getHeight()); // = 25
-        System.out.println(g.getWidth()); // = 50
-        System.out.println(g.cells.length); //x value, width, = 50
-        System.out.println(g.cells[0].length); //y value, height = 25
-        System.out.println("Getting neighbors of c = (" + c.getX() + ", " + c.getY() + ")");
-        int y = c.y - 1;
-        if(y>=0 && c.x >= 0 && c.x < g.getWidth())
-        {
-            System.out.println("Adding c = (" + c.getX() + ", " + y + ")");
-            c.neighbors.add(g.cells[c.x][y]);
-        }
-        int x = c.x + 1;
-        if(x < g.getWidth() && c.y >= 0 && c.y < g.getHeight()) //x < 50
-        {
-            System.out.println("Adding c = (" + x + ", " + c.getY() + ")");
-            c.neighbors.add(g.cells[x][c.y]); //this is failing because c.y must be < 25 (g.height)
-        }
-        y = c.y + 1;
-        if (y < g.getHeight() && c.x >= 0 && c.x < g.getWidth())
-        {
-            System.out.println("Adding c = (" + c.getX() + ", " + y + ")");
-            c.neighbors.add(g.cells[c.x][y]);
-        }
-        x = c.x - 1;
-        if (x >= 0 && c.y >= 0 && c.y < g.getHeight())
-        {
-            System.out.println("Adding c = (" + x + ", " + c.getY() + ")");
-            c.neighbors.add(g.cells[x][c.y]);
-        }
-        y = c.y - 1;
-        x = c.x + 1;
-        if (y >= 0 && x < g.getWidth() && y < g.getHeight() && x >= 0)
-        {
-            System.out.println("Adding c = (" + x + ", " + y + ")");
-            c.neighbors.add(g.cells[x][y]);
-        }
-        y = c.y - 1;
-        x = c.x - 1;
-        if(y >= 0 && x < g.getWidth() && y < g.getHeight() && x >= 0)
-        {
-            System.out.println("Adding c = (" + x + ", " + y + ")");
-            c.neighbors.add(g.cells[x][y]);
-        }
-        y = c.y + 1;
-        x = c.x + 1;
-        if(y >= 0 && x < g.getWidth() && y < g.getHeight() && x >= 0)
-        {
-            System.out.println("Adding c = (" + x + ", " + y + ")");
-            c.neighbors.add(g.cells[x][y]);
-        }
-        y = c.y + 1;
-        x = c.x - 1;
-        if(y >= 0 && x < g.getWidth() && y < g.getHeight() && x >= 0)
-        {
-            System.out.println("Adding c = (" + x + ", " + y + ")");
-            c.neighbors.add(g.cells[x][y]);
-        }
-        return c.neighbors;
     }
 
 }
