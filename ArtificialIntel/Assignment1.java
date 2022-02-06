@@ -31,8 +31,11 @@ public class Assignment1
 
     Assignment1()
     {
+
         sizeTile = 50;
         //sizeTile = getInt( "How many pixels per square? [1 - 100]?" );
+        sizeTile = getInt( "How many pixels per square? [1 - 100]?" );
+
     }
     
     /**
@@ -151,6 +154,11 @@ public class Assignment1
       
         jFrame.pack();
         jFrame.setVisible(true);
+
+        graphics.fillOval((grid.goal.x * sizeTile) - (sizeTile/8), (grid.goal.y * sizeTile)- (sizeTile/8), sizeTile/4, sizeTile/4);
+        jFrame.revalidate();
+        jFrame.repaint();
+
 
     }
    

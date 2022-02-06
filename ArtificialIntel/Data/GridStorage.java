@@ -53,12 +53,74 @@ public class GridStorage {
             e.printStackTrace();
         } catch(GridFileFormatException e){
             e.printStackTrace();
+
         }
         finally{
             if(bufferedReader!=null)
                 bufferedReader.close();
         }
         
+        for (int i = 0; i < grid.cells.length; i++) 
+        {
+            for (int j = 0; j < grid.cells[i].length; j++)
+            {
+                //c.neighbors.clear();
+                
+                if ( grid.north(grid.cells[i][j]) != null)
+                {
+                    grid.cells[i][j].neighbors.add(grid.north(grid.cells[i][j]));
+                }
+
+                if (grid.south(grid.cells[i][j]) != null)
+                {
+                    grid.cells[i][j].neighbors.add(grid.south(grid.cells[i][j]));
+                }
+
+                if (grid.east(grid.cells[i][j]) != null)
+                {
+                    grid.cells[i][j].neighbors.add(grid.east(grid.cells[i][j]));
+                } 
+                if (grid.west(grid.cells[i][j]) != null)
+                {
+                    grid.cells[i][j].neighbors.add(grid.west(grid.cells[i][j]));
+                }
+                if (grid.northEast(grid.cells[i][j]) != null)
+                {
+                    grid.cells[i][j].neighbors.add(grid.northEast(grid.cells[i][j]));
+                } 
+            
+                if (grid.northWest(grid.cells[i][j]) != null)
+                {
+                    grid.cells[i][j].neighbors.add(grid.northWest(grid.cells[i][j]));
+                }
+           
+                if (grid.southEast(grid.cells[i][j]) != null)
+                {
+                    grid.cells[i][j].neighbors.add(grid.southEast(grid.cells[i][j]));
+                } 
+            
+                if (grid.southWest(grid.cells[i][j]) != null)
+                {
+                    grid.cells[i][j].neighbors.add(grid.southWest(grid.cells[i][j]));
+                } 
+            
+            }
+        }
+
+        Grid temp = grid;
+        for (Cell[] eachRowTemp : temp.cells) {
+            for (Cell c : eachRowTemp) {
+                ArrayList<Cell> neighborTemp = c.neighbors;
+                for (Cell[] eachRowGrid : grid.cells) {     //traverses every cell in grid
+                    for (Cell cGrid : eachRowGrid) {
+                        if(cGrid.neighbors.contains(c))
+                        {
+                            cGrid.neighbors.get(cGrid.neighbors.indexOf(c)).neighbors = neighborTemp;
+                        }
+                    }
+                }
+            }
+        }
 
         return grid;
     }
