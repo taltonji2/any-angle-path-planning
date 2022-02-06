@@ -21,8 +21,8 @@ public class Grid{
         // convert the cell position identifiers to array index
         // int ix = cell.getX() - 1;
         // int iy = cell.getY() - 1;
-        int ix = cell.x - 1;
-        int iy = cell.y - 1;
+        int ix = cell.x;
+        int iy = cell.y;
         cells[ix][iy] = cell;
     }
 
@@ -35,52 +35,52 @@ public class Grid{
         int y = cell.y - 1;
         if(y<1)
             return null;
-        return cells[cell.x-1][y-1];
+        return cells[cell.x][y];
     }
     public Cell east(Cell cell){
         int x = cell.x + 1;
         if(x > cells.length)
             return null;
-        return cells[x-1][cell.y-1];
+        return cells[x][cell.y];
     }
     public Cell south(Cell cell){
         int y = cell.y + 1;
         if(y > cells.length)
             return null;
-        return cells[cell.x-1][y-1];
+        return cells[cell.x][y];
     }
     public Cell west(Cell cell){
         int x = cell.x - 1;
         if(x < 1)
             return null;
-        return cells[x-1][cell.y-1];
+        return cells[x][cell.y];
     }
     public Cell northEast(Cell cell){
         int y = cell.y - 1;
         int x = cell.x + 1;
         if(y < 1 || x > cells.length)
             return null;
-        return cells[x-1][y-1];
+        return cells[x][y];
     }
     public Cell northWest(Cell cell){
         int y = cell.y - 1;
         int x = cell.x - 1;
         if(y < 1 || x < 1)
             return null;
-        return cells[x-1][y-1];
+        return cells[x][y];
     }
     public Cell southEast(Cell cell){
         int y = cell.y + 1;
         int x = cell.x + 1;
         if(y > cells.length || x > cells.length)
             return null;
-        return cells[x-1][y-1];
+        return cells[x][y];
     }
     public Cell southWest(Cell cell){
         int y = cell.y + 1;
         int x = cell.x - 1;
         if(y > cells.length || x < 1)
             return null;
-        return cells[x-1][y-1];
+        return cells[x][y];
     }
 }

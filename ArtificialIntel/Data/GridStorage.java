@@ -59,8 +59,9 @@ public class GridStorage {
             if(bufferedReader!=null)
                 bufferedReader.close();
         }
+    return grid;
         
-        for (int i = 0; i < grid.cells.length; i++) 
+       /*  for (int i = 0; i < grid.cells.length; i++) 
         {
             for (int j = 0; j < grid.cells[i].length; j++)
             {
@@ -122,7 +123,7 @@ public class GridStorage {
             }
         }
 
-        return grid;
+        return grid; */
     }
     
     //reads grid txt file and restores integer pairs for start and target vertex

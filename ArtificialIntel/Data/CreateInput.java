@@ -74,7 +74,7 @@ public class CreateInput {
             {
                 for(int j = 0; j < this.rows; j++)
                 {
-                    Cell cell =  new Cell(i+1, j+1, 0);
+                    Cell cell =  new Cell(i, j, 0); //was i+1 j+1
 
                     while(cellCount < numOfCells){
                         ++cellCount;

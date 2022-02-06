@@ -56,7 +56,8 @@ public class BFS {
                     g.cells[i][j].neighbors.add(g.west(g.cells[i][j]));
                 }
                 if (g.northEast(g.cells[i][j]) != null)
-                {
+                { 
+                    System.out.println("added " + g.northEast(g.cells[i][j]).x + " " + g.northEast(g.cells[i][j]).y);
                     g.cells[i][j].neighbors.add(g.northEast(g.cells[i][j]));
                 } 
             
@@ -86,7 +87,10 @@ public class BFS {
                     for (Cell cGrid : eachRowGrid) {
                         if(cGrid.neighbors.contains(c))
                         {
-                            cGrid.neighbors.get(cGrid.neighbors.indexOf(c)).neighbors = neighborTemp;
+                            if(!cGrid.neighbors.get(cGrid.neighbors.indexOf(c)).neighbors.contains(c))
+                            {
+                                cGrid.neighbors.get(cGrid.neighbors.indexOf(c)).neighbors = neighborTemp;
+                            }
                         }
                     }
                 }
@@ -99,7 +103,7 @@ public class BFS {
         boolean nodes[][] = new boolean[g.getWidth()][g.getHeight()];       //initialize boolean array for holding the data
         Cell c; 
         
-        nodes[g.start.getX()-1][g.start.getY()-1] = true;                  
+        nodes[g.start.getX()][g.start.getY()] = true;                  
         queue.add(g.start);                   //root node is added to the top of the queue
  
         while (queue.size() != 0)
@@ -107,9 +111,9 @@ public class BFS {
             c = queue.poll();             //remove the top element of the queue
             System.out.println(c.x+" "+ c.y);           //print the top element of the queue
  
-            for (Cell neighbor : g.cells[c.x-1][c.y-1].neighbors)  //iterate through the linked list and push all neighbors into queue
+            for (Cell neighbor : g.cells[c.x][c.y].neighbors)  //iterate through the linked list and push all neighbors into queue
             {
-                if (!nodes[neighbor.x-1][neighbor.y-1])                    //only insert nodes into queue if they have not been explored already
+                if (!nodes[neighbor.x][neighbor.y])                    //only insert nodes into queue if they have not been explored already
                 {
                     nodes[neighbor.x-1][neighbor.y-1] = true;
                     queue.add(neighbor);

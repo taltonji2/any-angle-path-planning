@@ -4,6 +4,8 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
+
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -34,7 +36,6 @@ public class Assignment1
 
         sizeTile = 50;
         //sizeTile = getInt( "How many pixels per square? [1 - 100]?" );
-        sizeTile = getInt( "How many pixels per square? [1 - 100]?" );
 
     }
     
@@ -137,11 +138,7 @@ public class Assignment1
                 graphics.drawLine(x2, y2, x, y2);
                 graphics.drawLine(x, y2, x, y);
             }
-            
-       
         }
-
-        
         
         graphics.setColor(Color.BLUE);
         graphics.drawLine(grid.start.x * sizeTile, grid.start.y * sizeTile, grid.goal.x * sizeTile, grid.goal.y * sizeTile);
@@ -156,12 +153,17 @@ public class Assignment1
         jFrame.setVisible(true);
 
         graphics.fillOval((grid.goal.x * sizeTile) - (sizeTile/8), (grid.goal.y * sizeTile)- (sizeTile/8), sizeTile/4, sizeTile/4);
+        //paintPath(g, pathToTarget);
         jFrame.revalidate();
         jFrame.repaint();
 
-
     }
-   
+
+    private void paintPath(Graphics g, ArrayList<Cell> path)
+    {
+        g.setColor(Color.ORANGE);  
+    }
+
     private void view() { jFrame.setVisible( true ); }
 
     
