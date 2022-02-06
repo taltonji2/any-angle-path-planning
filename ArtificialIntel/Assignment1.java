@@ -152,10 +152,6 @@ public class Assignment1
         jFrame.pack();
         jFrame.setVisible(true);
 
-        graphics.fillOval((grid.goal.x * sizeTile) - (sizeTile/8), (grid.goal.y * sizeTile)- (sizeTile/8), sizeTile/4, sizeTile/4);
-        //paintPath(g, pathToTarget);
-        jFrame.revalidate();
-        jFrame.repaint();
 
     }
 

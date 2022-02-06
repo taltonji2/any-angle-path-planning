@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Random;
+import java.util.concurrent.ThreadLocalRandom;
 
 
 
@@ -11,8 +12,8 @@ import java.util.Random;
 public class CreateInput {
     int numOfGridFiles = 1;
     int getNumOfGridFiles(){ return this.numOfGridFiles;}
-    int columns = 8; //x
-    int rows = 4; //y
+    int columns = 4; //x
+    int rows = 8; //y
     int numOfCells = rows * columns;
     double numOfCellsBlocked = numOfCells * .10; //10% blocked
     
@@ -58,10 +59,15 @@ public class CreateInput {
 
     private Vertex RandomPoint (int columns, int rows)
     {
-        Random rand = new Random();
-        int randIntX = rand.nextInt(columns); //x
-        int randIntY = rand.nextInt(rows); //y
-        Vertex vertex = new Vertex(randIntX, randIntY); 
+        int lowerBound = 1;
+        int upperBound = columns;
+        int random_int_rangeX = ThreadLocalRandom.current().nextInt(lowerBound, upperBound + 1);
+
+        lowerBound = 1;
+        upperBound = rows;
+        int random_int_rangeY = ThreadLocalRandom.current().nextInt(lowerBound, upperBound + 1);
+
+        Vertex vertex = new Vertex(random_int_rangeX, random_int_rangeY); 
         return vertex;
     }
      
@@ -74,7 +80,7 @@ public class CreateInput {
             {
                 for(int j = 0; j < this.rows; j++)
                 {
-                    Cell cell =  new Cell(i, j, 0); //was i+1 j+1
+                    Cell cell =  new Cell(i+1, j+1, 0); //was i+1 j+1
 
                     while(cellCount < numOfCells){
                         ++cellCount;
@@ -88,17 +94,17 @@ public class CreateInput {
         while(count < numOfCellsBlocked)
         {
             Vertex v = RandomPoint(columns, rows);
-            if(v.y == rows - 1)
+            if(v.y == rows + 1)
             {
                 continue;
             }
-            if(v.x == columns - 1)
+            if(v.x == columns + 1)
             {
                 continue;
             }
-            if(grid.cells[v.x][v.y].bFree == true)
+            if(grid.cells[v.x-1][v.y-1].bFree == true)
             {
-                grid.cells[v.x][v.y].bFree = false;
+                grid.cells[v.x-1][v.y-1].bFree = false;
                 count++; 
             } 
         }

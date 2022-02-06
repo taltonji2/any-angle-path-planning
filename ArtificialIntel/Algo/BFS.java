@@ -132,7 +132,7 @@ public class BFS {
                 continue;
             }
             System.out.print("Visiting neighbors: ");
-            for (Cell neighbor : g.cells[c.x][c.y].neighbors)  //iterate through the linked list and push all neighbors into queue
+            for (Cell neighbor : g.cells[c.x-1][c.y-1].neighbors)  //iterate through the linked list and push all neighbors into queue
             {
                 System.out.print("(" + neighbor.getX() + ", " + neighbor.getY() + ") ");
                 if (!neighbor.IsFree())
@@ -142,23 +142,17 @@ public class BFS {
                 }
                 if(neighbor.x == g.goal.x && neighbor.y == g.goal.y)
                 { 
-                    System.out.println("Found!"); //target is 2 5 
+                    System.out.println("Found!" + c.x + " " + c.y); //target is 2 5 
                     return true;
                 
                 }
-                if (!visited[neighbor.x][neighbor.y])                    //only insert nodes into queue if they have not been explored already
+                if (!visited[neighbor.x-1][neighbor.y-1])                    //only insert nodes into queue if they have not been explored already
                 {
-                    visited[neighbor.x][neighbor.y] = true;
+                    visited[neighbor.x-1][neighbor.y-1] = true;
                     queue.add(neighbor);
                 }
             }  
             System.out.println();
-            if(c.x == g.goal.x && c.y == g.goal.y)
-            { 
-                System.out.println("Found!"); //target is 2 5 
-                return true;
-                
-            }
             System.out.print("Queue at beginning of iteration: ");
             for (Cell cell : queue) {
                 System.out.print("(" + cell.getX() + ", " + cell.getY() + ")");
