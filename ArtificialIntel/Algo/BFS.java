@@ -112,9 +112,10 @@ public class BFS {
  
     boolean doBFS()
     {
-        boolean nodes[][] = new boolean[g.getWidth()][g.getHeight()];       //initialize boolean array for holding the data
+        boolean visited[][] = new boolean[g.getWidth()][g.getHeight()];       //initialize boolean array for holding the data
         Cell c; 
-        nodes[g.start.getX()][g.start.getY()] = true;                  
+        
+        visited[g.start.getX()][g.start.getY()] = true;                  
         queue.add(g.start);                   //root node is added to the top of the queue
         while (queue.size() != 0)
         {
@@ -140,9 +141,9 @@ public class BFS {
                     return true;
                 
                 }
-                if (!nodes[neighbor.x][neighbor.y])                    //only insert nodes into queue if they have not been explored already
+                if (!visited[neighbor.x][neighbor.y])                    //only insert nodes into queue if they have not been explored already
                 {
-                    nodes[neighbor.x][neighbor.y] = true;
+                    visited[neighbor.x][neighbor.y] = true;
                     queue.add(neighbor);
                 }
             }  
