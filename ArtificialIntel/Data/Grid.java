@@ -33,53 +33,53 @@ public class Grid{
     
     public Cell north(Cell cell){
         int y = cell.y - 1;
-        if(y<1)
+        if(y<0)
             return null;
         return cells[cell.x][y];
     }
     public Cell east(Cell cell){
         int x = cell.x + 1;
-        if(x > cells.length)
+        if(x > cells.length - 1)
             return null;
         return cells[x][cell.y];
     }
     public Cell south(Cell cell){
         int y = cell.y + 1;
-        if(y > cells.length)
+        if(y > cells.length - 1)
             return null;
         return cells[cell.x][y];
     }
     public Cell west(Cell cell){
         int x = cell.x - 1;
-        if(x < 1)
+        if(x < 0)
             return null;
         return cells[x][cell.y];
     }
     public Cell northEast(Cell cell){
         int y = cell.y - 1;
         int x = cell.x + 1;
-        if(y < 1 || x > cells.length)
+        if(y < 0 || x > cells.length - 1)
             return null;
         return cells[x][y];
     }
     public Cell northWest(Cell cell){
         int y = cell.y - 1;
         int x = cell.x - 1;
-        if(y < 1 || x < 1)
+        if(y < 0 || x < 0)
             return null;
         return cells[x][y];
     }
     public Cell southEast(Cell cell){
         int y = cell.y + 1;
         int x = cell.x + 1;
-        if(y > cells.length || x > cells.length)
+        if(y > cells.length - 1|| x > cells.length - 1)
             return null;
         return cells[x][y];
     }
     public Cell southWest(Cell cell){
         int y = cell.y + 1;
         int x = cell.x - 1;
-        if(y > cells.length || x < 1)
+        if(y > cells.length - 1|| x < 0)
             return null;
         return cells[x][y];
     }

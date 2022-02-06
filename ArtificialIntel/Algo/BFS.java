@@ -36,49 +36,64 @@ public class BFS {
             for (int j = 0; j < g.cells[i].length; j++)
             {
                 //c.neighbors.clear();
-                
+                //System.out.println("Analyzing (" + i + ", " + j + ")");
                 if ( g.north(g.cells[i][j]) != null)
                 {
+                    //System.out.println("North");
+                    //System.out.println("(" + g.north(g.cells[i][j]).getX() + ", " + g.north(g.cells[i][j]).getY() + ")");
                     g.cells[i][j].neighbors.add(g.north(g.cells[i][j]));
                 }
 
                 if (g.south(g.cells[i][j]) != null)
                 {
+                    //System.out.println("South");
+                    //System.out.println("(" + g.south(g.cells[i][j]).getX() + ", " + g.south(g.cells[i][j]).getY() + ")");
                     g.cells[i][j].neighbors.add(g.south(g.cells[i][j]));
                 }
 
                 if (g.east(g.cells[i][j]) != null)
                 {
+                    //System.out.println("East");
+                    //System.out.println("(" + g.east(g.cells[i][j]).getX() + ", " + g.east(g.cells[i][j]).getY() + ")");
                     g.cells[i][j].neighbors.add(g.east(g.cells[i][j]));
                 } 
                 if (g.west(g.cells[i][j]) != null)
                 {
+                    //System.out.println("West");
+                    //System.out.println("(" + g.west(g.cells[i][j]).getX() + ", " + g.west(g.cells[i][j]).getY() + ")");
                     g.cells[i][j].neighbors.add(g.west(g.cells[i][j]));
                 }
                 if (g.northEast(g.cells[i][j]) != null)
-                { 
-                    System.out.println("added " + g.northEast(g.cells[i][j]).x + " " + g.northEast(g.cells[i][j]).y);
+                {
+                    //System.out.println("NE");
+                    //System.out.println("(" + g.northEast(g.cells[i][j]).getX() + ", " + g.northEast(g.cells[i][j]).getY() + ")");
                     g.cells[i][j].neighbors.add(g.northEast(g.cells[i][j]));
                 } 
             
                 if (g.northWest(g.cells[i][j]) != null)
                 {
+                    //System.out.println("NW");
+                    //System.out.println("(" + g.northWest(g.cells[i][j]).getX() + ", " + g.northWest(g.cells[i][j]).getY() + ")");
                     g.cells[i][j].neighbors.add(g.northWest(g.cells[i][j]));
                 }
            
                 if (g.southEast(g.cells[i][j]) != null)
                 {
+                    //System.out.println("SE");
+                    //System.out.println("(" + g.southEast(g.cells[i][j]).getX() + ", " + g.southEast(g.cells[i][j]).getY() + ")");
                     g.cells[i][j].neighbors.add(g.southEast(g.cells[i][j]));
                 } 
             
                 if (g.southWest(g.cells[i][j]) != null)
                 {
+                    //System.out.println("SW");
+                    //System.out.println("(" + g.southWest(g.cells[i][j]).getX() + ", " + g.southWest(g.cells[i][j]).getY() + ")");
                     g.cells[i][j].neighbors.add(g.southWest(g.cells[i][j]));
                 } 
             
             }
         }
-
+        
         Grid temp = g;
         for (Cell[] eachRowTemp : temp.cells) {
             for (Cell c : eachRowTemp) {
@@ -87,10 +102,7 @@ public class BFS {
                     for (Cell cGrid : eachRowGrid) {
                         if(cGrid.neighbors.contains(c))
                         {
-                            if(!cGrid.neighbors.get(cGrid.neighbors.indexOf(c)).neighbors.contains(c))
-                            {
-                                cGrid.neighbors.get(cGrid.neighbors.indexOf(c)).neighbors = neighborTemp;
-                            }
+                            cGrid.neighbors.get(cGrid.neighbors.indexOf(c)).neighbors = neighborTemp;
                         }
                     }
                 }
@@ -102,26 +114,42 @@ public class BFS {
     {
         boolean nodes[][] = new boolean[g.getWidth()][g.getHeight()];       //initialize boolean array for holding the data
         Cell c; 
-        
         nodes[g.start.getX()][g.start.getY()] = true;                  
         queue.add(g.start);                   //root node is added to the top of the queue
- 
         while (queue.size() != 0)
         {
             c = queue.poll();             //remove the top element of the queue
             System.out.println(c.x+" "+ c.y);           //print the top element of the queue
- 
+            if (!c.IsFree())
+            {
+                System.out.println("Vertex is blocked");
+                continue;
+            }
+            System.out.print("Visiting neighbors: ");
             for (Cell neighbor : g.cells[c.x][c.y].neighbors)  //iterate through the linked list and push all neighbors into queue
             {
+                System.out.print("(" + neighbor.getX() + ", " + neighbor.getY() + ") ");
+                if (!neighbor.IsFree())
+                {
+                    //System.out.println("Neighbor is blocked");
+                    continue;
+                }
+                if(neighbor.x == g.goal.x && neighbor.y == g.goal.y)
+                { 
+                    System.out.println("Found!"); //target is 2 5 
+                    return true;
+                
+                }
                 if (!nodes[neighbor.x][neighbor.y])                    //only insert nodes into queue if they have not been explored already
                 {
-                    nodes[neighbor.x-1][neighbor.y-1] = true;
+                    nodes[neighbor.x][neighbor.y] = true;
                     queue.add(neighbor);
                 }
             }  
+            System.out.println();
             if(c.x == g.goal.x && c.y == g.goal.y)
             { 
-                System.out.println("Found!"); //target is 0 2 
+                System.out.println("Found!"); //target is 2 5 
                 return true;
                 
             }
