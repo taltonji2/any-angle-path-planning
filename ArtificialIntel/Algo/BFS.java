@@ -1,20 +1,138 @@
 package ArtificialIntel.Algo;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.LinkedList;
+import java.util.Queue;
 
 import ArtificialIntel.Data.Cell;
 import ArtificialIntel.Data.Grid;
 
 public class BFS {
-    //to do: use cell instead of node
+    private int V;                              //number of nodes in the graph
+    private Queue<Cell> queue;                   //maintaining a queue
+    private Grid g;                
+ 
+    public BFS(Grid grid)
+    {
+        this.g = grid;
+        createAdjacencies();
+        V = g.numOfVertices;
+        // adj = new LinkedList[g.getWidth()][g.getHeight()];
+        // for (int i=0; i < g.getWidth(); ++i)
+        // { 
+        //     for (int j=0; i < g.getHeight(); ++j)
+        //     {
+        //         adj[i][j] = new LinkedList<Cell>();
+        //     }
+        // }
+        queue = new LinkedList<Cell>();
+        doBFS();
+    }
+
+    void createAdjacencies()              //adjacency list err.. well not a list but they are there :)
+    {
+        for (int i = 0; i < g.cells.length; i++) 
+        {
+            for (int j = 0; j < g.cells[i].length; j++)
+            {
+                //c.neighbors.clear();
+                
+                if ( g.north(g.cells[i][j]) != null)
+                {
+                    g.cells[i][j].neighbors.add(g.north(g.cells[i][j]));
+                }
+
+                if (g.south(g.cells[i][j]) != null)
+                {
+                    g.cells[i][j].neighbors.add(g.south(g.cells[i][j]));
+                }
+
+                if (g.east(g.cells[i][j]) != null)
+                {
+                    g.cells[i][j].neighbors.add(g.east(g.cells[i][j]));
+                } 
+                if (g.west(g.cells[i][j]) != null)
+                {
+                    g.cells[i][j].neighbors.add(g.west(g.cells[i][j]));
+                }
+                if (g.northEast(g.cells[i][j]) != null)
+                {
+                    g.cells[i][j].neighbors.add(g.northEast(g.cells[i][j]));
+                } 
+            
+                if (g.northWest(g.cells[i][j]) != null)
+                {
+                    g.cells[i][j].neighbors.add(g.northWest(g.cells[i][j]));
+                }
+           
+                if (g.southEast(g.cells[i][j]) != null)
+                {
+                    g.cells[i][j].neighbors.add(g.southEast(g.cells[i][j]));
+                } 
+            
+                if (g.southWest(g.cells[i][j]) != null)
+                {
+                    g.cells[i][j].neighbors.add(g.southWest(g.cells[i][j]));
+                } 
+            
+            }
+        }
+
+        Grid temp = g;
+        for (Cell[] eachRowTemp : temp.cells) {
+            for (Cell c : eachRowTemp) {
+                ArrayList<Cell> neighborTemp = c.neighbors;
+                for (Cell[] eachRowGrid : g.cells) {     //traverses every cell in grid
+                    for (Cell cGrid : eachRowGrid) {
+                        if(cGrid.neighbors.contains(c))
+                        {
+                            cGrid.neighbors.get(cGrid.neighbors.indexOf(c)).neighbors = neighborTemp;
+                        }
+                    }
+                }
+            }
+        }
+    }
+ 
+    boolean doBFS()
+    {
+        boolean nodes[][] = new boolean[g.getWidth()][g.getHeight()];       //initialize boolean array for holding the data
+        Cell c; 
+        
+        nodes[g.start.getX()-1][g.start.getY()-1] = true;                  
+        queue.add(g.start);                   //root node is added to the top of the queue
+ 
+        while (queue.size() != 0)
+        {
+            c = queue.poll();             //remove the top element of the queue
+            System.out.println(c.x+" "+ c.y);           //print the top element of the queue
+ 
+            for (Cell neighbor : g.cells[c.x-1][c.y-1].neighbors)  //iterate through the linked list and push all neighbors into queue
+            {
+                if (!nodes[neighbor.x-1][neighbor.y-1])                    //only insert nodes into queue if they have not been explored already
+                {
+                    nodes[neighbor.x-1][neighbor.y-1] = true;
+                    queue.add(neighbor);
+                }
+            }  
+            if(c.x == g.goal.x && c.y == g.goal.y)
+            { 
+                System.out.println("Found!"); //target is 0 2 
+                return true;
+                
+            }
+        }
+        System.out.println("Not Found!");
+        return false;
+    }
+    
+    /* //to do: use cell instead of node
     private int num_nodes;   // # of nodes
     private ArrayList<ArrayList<Cell>> adj; //Adjacency Lists
     public Grid grid;
     public Cell start, goal;
 
-    BFS(int v, Grid grid)
+    public BFS(int v, Grid grid)
     {
         this.num_nodes = v;
         this.grid = grid;
@@ -32,7 +150,7 @@ public class BFS {
             System.out.println("Not Found");
         }
     }
-
+    
     // prints BFS traversal from a given source s
     boolean doBFS(Cell start, Cell goal)
     {
@@ -56,7 +174,7 @@ public class BFS {
             {
                 return true;
             }
-            if (!start.IsFree())
+            if (!start.IsFree()) //if start is blocked this code just continues
             {
                 continue;
             }
@@ -76,6 +194,6 @@ public class BFS {
             }
         }
         return false;
-    }
+    } */
 
 }

@@ -1,32 +1,20 @@
 package ArtificialIntel;
-
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Container;
-import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
-import java.io.Console;
-import java.util.Random;
-
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.plaf.basic.BasicSliderUI.ComponentHandler;
-
 import ArtificialIntel.Data.Cell;
 import ArtificialIntel.Data.Grid;
 import ArtificialIntel.Data.GridStorage;
 import ArtificialIntel.Algo.AStar;
-import ArtificialIntel.Data.Agent;
-
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
-import java.awt.*;
+import ArtificialIntel.Algo.BFS;
 
 
 /**
@@ -39,13 +27,12 @@ public class Assignment1
     private ImageIcon imageIcon;
     private JLabel jLabel;
     private static JFrame jFrame;
-    public Agent agent; //should be displayed using a circle on the grid
-    public Grid g;
+    private static Grid g;
 
     Assignment1()
     {
-        sizeTile = getInt( "How many pixels per square? [1 - 100]?" );
-        agent = new Agent(2, 0);
+        sizeTile = 50;
+        //sizeTile = getInt( "How many pixels per square? [1 - 100]?" );
     }
     
     /**
@@ -54,17 +41,22 @@ public class Assignment1
     public static void main(String[] args) 
     {
         Assignment1 assignment1 = new Assignment1();
-        Grid grid = assignment1.restoreGrid();
-        assignment1.InitializeGUI(grid);
-        assignment1.paint(grid);
+        Assignment1.g = assignment1.restoreGrid();
+        assignment1.InitializeGUI(g);
+        assignment1.paint(g);
         assignment1.view();
-        assignment1.doAStar();
+        assignment1.doBFS();
+    }
+
+    public void doBFS()
+    {
+        BFS bfs = new BFS(g);
     }
 
     public void doAStar()
     {
         AStar as = new AStar();
-        as.doAStar((Cell)g.start, (Cell)g.goal, g, sizeTile, jFrame);
+        as.doAStar(g.start, g.goal, g);
     }
     
     protected void InitializeGUI(Grid grid){
@@ -76,7 +68,7 @@ public class Assignment1
         JLabel picLabel = new JLabel(new ImageIcon(image));
         JPanel gridPanel = new JPanel();
         gridPanel.setLayout(new BorderLayout());
-        gridPanel.add(picLabel, BorderLayout.WEST);
+        gridPanel.add(picLabel, BorderLayout.CENTER);
 
         JScrollPane scrollFrame = new JScrollPane(gridPanel);
         gridPanel.setAutoscrolls(true);
@@ -92,8 +84,6 @@ public class Assignment1
             String currentDirectory = System.getProperty("user.dir");
             String fileName = currentDirectory + "/resources/" + "grid0.txt";
             grid = GridStorage.restoreGrid(fileName);
-            agent.gridWidth = grid.getWidth();
-            agent.gridHeight = grid.getHeight();
         } catch(Exception ex){
             ex.printStackTrace();
         }
@@ -108,7 +98,6 @@ public class Assignment1
    
     private void paint(Grid grid)
     {
-        g = grid;
         Graphics graphics = image.getGraphics();
         // paint the cells
         graphics.setColor( Color.white );
@@ -124,6 +113,7 @@ public class Assignment1
                     graphics.setColor( Color.gray );
                 }
                 graphics.fillRect( col * sizeTile, row * sizeTile, sizeTile, sizeTile );
+              
             }
         }
 
@@ -144,17 +134,27 @@ public class Assignment1
                 graphics.drawLine(x2, y2, x, y2);
                 graphics.drawLine(x, y2, x, y);
             }
+            
+       
         }
+
         
+        
+        graphics.setColor(Color.BLUE);
+        graphics.drawLine(grid.start.x * sizeTile, grid.start.y * sizeTile, grid.goal.x * sizeTile, grid.goal.y * sizeTile);
+
         graphics.setColor(Color.GREEN);
-        graphics.fillOval(grid.start.x * sizeTile, grid.start.y * sizeTile, 5, 5);
+        graphics.fillOval((grid.start.x * sizeTile) - (sizeTile/8), (grid.start.y * sizeTile)- (sizeTile/8), sizeTile/4, sizeTile/4);
 
         graphics.setColor(Color.RED);
-        graphics.fillOval(grid.goal.x * sizeTile, grid.goal.y * sizeTile, 5, 5);
-        jFrame.revalidate();
-        jFrame.repaint();
+        graphics.fillOval((grid.goal.x * sizeTile) - (sizeTile/8), (grid.goal.y * sizeTile)- (sizeTile/8), sizeTile/4, sizeTile/4);       
+      
+        jFrame.pack();
+        jFrame.setVisible(true);
 
     }
    
     private void view() { jFrame.setVisible( true ); }
+
+    
 }

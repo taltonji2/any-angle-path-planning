@@ -1,5 +1,6 @@
 package ArtificialIntel.Data;
 import java.io.*;
+import java.util.ArrayList;
 
 class GridFileFormatException extends Exception{
     String message;
@@ -15,50 +16,7 @@ class GridFileFormatException extends Exception{
 
 public class GridStorage {
     public static Grid restoreGrid(String fileName) throws IOException{
-        /* Grid grid = null;
-        BufferedReader bufferedReader = null;
-        try {
-            FileReader reader = new FileReader(fileName);
-             bufferedReader = new BufferedReader(reader);
- 
-            Pair<Integer, Integer> pairVertexFromFile = restoreIntegerPair(bufferedReader);
-            if(pairVertexFromFile == null)
-                throw new GridFileFormatException("missing vertex start");
-            Grid.start.x = pairVertexFromFile.getKey();
-            Grid.start.y = pairVertexFromFile.getValue();
-
-            pairVertexFromFile = restoreIntegerPair(bufferedReader);
-            if(pairVertexFromFile == null)
-                throw new GridFileFormatException("missing vertex goal");
-            Grid.goal.x = pairVertexFromFile.getKey();
-            Grid.goal.y = pairVertexFromFile.getValue();
-
-            Pair<Integer, Integer> dimensions = restoreIntegerPair(bufferedReader);
-
-            grid = new Grid(dimensions.getKey(),dimensions.getValue());
-
-            Cell cell = restoreCell(bufferedReader); 
-            int cellCount = 0;
-            while(cell != null){
-                ++cellCount;
-                grid.add(cell);
-                cell = restoreCell(bufferedReader);
-            }
-            reader.close();
- 
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch(GridFileFormatException e){
-            e.printStackTrace();
-        }
-        finally{
-            if(bufferedReader!=null)
-                bufferedReader.close();
-        }
-
-        return grid;
-    }
-    */
+    
     Grid grid = null;
     BufferedReader bufferedReader = null;
     try {
@@ -78,7 +36,6 @@ public class GridStorage {
         Pair<Integer, Integer> dimensions = restoreIntegerPair(bufferedReader);
 
         grid = new Grid(dimensions.getKey(),dimensions.getValue());
-
         
         grid.start = new Cell(vertexStart.getX(), vertexStart.getY(), 0);
         grid.goal = new Cell(vertexGoal.getX(), vertexGoal.getY(), 0); 
@@ -92,99 +49,20 @@ public class GridStorage {
         }
         reader.close();
 
-    } catch (IOException e) {
-        e.printStackTrace();
-    } catch(GridFileFormatException e){
-        e.printStackTrace();
-    }
-    finally{
-        if(bufferedReader!=null)
-            bufferedReader.close();
-    }
-    for (Cell[] ca: grid.cells) 
-    {
-        for (Cell c: ca)
-        {
-            c.neighbors.clear();
-            try {
-                c.neighbors.add(grid.cells[c.x][c.y + 1]);
-            } catch (Exception e) {
-                //TODO: handle exception
-            }
-            try {
-                c.neighbors.add(grid.cells[c.x][c.y - 1]);
-            } catch (Exception e) {
-                //TODO: handle exception
-            }
-            try {
-                c.neighbors.add(grid.cells[c.x + 1][c.y + 1]);
-            } catch (Exception e) {
-                //TODO: handle exception
-            }
-            try {
-                c.neighbors.add(grid.cells[c.x + 1][c.y - 1]);
-            } catch (Exception e) {
-                //TODO: handle exception
-            }
-            try {
-                c.neighbors.add(grid.cells[c.x - 1][c.y + 1]);
-            } catch (Exception e) {
-                //TODO: handle exception
-            }
-            try {
-                c.neighbors.add(grid.cells[c.x - 1][c.y - 1]);
-            } catch (Exception e) {
-                //TODO: handle exception
-            }
-            try {
-                c.neighbors.add(grid.cells[c.x + 1][c.y]);
-            } catch (Exception e) {
-                //TODO: handle exception
-            }
-            try {
-                c.neighbors.add(grid.cells[c.x - 1][c.y]);
-            } catch (Exception e) {
-                //TODO: handle exception
-            }
-            
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch(GridFileFormatException e){
+            e.printStackTrace();
         }
+        finally{
+            if(bufferedReader!=null)
+                bufferedReader.close();
+        }
+        
+
+        return grid;
     }
-    grid.start.neighbors.clear();
-    try 
-    {
-        grid.start.neighbors.add(grid.cells[grid.start.x][grid.start.y + 1]);
-    } catch (Exception e) {}
-    try 
-    {
-        grid.start.neighbors.add(grid.cells[grid.start.x][grid.start.y - 1]);
-    } catch (Exception e) {}
-    try 
-    {
-        grid.start.neighbors.add(grid.cells[grid.start.x + 1][grid.start.y + 1]);
-    } catch (Exception e) {}
-    try 
-    {
-        grid.start.neighbors.add(grid.cells[grid.start.x + 1][grid.start.y - 1]);
-    } catch (Exception e) {}
-    try 
-    {
-        grid.start.neighbors.add(grid.cells[grid.start.x - 1][grid.start.y + 1]);
-    } catch (Exception e) {}
-    try 
-    {
-        grid.start.neighbors.add(grid.cells[grid.start.x - 1][grid.start.y - 1]);
-    } catch (Exception e) {}
-    try 
-    {
-        grid.start.neighbors.add(grid.cells[grid.start.x + 1][grid.start.y]);
-    } catch (Exception e) {}
-    try 
-    {
-        grid.start.neighbors.add(grid.cells[grid.start.x - 1][grid.start.y]);
-    } catch (Exception e) {}
-    System.out.println("Start cell neighbors: " + grid.start.neighbors.size());
-    return grid;
-    }
+    
     //reads grid txt file and restores integer pairs for start and target vertex
     static Pair<Integer,Integer> restoreIntegerPair(BufferedReader bufferedReader) 
         throws IOException, GridFileFormatException{

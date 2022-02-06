@@ -11,8 +11,8 @@ import java.util.Random;
 public class CreateInput {
     int numOfGridFiles = 1;
     int getNumOfGridFiles(){ return this.numOfGridFiles;}
-    int columns = 50; //x
-    int rows = 25; //y
+    int columns = 8; //x
+    int rows = 4; //y
     int numOfCells = rows * columns;
     double numOfCellsBlocked = numOfCells * .10; //10% blocked
     
@@ -20,7 +20,7 @@ public class CreateInput {
     //if no valid path then regenerate random bocked.
 
     public static void main(String[] args) {
-        CreateInput createInput = new CreateInput(25,50);
+        CreateInput createInput = new CreateInput(8,4);
         
     }
 
