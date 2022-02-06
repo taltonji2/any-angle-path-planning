@@ -45,7 +45,7 @@ public class Grid{
     }
     public Cell south(Cell cell){
         int y = cell.y + 1;
-        if(y > cells.length - 1)
+        if(y > cells[0].length - 1)
             return null;
         return cells[cell.x][y];
     }
@@ -72,14 +72,14 @@ public class Grid{
     public Cell southEast(Cell cell){
         int y = cell.y + 1;
         int x = cell.x + 1;
-        if(y > cells.length - 1|| x > cells.length - 1)
+        if(y > cells[0].length - 1|| x > cells.length - 1)
             return null;
         return cells[x][y];
     }
     public Cell southWest(Cell cell){
         int y = cell.y + 1;
         int x = cell.x - 1;
-        if(y > cells.length - 1|| x < 0)
+        if(y > cells[0].length - 1|| x < 0)
             return null;
         return cells[x][y];
     }

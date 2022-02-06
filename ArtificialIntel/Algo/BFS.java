@@ -119,6 +119,11 @@ public class BFS {
         queue.add(g.start);                   //root node is added to the top of the queue
         while (queue.size() != 0)
         {
+            System.out.print("Queue at beginning of iteration: ");
+            for (Cell cell : queue) {
+                System.out.print("(" + cell.getX() + ", " + cell.getY() + ")");
+            }
+            System.out.println();
             c = queue.poll();             //remove the top element of the queue
             System.out.println(c.x+" "+ c.y);           //print the top element of the queue
             if (!c.IsFree())
@@ -154,6 +159,11 @@ public class BFS {
                 return true;
                 
             }
+            System.out.print("Queue at beginning of iteration: ");
+            for (Cell cell : queue) {
+                System.out.print("(" + cell.getX() + ", " + cell.getY() + ")");
+            }
+            System.out.println();
         }
         System.out.println("Not Found!");
         return false;
