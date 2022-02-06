@@ -45,7 +45,6 @@ public class Assignment1
     Assignment1()
     {
         sizeTile = getInt( "How many pixels per square? [1 - 100]?" );
-        agent = new Agent(2, 0);
     }
     
     /**
@@ -64,7 +63,7 @@ public class Assignment1
     public void doAStar()
     {
         AStar as = new AStar();
-        as.doAStar((Cell)g.start, (Cell)g.goal, g, sizeTile, jFrame);
+        as.doAStar(g.start, g.goal, g);
     }
     
     protected void InitializeGUI(Grid grid){
@@ -76,7 +75,7 @@ public class Assignment1
         JLabel picLabel = new JLabel(new ImageIcon(image));
         JPanel gridPanel = new JPanel();
         gridPanel.setLayout(new BorderLayout());
-        gridPanel.add(picLabel, BorderLayout.WEST);
+        gridPanel.add(picLabel, BorderLayout.CENTER);
 
         JScrollPane scrollFrame = new JScrollPane(gridPanel);
         gridPanel.setAutoscrolls(true);
@@ -92,8 +91,6 @@ public class Assignment1
             String currentDirectory = System.getProperty("user.dir");
             String fileName = currentDirectory + "/resources/" + "grid0.txt";
             grid = GridStorage.restoreGrid(fileName);
-            agent.gridWidth = grid.getWidth();
-            agent.gridHeight = grid.getHeight();
         } catch(Exception ex){
             ex.printStackTrace();
         }
@@ -147,10 +144,10 @@ public class Assignment1
         }
         
         graphics.setColor(Color.GREEN);
-        graphics.fillOval(grid.start.x * sizeTile, grid.start.y * sizeTile, 5, 5);
+        graphics.fillOval((grid.start.x * sizeTile) - (sizeTile/8), (grid.start.y * sizeTile)- (sizeTile/8), sizeTile/4, sizeTile/4);
 
         graphics.setColor(Color.RED);
-        graphics.fillOval(grid.goal.x * sizeTile, grid.goal.y * sizeTile, 5, 5);
+        graphics.fillOval((grid.goal.x * sizeTile) - (sizeTile/8), (grid.goal.y * sizeTile)- (sizeTile/8), sizeTile/4, sizeTile/4);
         jFrame.revalidate();
         jFrame.repaint();
 
