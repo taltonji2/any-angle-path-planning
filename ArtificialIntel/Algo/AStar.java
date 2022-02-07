@@ -15,39 +15,39 @@ import ArtificialIntel.Data.Grid;
 public class AStar
 {
     Cell start, goal;
-    Grid g;
+    Grid grid;
     PriorityQueue<Cell> fringe = new PriorityQueue<Cell>(1, (Cell c1, Cell c2) -> Double.compare(f(c1), f(c2)));
     ArrayList<Cell> closed = new ArrayList<Cell>();
     
     public boolean doAStar(Cell s, Cell g, Grid grid)
     {
-        this.g = grid;
+        this.grid = grid;
         start = grid.getStart();
         goal = grid.getGoal();
         start.parent = start;
         s = start;
 
-        System.out.println("Start: (" + start.getX() + ", " + start.getY() + ")");
-        System.out.println("Goal: (" + goal.getX() + ", " + goal.getY() + ")");
+        //System.out.println("Start: (" + start.getX() + ", " + start.getY() + ")");
+        //System.out.println("Goal: (" + goal.getX() + ", " + goal.getY() + ")");
         fringe.add(s);
         while (!fringe.isEmpty())
         {
             s = fringe.poll();
-            System.out.println("Visiting (" + s.getX() + ", " + s.getY() + ")");
+            //System.out.println("Visiting (" + s.getX() + ", " + s.getY() + ")");
             if (s.equals(goal))
             {
                 System.out.println("Found it!");
                 return true;
             }
-            System.out.println("Goal not found yet");
+            //System.out.println("Goal not found yet");
             closed.add(s);
-            System.out.println(s.neighbors.size());
+            //System.out.println(s.neighbors.size());
             
             for (Cell c : s.neighbors) 
             {
                 if (c.IsFree())
                 {
-                    System.out.println("Visiting neighbor (" + c.getX() + ", " + c.getY() + ")");
+                   // System.out.println("Visiting neighbor (" + c.getX() + ", " + c.getY() + ")");
                     if (!fringe.contains(c))
                     {
                         c.setCost(Integer.MAX_VALUE);
@@ -75,6 +75,7 @@ public class AStar
         }
 
     }
+
     public double c(Cell c1, Cell c2)
     {
         if (c1.getX() < c2.getX() && c1.getY() == c2.getY()) //c1 is to the left of c2
@@ -101,23 +102,25 @@ public class AStar
     }
 
     //determines cost of cell relative to start
-    private double g(Cell cell)
+    private static double g(Cell cell)
     {
-        if (cell.equals(this.start))
+        Cell start = Grid.Instance().getStart();
+        if (cell.equals(start))
         {
-            this.start.setCost(0);
+            start.setCost(0);
         }
         return cell.cost;
     }
 
-    private int h(Cell c)
+    public static double h(Cell c)
     {
-        return (int) (Math.sqrt(2) * Math.min(Math.abs(c.getX() - goal.getX()), Math.abs(c.getY() - goal.getY())) + Math.max(Math.abs(c.getX() - goal.getX()), Math.abs(c.getY() - goal.getY())) + Math.min(Math.abs(c.getX() - goal.getX()), Math.abs(c.getY() - goal.getY())));
+        Cell goal = Grid.Instance().getGoal();
+        return (Math.sqrt(2) * Math.min(Math.abs(c.getX() - goal.getX()), Math.abs(c.getY() - goal.getY())) + Math.max(Math.abs(c.getX() - goal.getX()), Math.abs(c.getY() - goal.getY())) + Math.min(Math.abs(c.getX() - goal.getX()), Math.abs(c.getY() - goal.getY())));
     }
 
-    private double f(Cell c)
+    public static double f(Cell c)
     {
-        return h(start) + g(start);
+        return h(c) + g(c);
         
     }
 

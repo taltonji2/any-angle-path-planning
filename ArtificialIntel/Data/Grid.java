@@ -1,6 +1,8 @@
 package ArtificialIntel.Data;
 
 public class Grid{
+    private static Grid s_THIS;
+
     public Cell [][] cells;
     private Cell start;
     private Cell goal;
@@ -11,7 +13,18 @@ public class Grid{
     public int getHeight(){
         return cells[0].length;
     }
-    Grid(int width, int height){
+    
+    public static Grid Instance(int width, int height){
+        if( s_THIS == null)
+            s_THIS = new Grid(width, height);
+        return s_THIS;
+    }
+
+    public static Grid Instance(){
+        return s_THIS;
+    }
+
+    private Grid(int width, int height){
         cells = new Cell[width][height];
         this.numOfVertices = (width + 1) * (height +1);
     }
@@ -111,4 +124,8 @@ public class Grid{
             return null;
         return cells[x][y];
     }
+
+
+   
+
 }

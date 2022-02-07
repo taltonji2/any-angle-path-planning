@@ -35,7 +35,7 @@ public class GridStorage {
 
         Pair<Integer, Integer> dimensions = restoreIntegerPair(bufferedReader);
 
-        grid = new Grid(dimensions.getKey(),dimensions.getValue());
+        grid = Grid.Instance(dimensions.getKey(),dimensions.getValue());
         
 
         Cell cell = restoreCell(bufferedReader); 

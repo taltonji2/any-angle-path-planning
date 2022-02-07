@@ -73,7 +73,7 @@ public class CreateInput {
      
     private Grid createGrid () 
     {
-        Grid grid = new Grid(this.columns, this.rows);
+        Grid grid = Grid.Instance(this.columns, this.rows);
 
         int cellCount = 0;
         for(int i = 0; i < this.columns; i++)

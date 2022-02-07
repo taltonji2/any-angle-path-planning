@@ -20,6 +20,7 @@ import ArtificialIntel.Data.GridStorage;
 import ArtificialIntel.Data.Vertex;
 import ArtificialIntel.Algo.AStar;
 import ArtificialIntel.Algo.BFS;
+import ArtificialIntel.Algo.Graph;
 
 
 /**
@@ -53,8 +54,11 @@ public class Assignment1
         assignment1.InitializeGUI(g);
         assignment1.paint(g);
         assignment1.view();
-        g = CreateAdj.AddNeighbors(g); 
-        assignment1.doAStar();
+        Graph graph = new Graph();
+        graph.Load(g);
+        System.out.println(graph.BFS(g.getStart(), g.getGoal()));
+        
+        //assignment1.doAStar();
         // BFS bfs = new BFS(g);
         // if(bfs.doBFS())
         // {

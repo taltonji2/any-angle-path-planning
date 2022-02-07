@@ -11,7 +11,7 @@ public class CreateAdj {
     {
         for (int i = 0; i < g.cells.length; i++) 
         {
-            for (int j = 0; j < g.cells[0].length; j++)
+            for (int j = 0; j < g.cells[i].length; j++)
             {
                 //c.neighbors.clear();
                 //System.out.println("Analyzing (" + i + ", " + j + ")");
