@@ -27,27 +27,27 @@ public class AStar
         start.parent = start;
         s = start;
 
-        //System.out.println("Start: (" + start.getX() + ", " + start.getY() + ")");
-        //System.out.println("Goal: (" + goal.getX() + ", " + goal.getY() + ")");
+        System.out.println("Start: (" + start.getX() + ", " + start.getY() + ")");
+        System.out.println("Goal: (" + goal.getX() + ", " + goal.getY() + ")");
         fringe.add(s);
         while (!fringe.isEmpty())
         {
             s = fringe.poll();
-            //System.out.println("Visiting (" + s.getX() + ", " + s.getY() + ")");
+            System.out.println("Visiting (" + s.getX() + ", " + s.getY() + ")");
             if (s.equals(goal))
             {
                 System.out.println("Found it!");
                 return true;
             }
-            //System.out.println("Goal not found yet");
+            System.out.println("Goal not found yet");
             closed.add(s);
-            //System.out.println(s.neighbors.size());
+            System.out.println(s.neighbors.size());
             
             for (Cell c : s.neighbors) 
             {
                 if (c.IsFree())
                 {
-                   // System.out.println("Visiting neighbor (" + c.getX() + ", " + c.getY() + ")");
+                    System.out.println("Visiting neighbor (" + c.getX() + ", " + c.getY() + ")");
                     if (!fringe.contains(c))
                     {
                         c.setCost(Integer.MAX_VALUE);

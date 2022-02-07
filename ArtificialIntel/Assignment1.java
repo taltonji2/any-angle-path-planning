@@ -4,9 +4,7 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
-import java.util.ArrayList;
 import java.util.Stack;
-
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -14,12 +12,10 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import ArtificialIntel.Data.Cell;
-import ArtificialIntel.Data.CreateAdj;
 import ArtificialIntel.Data.Grid;
 import ArtificialIntel.Data.GridStorage;
 import ArtificialIntel.Data.Vertex;
 import ArtificialIntel.Algo.AStar;
-import ArtificialIntel.Algo.BFS;
 import ArtificialIntel.Algo.Graph;
 import ArtificialIntel.Algo.ThetaStar;
 
@@ -58,15 +54,7 @@ public class Assignment1
         Graph graph = new Graph();
         graph.Load(g);
         System.out.println(graph.BFS(g.getStart(), g.getGoal()));
-        
         //assignment1.doAStar();
-        // BFS bfs = new BFS(g);
-        // if(bfs.doBFS())
-        // {
-        //     System.out.print("A* time!");
-        //     assignment1.doAStar();
-       
-        
     }
     public void doAStar()
     {
