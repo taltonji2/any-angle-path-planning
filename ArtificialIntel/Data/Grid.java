@@ -2,8 +2,8 @@ package ArtificialIntel.Data;
 
 public class Grid{
     public Cell [][] cells;
-    public Cell start;
-    public Cell goal;
+    private Cell start;
+    private Cell goal;
     public int numOfVertices; 
     public int getWidth(){
         return cells.length;
@@ -14,6 +14,23 @@ public class Grid{
     Grid(int width, int height){
         cells = new Cell[width][height];
         this.numOfVertices = (width + 1) * (height +1);
+    }
+
+    public Cell getStart()
+    {
+        return this.start;
+    }
+    public Cell getGoal()
+    {
+        return this.goal;
+    }
+    public void setStart(Cell c)
+    {
+        this.start = c;
+    }
+    public void setGoal(Cell c)
+    {
+        this.goal = c;
     }
 
     void add(Cell cell){

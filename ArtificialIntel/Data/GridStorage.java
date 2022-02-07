@@ -37,8 +37,6 @@ public class GridStorage {
 
         grid = new Grid(dimensions.getKey(),dimensions.getValue());
         
-        grid.start = new Cell(vertexStart.getX(), vertexStart.getY(), 0);
-        grid.goal = new Cell(vertexGoal.getX(), vertexGoal.getY(), 0); 
 
         Cell cell = restoreCell(bufferedReader); 
         int cellCount = 0;
@@ -47,6 +45,9 @@ public class GridStorage {
             grid.add(cell);
             cell = restoreCell(bufferedReader);
         }
+        grid.setStart(grid.cells[vertexStart.getX()-1][vertexStart.getY()-1]);
+        grid.setGoal(grid.cells[vertexGoal.getX()-1][vertexGoal.getY()-1]); 
+
         reader.close();
 
         } catch (IOException e) {

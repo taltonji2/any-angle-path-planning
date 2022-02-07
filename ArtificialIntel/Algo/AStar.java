@@ -18,11 +18,12 @@ public class AStar
     Grid g;
     PriorityQueue<Cell> fringe = new PriorityQueue<Cell>(1, (Cell c1, Cell c2) -> Double.compare(f(c1), f(c2)));
     ArrayList<Cell> closed = new ArrayList<Cell>();
+    
     public boolean doAStar(Cell s, Cell g, Grid grid)
     {
         this.g = grid;
-        start = grid.start;
-        goal = grid.goal;
+        start = grid.getStart();
+        goal = grid.getGoal();
         start.parent = start;
         s = start;
 
@@ -56,7 +57,7 @@ public class AStar
                 }
             }
         }
-        System.out.println("Goal not reached :(");
+        System.out.println("Goal not reached");
         return false;
     }
 

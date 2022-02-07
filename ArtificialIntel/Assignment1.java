@@ -5,6 +5,7 @@ import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
+import java.util.Stack;
 
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
@@ -13,8 +14,10 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import ArtificialIntel.Data.Cell;
+import ArtificialIntel.Data.CreateAdj;
 import ArtificialIntel.Data.Grid;
 import ArtificialIntel.Data.GridStorage;
+import ArtificialIntel.Data.Vertex;
 import ArtificialIntel.Algo.AStar;
 import ArtificialIntel.Algo.BFS;
 
@@ -25,6 +28,7 @@ import ArtificialIntel.Algo.BFS;
 public class Assignment1
 {
     private static int sizeTile;
+    private static int algo;
     private Image image;
     private ImageIcon imageIcon;
     private JLabel jLabel;
@@ -36,7 +40,7 @@ public class Assignment1
 
         sizeTile = 50;
         //sizeTile = getInt( "How many pixels per square? [1 - 100]?" );
-
+        //algo = getAlgo( "Which operation?   \'0\' A*     \'1\' Theta*" );
     }
     
     /**
@@ -49,20 +53,21 @@ public class Assignment1
         assignment1.InitializeGUI(g);
         assignment1.paint(g);
         assignment1.view();
-        assignment1.doBFS();
+        g = CreateAdj.AddNeighbors(g); 
+        assignment1.doAStar();
+        // BFS bfs = new BFS(g);
+        // if(bfs.doBFS())
+        // {
+        //     System.out.print("A* time!");
+        //     assignment1.doAStar();
+        // }
+        
     }
-
-    public void doBFS()
-    {
-        BFS bfs = new BFS(g);
-    }
-
     public void doAStar()
     {
         AStar as = new AStar();
-        as.doAStar(g.start, g.goal, g);
+        as.doAStar(g.getStart(), g.getGoal(), g);
     }
-    
     protected void InitializeGUI(Grid grid){
         int imageSize = Math.max(grid.getWidth(), grid.getHeight()) * sizeTile;
         image = new BufferedImage( imageSize, imageSize, BufferedImage.TYPE_INT_ARGB );
@@ -81,7 +86,6 @@ public class Assignment1
         jFrame.setSize(1000,500); 
         jFrame.setDefaultCloseOperation( JFrame.EXIT_ON_CLOSE );
     }
-
     protected Grid restoreGrid(){
         Grid grid = null;
         try{
@@ -94,6 +98,11 @@ public class Assignment1
         return grid;
     }
     private int getInt( String question )
+    {
+        String intString = JOptionPane.showInputDialog( question );
+        return Integer.parseInt( intString );
+    }
+    private int getAlgo( String question )
     {
         String intString = JOptionPane.showInputDialog( question );
         return Integer.parseInt( intString );
@@ -132,7 +141,6 @@ public class Assignment1
                 int y = row * sizeTile;
                 int x2 = (col+1) * sizeTile;
                 int y2 = (row+1) * sizeTile;
-
                 graphics.drawLine(x, y, x2, y);
                 graphics.drawLine(x2, y, x2, y2);
                 graphics.drawLine(x2, y2, x, y2);
@@ -140,24 +148,48 @@ public class Assignment1
             }
         }
         
+        //Drawing Path
+        /* Stack<Vertex> path = new Stack<Vertex>();
+        Vertex v; 
+        v = new Vertex(g.start.x,g.start.y); 
+        path.push(v);
+        v = new Vertex(3,6); 
+        path.push(v);
+        v = new Vertex(3,5); 
+        path.push(v);
+        v = new Vertex(3,4);
+        path.push(v);
+        v = new Vertex(3,3); 
+        path.push(v);
+        v = new Vertex(3,2); 
+        path.push(v);
+        paintPath(graphics, g, path); 
+        graphics.drawString(String.valueOf(grid.start.x + " " + grid.start.y), grid.start.x  * sizeTile + sizeTile/g.getWidth(), grid.start.y  * sizeTile);
+        */
+
         graphics.setColor(Color.BLUE);
-        graphics.drawLine(grid.start.x * sizeTile, grid.start.y * sizeTile, grid.goal.x * sizeTile, grid.goal.y * sizeTile);
-
+        graphics.drawLine(grid.getStart().x * sizeTile, grid.getStart().y * sizeTile, grid.getGoal().x * sizeTile, grid.getGoal().y * sizeTile);
         graphics.setColor(Color.GREEN);
-        graphics.fillOval((grid.start.x * sizeTile) - (sizeTile/8), (grid.start.y * sizeTile)- (sizeTile/8), sizeTile/4, sizeTile/4);
-
+        graphics.fillOval((grid.getStart().x * sizeTile) - (sizeTile/8), (grid.getStart().y * sizeTile)- (sizeTile/8), sizeTile/4, sizeTile/4);
         graphics.setColor(Color.RED);
-        graphics.fillOval((grid.goal.x * sizeTile) - (sizeTile/8), (grid.goal.y * sizeTile)- (sizeTile/8), sizeTile/4, sizeTile/4);       
-      
+        graphics.fillOval((grid.getGoal().x * sizeTile) - (sizeTile/8), (grid.getGoal().y * sizeTile)- (sizeTile/8), sizeTile/4, sizeTile/4);       
         jFrame.pack();
         jFrame.setVisible(true);
-
-
     }
 
-    private void paintPath(Graphics g, ArrayList<Cell> path)
+    private void paintPath(Graphics g2, Grid g,  Stack<Vertex> path)
     {
-        g.setColor(Color.ORANGE);  
+        Vertex v1 = new Vertex(g.getGoal().x, g.getGoal().y);
+        g2.setColor(Color.RED);  
+        while(!path.empty())
+        {
+            g2.drawString(String.valueOf(v1.x + " " + v1.y), v1.x  * sizeTile + sizeTile/g.getWidth(), v1.y  * sizeTile);
+            Vertex v2 = path.pop();
+            g2.drawLine(v1.x * sizeTile, v1.y * sizeTile, v2.x * sizeTile, v2.y * sizeTile); 
+            g2.fillOval((v2.x * sizeTile) - (sizeTile/16), (v2.y * sizeTile)- (sizeTile/16), sizeTile/8, sizeTile/8);
+            
+            v1 = v2;
+        }
     }
 
     private void view() { jFrame.setVisible( true ); }

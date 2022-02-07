@@ -110,13 +110,13 @@ public class BFS {
         }
     }
  
-    boolean doBFS()
+    public boolean doBFS()
     {
         boolean visited[][] = new boolean[g.getWidth()][g.getHeight()];       //initialize boolean array for holding the data
         Cell c; 
         
-        visited[g.start.getX()][g.start.getY()] = true;                  
-        queue.add(g.start);                   //root node is added to the top of the queue
+        visited[g.getStart().getX()][g.getStart().getY()] = true;                  
+        queue.add(g.getStart());                   //root node is added to the top of the queue
         while (queue.size() != 0)
         {
             System.out.print("Queue at beginning of iteration: ");
@@ -140,7 +140,7 @@ public class BFS {
                     //System.out.println("Neighbor is blocked");
                     continue;
                 }
-                if(neighbor.x == g.goal.x && neighbor.y == g.goal.y)
+                if(neighbor.x == g.getGoal().x && neighbor.y == g.getGoal().y)
                 { 
                     System.out.println("Found!" + c.x + " " + c.y); //target is 2 5 
                     return true;
