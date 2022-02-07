@@ -21,6 +21,7 @@ import ArtificialIntel.Data.Vertex;
 import ArtificialIntel.Algo.AStar;
 import ArtificialIntel.Algo.BFS;
 import ArtificialIntel.Algo.Graph;
+import ArtificialIntel.Algo.ThetaStar;
 
 
 /**
@@ -64,13 +65,18 @@ public class Assignment1
         // {
         //     System.out.print("A* time!");
         //     assignment1.doAStar();
-        // }
+       
         
     }
     public void doAStar()
     {
         AStar as = new AStar();
         as.doAStar(g.getStart(), g.getGoal(), g);
+    }
+    public void doThetaStar()
+    {
+        ThetaStar as = new ThetaStar();
+        as.doThetaStar(g.getStart(), g.getGoal(), g);
     }
     protected void InitializeGUI(Grid grid){
         int imageSize = Math.max(grid.getWidth(), grid.getHeight()) * sizeTile;
