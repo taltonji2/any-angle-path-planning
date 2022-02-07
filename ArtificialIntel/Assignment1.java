@@ -146,10 +146,10 @@ public class Assignment1
             }
         }
         
-        //Drawing Path
-        /* Stack<Vertex> path = new Stack<Vertex>();
+        
+        Stack<Vertex> path = new Stack<Vertex>();
         Vertex v; 
-        v = new Vertex(g.start.x,g.start.y); 
+        v = new Vertex(g.getStart().x,g.getStart().y); 
         path.push(v);
         v = new Vertex(3,6); 
         path.push(v);
@@ -162,8 +162,8 @@ public class Assignment1
         v = new Vertex(3,2); 
         path.push(v);
         paintPath(graphics, g, path); 
-        graphics.drawString(String.valueOf(grid.start.x + " " + grid.start.y), grid.start.x  * sizeTile + sizeTile/g.getWidth(), grid.start.y  * sizeTile);
-        */
+        graphics.drawString(String.valueOf(grid.getStart().x + " " + grid.getStart().y), grid.getStart().x  * sizeTile + sizeTile/g.getWidth(), grid.getStart().y  * sizeTile);
+        
 
         graphics.setColor(Color.BLUE);
         graphics.drawLine(grid.getStart().x * sizeTile, grid.getStart().y * sizeTile, grid.getGoal().x * sizeTile, grid.getGoal().y * sizeTile);

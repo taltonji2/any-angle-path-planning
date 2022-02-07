@@ -39,20 +39,20 @@ public class Cell extends Vertex implements IBinaryHeapElement{
     // cell.LessThan(othercell)
     public boolean LessThan(IBinaryHeapElement element){
         Cell cell = (Cell) element;
-        double thisF = AStar.f(this);
-        double cellF = AStar.f(cell);
+        double thisF = this.f;
+        double cellF = cell.f;
         return thisF < cellF;
     }
     public boolean GreaterThan(IBinaryHeapElement element){
         Cell cell = (Cell) element;
-        double thisF = AStar.f(this);
-        double cellF = AStar.f(cell);
+        double thisF = this.f;
+        double cellF = cell.f;
         return thisF > cellF;
     }
     public boolean Equals(IBinaryHeapElement element){
         Cell cell = (Cell) element;
-        double thisF = AStar.f(this);
-        double cellF = AStar.f(cell);
+        double thisF = this.f;
+        double cellF = cell.f;
         return thisF == cellF;
     }
 }

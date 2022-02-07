@@ -1,10 +1,15 @@
 package ArtificialIntel.Algo;
 
-class  BinaryHeap{
-    private int MAX_SIZE = 0;
+import ArtificialIntel.Data.Grid;
+
+class  MinHeap{
     private IBinaryHeapElement [] heap;
     private int size;
-
+    private int maxsize;
+ 
+    // Initializing front as static with unity
+    private static final int FRONT = 0;
+ 
     // MAX_SIZE = width * height
     // pass in new Cell[MAX_SIZE]
     // Cell [] array = Cell[ width * length];
@@ -14,30 +19,66 @@ class  BinaryHeap{
     // Cell c = grid[i][j];
     // heap.insert(c);
     //
-    public BinaryHeap(IBinaryHeapElement [] array) {
+    // Constructor of this class
+    public MinHeap(IBinaryHeapElement [] array)
+    {
+ 
+        // This keyword refers to current object itself
         heap = array;
-        size = 0;
-        MAX_SIZE = heap.length;
+        this.maxsize = heap.length;
+        this.size = 0;
+        heap[0] = Grid.Instance().getStart(); //Root first adds the start then inserts its neighbor nodes
+    } 
+ 
+    // Method 1
+    // Returning the position of
+    // the parent for the node currently
+    // at pos
+    private int parent(int pos) { return pos / 2; }
+ 
+    // Method 2
+    // Returning the position of the
+    // left child for the node currently at pos
+    private int leftChild(int pos) { return (2 * pos); }
+ 
+    // Method 3
+    // Returning the position of
+    // the right child for the node currently
+    // at pos
+    private int rightChild(int pos)
+    {
+        return (2 * pos) + 1;
+    }
+ 
+    // Method 4
+    // Returning true if the passed
+    // node is a leaf node
+    private boolean isLeaf(int pos)
+    {
+ 
+        if (pos > (size / 2) && pos <= size) {
+            return true;
+        }
+ 
+        return false;
+    }
+ 
+    // Method 5
+    // To swap two nodes of the heap
+    private void swap(int fpos, int spos)
+    {
+ 
+        IBinaryHeapElement tmp;
+        tmp = heap[fpos];
+ 
+        heap[fpos] = heap[spos];
+        heap[spos] = tmp;
     }
 
-    // returns the index of the parent node
-    public static int parent(int i) {
-        return (i - 1) / 2;
-    }
-
-    // return the index of the left child 
-    public static int leftChild(int i) {
-        return 2*i + 1;
-    }
 
     // return the IBinaryHeapElement of the left child 
     public IBinaryHeapElement leftChildElement(int i) {
         return heap[leftChild(i)];
-    }
-
-    // return the index of the right child 
-    public static int rightChild(int i) {
-        return 2*i + 2;
     }
 
     // return the IBinaryHeapElement of the right child 
@@ -45,73 +86,59 @@ class  BinaryHeap{
         return heap[rightChild(i)];
     }
 
-
-    // insert the item at the appropriate position
-    public void insert(IBinaryHeapElement data) {
-        if (size >= MAX_SIZE) {
-            System.out.println("The heap is full. Cannot insert");
-            return;
-        }
-
-        // first insert the time at the last position of the array 
-        // and move it up
-        heap[size] = data;
-        size = size + 1;
-
-
-        // move up until the heap property satisfies
-        int i = size - 1;
-        while (i != 0 && heap[BinaryHeap.parent(i)].LessThan(heap[i])) {
-            IBinaryHeapElement temp = heap[i];
-            heap[i] = heap[parent(i)];
-            heap[parent(i)] = temp;
-            i = BinaryHeap.parent(i);
-        }
-    }
-
     // moves the item at position i of array a
     // into its appropriate position
-    public void maxHeapify(int i){
-        // find left child node
-        int left = BinaryHeap.leftChild(i);
-
-        // find right child node
-        int right = BinaryHeap.rightChild(i);
-
-        // find the largest among 3 nodes
-        int largest = i;
-
-        // check if the left node is larger than the current node
-        if (left <= size && heap[left].GreaterThan(heap[largest])) {
-            largest = left;
+    private void minHeapify(int pos)
+    {
+        // If the node is a non-leaf node and greater
+        // than any of its child
+        if (!isLeaf(pos)) {
+            if (heap[pos] > heap[leftChild(pos)]
+                || heap[pos] > heap[rightChild(pos)]) {
+ 
+                // Swap with the left child and heapify
+                // the left child
+                if (heap[leftChild(pos)] < heap[rightChild(pos)]) { 
+                    swap(pos, leftChild(pos));
+                    minHeapify(leftChild(pos));
+                }
+ 
+                // Swap with the right child and heapify
+                // the right child
+                else {
+                    swap(pos, rightChild(pos));
+                    minHeapify(rightChild(pos));
+                }
+            }
         }
-
-        // check if the right node is larger than the current node 
-        // and left node
-        if (right <= size && heap[right].GreaterThan( heap[largest])) {
-            largest = right;
-        }
-
-        // swap the largest node with the current node 
-        // and repeat this process until the current node is larger than 
-        // the right and the left node
-        if (largest != i) {
-            IBinaryHeapElement temp = heap[i];
-            heap[i] = heap[largest];
-            heap[largest] = temp;
-            maxHeapify(largest);
-        }
-
     }
-
+    
     // returns the  maximum item of the heap
     public IBinaryHeapElement getMax() {
         return heap[0];
     }
 
-    // deletes the max item and return
-    public IBinaryHeapElement extractMax() {
-        IBinaryHeapElement maxItem = heap[0];
+    // Method 7
+    // To insert a node into the heap
+    public void insert(IBinaryHeapElement element)
+    {
+ 
+        if (size >= maxsize) {
+            return;
+        }
+ 
+        heap[++size] = element;
+        int current = size;
+ 
+        while (heap[current] < heap[parent(current)]) {
+            swap(current, parent(current));
+            current = parent(current);
+        }
+    } 
+    
+    // deletes the min item and return
+    public IBinaryHeapElement extractMin() {
+        IBinaryHeapElement minItem = heap[0];
 
         // replace the first item with the last item
         heap[0] = heap[size - 1];
@@ -119,8 +146,8 @@ class  BinaryHeap{
 
         // maintain the heap property by heapifying the 
         // first item
-        maxHeapify(0);
-        return maxItem;
+        // minHeapify(0);
+        return minItem;
     }
 
     // prints the heap
