@@ -58,8 +58,7 @@ public class Assignment1
         Graph graph = new Graph();
         graph.Load(g);
         System.out.println(graph.BFS(g.getStart(), g.getGoal()));
-        
-        //assignment1.doAStar();
+        assignment1.doThetaStar();
         // BFS bfs = new BFS(g);
         // if(bfs.doBFS())
         // {

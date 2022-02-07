@@ -19,45 +19,42 @@ public class ThetaStar {
         goal = grid.getGoal();
         start.parent = start;
         s = start;
-        s.parent = start;
-
+        s.g = 0;
+        s.neighbors.remove(start);
         System.out.println("Start: (" + start.getX() + ", " + start.getY() + ")");
         System.out.println("Goal: (" + goal.getX() + ", " + goal.getY() + ")");
         fringe.add(s);
-        System.out.print("Neighbors of start: ");
-        for (Cell c : s.neighbors) {
-            System.out.print("(" + c.getX() + ", " + c.getY() + ")");
-        }
-        System.out.println();
+        s.h = h(s);
+        s.f = s.g + s.h;
         while (!fringe.isEmpty())
         {
             s = fringe.poll();
-            //System.out.println(s.parent == null);
             System.out.println("Visiting (" + s.getX() + ", " + s.getY() + ")");
             if (s.equals(goal))
             {
                 System.out.println("Found it!");
                 return true;
             }
-            System.out.println("Goal not found yet");
+            //System.out.println("Goal not found yet");
             closed.add(s);
-            //System.out.println(s.parent == null);
             System.out.println(s.neighbors.size());
+            
             for (Cell c : s.neighbors) 
             {
-                //System.out.println(s.parent == null);
                 if (c.IsFree())
                 {
                     System.out.println("Visiting neighbor (" + c.getX() + ", " + c.getY() + ")");
-                    //System.out.println(s.parent == null);
                     if (!fringe.contains(c))
                     {
-                        //System.out.println(s.parent == null);
-                        c.setCost(Integer.MAX_VALUE);
-                        System.out.println(c == s);
+                        c.g = Integer.MAX_VALUE;
                         c.parent = null;
                     }
                     updateVertex(s, c);
+                    System.out.print("Fringe at end of iteration: ");
+                    for (Cell ce : fringe) {
+                        System.out.print("(" + c.getX() + ", " + c.getY() + ") ");
+                    }
+                    System.out.println();
                 }
             }
         }
@@ -70,27 +67,31 @@ public class ThetaStar {
         System.out.println(s.parent == null);
         if (lineOfSight(s.parent, c))
         {
-             if (g(s.parent) + c(s.parent, c) < g(c))
+             if (s.parent.g + c(s.parent, c) < c.g)
              {
-                 c.setCost(g(s.parent) + c(s.parent, c));
+                 c.g = s.parent.g + c(s.parent, c);
                  c.parent = s.parent;
                  if (fringe.contains(c))
                  {
                      fringe.remove(c);
                  }
+                 c.h = h(c);
+                 c.f = c.g + c.h;
                  fringe.add(c);
              }
         }
         else
         {
-            if (g(s) + c(s, c) < g(c))
+            if (s.g + c(s, c) < c.g)
             {
-                c.setCost(g(s) + c(s, c));
+                c.g = s.g + c(s, c);
                 c.parent = s;
                 if (fringe.contains(c))
                 {
                     fringe.remove(c);
                 }
+                c.h = h(c);
+                c.f = c.g + c.h;
                 fringe.add(c);
             }
         }
@@ -211,7 +212,7 @@ public class ThetaStar {
         {
             this.start.setCost(0);
         }
-        return cell.cost;
+        return cell.g;
     }
 
     private int h(Cell c)

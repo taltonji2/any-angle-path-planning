@@ -9,7 +9,9 @@ public class Cell extends Vertex implements IBinaryHeapElement{
     
     protected boolean bFree = true;
     public Cell parent;
-    public double cost = Integer.MAX_VALUE;
+    public double g = Integer.MAX_VALUE;
+    public double h = 0;
+    public double f = g + h;
     public ArrayList<Cell> neighbors = new ArrayList<Cell>();
     public boolean visited; 
     public boolean IsFree(){
@@ -24,7 +26,7 @@ public class Cell extends Vertex implements IBinaryHeapElement{
     }
     public void setCost(double c)
     {
-        this.cost = c;
+        this.g = c;
     }
     public ArrayList<Cell> getNeighbors ()
     {

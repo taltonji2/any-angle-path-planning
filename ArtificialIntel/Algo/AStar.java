@@ -16,7 +16,7 @@ public class AStar
 {
     Cell start, goal;
     Grid grid;
-    PriorityQueue<Cell> fringe = new PriorityQueue<Cell>(1, (Cell c1, Cell c2) -> Double.compare(f(c1), f(c2)));
+    PriorityQueue<Cell> fringe = new PriorityQueue<Cell>(1, (Cell c1, Cell c2) -> Double.compare(c1.f, c2.f));
     ArrayList<Cell> closed = new ArrayList<Cell>();
     
     public boolean doAStar(Cell s, Cell g, Grid grid)
@@ -26,14 +26,17 @@ public class AStar
         goal = grid.getGoal();
         start.parent = start;
         s = start;
-
-        //System.out.println("Start: (" + start.getX() + ", " + start.getY() + ")");
-        //System.out.println("Goal: (" + goal.getX() + ", " + goal.getY() + ")");
+        s.g = 0;
+        s.neighbors.remove(start);
+        System.out.println("Start: (" + start.getX() + ", " + start.getY() + ")");
+        System.out.println("Goal: (" + goal.getX() + ", " + goal.getY() + ")");
         fringe.add(s);
+        s.h = h(s);
+        s.f = s.g + s.h;
         while (!fringe.isEmpty())
         {
             s = fringe.poll();
-            //System.out.println("Visiting (" + s.getX() + ", " + s.getY() + ")");
+            System.out.println("Visiting (" + s.getX() + ", " + s.getY() + ")");
             if (s.equals(goal))
             {
                 System.out.println("Found it!");
@@ -41,19 +44,24 @@ public class AStar
             }
             //System.out.println("Goal not found yet");
             closed.add(s);
-            //System.out.println(s.neighbors.size());
+            System.out.println(s.neighbors.size());
             
             for (Cell c : s.neighbors) 
             {
                 if (c.IsFree())
                 {
-                   // System.out.println("Visiting neighbor (" + c.getX() + ", " + c.getY() + ")");
+                    System.out.println("Visiting neighbor (" + c.getX() + ", " + c.getY() + ")");
                     if (!fringe.contains(c))
                     {
-                        c.setCost(Integer.MAX_VALUE);
+                        c.g = Integer.MAX_VALUE;
                         c.parent = null;
                     }
                     updateVertex(s, c);
+                    System.out.print("Fringe at end of iteration: ");
+                    for (Cell ce : fringe) {
+                        System.out.print("(" + c.getX() + ", " + c.getY() + ") ");
+                    }
+                    System.out.println();
                 }
             }
         }
@@ -63,15 +71,23 @@ public class AStar
 
     public void updateVertex(Cell s, Cell c)
     {
-        if (g(s) + c(s, c) < g(c))
+        System.out.println(s.g);
+        System.out.println(c(s, c));
+        System.out.println(c.g);
+        if (s.g + c(s, c) < c.g)
         {
-            c.setCost(g(s) + c(s, c));
+            c.g = s.g + c(s, c);
             c.parent = s;
             if (fringe.contains(c))
             {
+                System.out.println("Removing");
                 fringe.remove(c);
+                System.out.println("Removed " + c.getX() + ", " + c.getY());
             }
+            c.h = h(c);
+            c.f = c.g + c.h;
             fringe.add(c);
+            System.out.println("Added " + c.getX() + ", " + c.getY());
         }
 
     }
@@ -109,7 +125,7 @@ public class AStar
         {
             start.setCost(0);
         }
-        return cell.cost;
+        return cell.g;
     }
 
     public static double h(Cell c)
