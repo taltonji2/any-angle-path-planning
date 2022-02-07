@@ -20,6 +20,7 @@ import ArtificialIntel.Data.GridStorage;
 import ArtificialIntel.Data.Vertex;
 import ArtificialIntel.Algo.AStar;
 import ArtificialIntel.Algo.BFS;
+import ArtificialIntel.Algo.ThetaStar;
 
 
 /**
@@ -53,20 +54,25 @@ public class Assignment1
         assignment1.InitializeGUI(g);
         assignment1.paint(g);
         assignment1.view();
-        g = CreateAdj.AddNeighbors(g); 
-        assignment1.doAStar();
-        // BFS bfs = new BFS(g);
-        // if(bfs.doBFS())
-        // {
+        //g = CreateAdj.AddNeighbors(g); 
+        //assignment1.doThetaStar();
+        BFS bfs = new BFS(g);
+        if(bfs.doBFS())
+        {
         //     System.out.print("A* time!");
         //     assignment1.doAStar();
-        // }
+        }
         
     }
     public void doAStar()
     {
         AStar as = new AStar();
         as.doAStar(g.getStart(), g.getGoal(), g);
+    }
+    public void doThetaStar()
+    {
+        ThetaStar as = new ThetaStar();
+        as.doThetaStar(g.getStart(), g.getGoal(), g);
     }
     protected void InitializeGUI(Grid grid){
         int imageSize = Math.max(grid.getWidth(), grid.getHeight()) * sizeTile;
