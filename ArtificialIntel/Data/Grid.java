@@ -119,7 +119,6 @@ public class Grid{
         int iy = cell.y -1;
         int x = ix - 1;
         int y = iy + 1;
-
         if(y > cells[0].length-1 || x < 0)
             return null;
         return cells[x][y];

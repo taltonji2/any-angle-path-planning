@@ -42,7 +42,7 @@ public class AStar
                 System.out.println("Found it!");
                 return true;
             }
-            //System.out.println("Goal not found yet");
+            System.out.println("Goal not found yet");
             closed.add(s);
             System.out.println(s.neighbors.size());
             
