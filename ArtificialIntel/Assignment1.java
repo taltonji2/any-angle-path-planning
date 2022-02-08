@@ -56,7 +56,11 @@ public class Assignment1
         Graph graph = new Graph();
         graph.Load(g);
         System.out.println(graph.BFS(g.getStart(), g.getGoal()));
-        //assignment1.doAStar();
+        if (graph.BFS(g.getStart(), g.getGoal()))
+        {
+            assignment1.doAStar();
+        }
+       
     }
     public void doAStar()
     {

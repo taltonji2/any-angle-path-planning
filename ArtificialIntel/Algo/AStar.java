@@ -37,7 +37,7 @@ public class AStar
         {
             s = fringe.poll();
             System.out.println("Visiting (" + s.getX() + ", " + s.getY() + ")");
-            if (s.equals(goal))
+            if (s.equals(goal))     //when on same vertex does not fire;
             {
                 System.out.println("Found it!");
                 return true;
