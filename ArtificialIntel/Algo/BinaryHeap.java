@@ -2,9 +2,9 @@ package ArtificialIntel.Algo;
 
 import ArtificialIntel.Data.Grid;
 
-class  MinHeap{
-    private IBinaryHeapElement [] heap;
-    private int size;
+class  MinHeap {
+    IBinaryHeapElement [] heap;
+    int size;
     private int maxsize;
  
     // Initializing front as static with unity
@@ -22,7 +22,6 @@ class  MinHeap{
     // Constructor of this class
     public MinHeap(IBinaryHeapElement [] array)
     {
- 
         // This keyword refers to current object itself
         heap = array;
         this.maxsize = heap.length;
@@ -86,6 +85,11 @@ class  MinHeap{
         return heap[rightChild(i)];
     }
 
+    // return the IBinaryHeapElement of the right child 
+    public IBinaryHeapElement parentElement(int i) {
+        return heap[parent(i)];
+    }
+
     // moves the item at position i of array a
     // into its appropriate position
     private void minHeapify(int pos)
@@ -93,12 +97,14 @@ class  MinHeap{
         // If the node is a non-leaf node and greater
         // than any of its child
         if (!isLeaf(pos)) {
-            if (heap[pos] > heap[leftChild(pos)]
-                || heap[pos] > heap[rightChild(pos)]) {
+            IBinaryHeapElement cell = heap[pos];
+            IBinaryHeapElement cellLeft = this.leftChildElement(pos);
+            IBinaryHeapElement cellRight = this.rightChildElement(pos);
+            if (cell.GreaterThan(cellLeft)  || cell.GreaterThan(cellRight)) {
  
                 // Swap with the left child and heapify
                 // the left child
-                if (heap[leftChild(pos)] < heap[rightChild(pos)]) { 
+                if (cellLeft.LessThan(cellRight)) { 
                     swap(pos, leftChild(pos));
                     minHeapify(leftChild(pos));
                 }
@@ -114,7 +120,7 @@ class  MinHeap{
     }
     
     // returns the  maximum item of the heap
-    public IBinaryHeapElement getMax() {
+    public IBinaryHeapElement getMin() {
         return heap[0];
     }
 
@@ -122,15 +128,14 @@ class  MinHeap{
     // To insert a node into the heap
     public void insert(IBinaryHeapElement element)
     {
- 
         if (size >= maxsize) {
             return;
         }
  
         heap[++size] = element;
         int current = size;
- 
-        while (heap[current] < heap[parent(current)]) {
+        IBinaryHeapElement cellParent = this.parentElement(current);
+        while (element.LessThan(cellParent)  ) {
             swap(current, parent(current));
             current = parent(current);
         }
@@ -150,12 +155,35 @@ class  MinHeap{
         return minItem;
     }
 
-    // prints the heap
-    public void printHeap() {
-        for (int i = 0; i < size; i++) {
-            System.out.print(heap[i] + " ");
+
+    // Method 8
+    // To print the contents of the heap
+    public void print()
+    {
+        for (int i = 1; i <= size / 2; i++) {
+ 
+            // Printing the parent and both childrens
+            System.out.print(
+                " PARENT : " + heap[i]
+                + " LEFT CHILD : " + heap[2 * i]
+                + " RIGHT CHILD :" + heap[2 * i + 1]);
+ 
+            // By here new line is required
+            System.out.println();
         }
-        System.out.println();
+    }
+ 
+    // Method 9
+    // To remove and return the minimum
+    // element from the heap
+    public IBinaryHeapElement remove()
+    {
+ 
+        IBinaryHeapElement popped = heap[FRONT];
+        heap[FRONT] = heap[size--];
+        minHeapify(FRONT);
+ 
+        return popped;
     }
 
 }

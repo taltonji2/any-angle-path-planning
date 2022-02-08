@@ -61,7 +61,7 @@ public class Grid{
         int y = iy - 1;
         if(y<0)
             return null;
-        return cells[ix][iy];
+        return cells[ix][y];
     }
     public Cell east(Cell cell){
         int ix = cell.x - 1;
@@ -123,8 +123,4 @@ public class Grid{
             return null;
         return cells[x][y];
     }
-
-
-   
-
 }

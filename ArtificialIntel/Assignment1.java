@@ -15,6 +15,7 @@ import ArtificialIntel.Data.Cell;
 import ArtificialIntel.Data.Grid;
 import ArtificialIntel.Data.GridStorage;
 import ArtificialIntel.Data.Vertex;
+import ArtificialIntel.GUI.CreateGui;
 import ArtificialIntel.Algo.AStar;
 import ArtificialIntel.Algo.Graph;
 import ArtificialIntel.Algo.ThetaStar;
@@ -48,6 +49,7 @@ public class Assignment1
     {
         Assignment1 assignment1 = new Assignment1();
         Assignment1.g = assignment1.restoreGrid();
+        //CreateGui.createAndShowGui(Assignment1.g);
         assignment1.InitializeGUI(g);
         assignment1.paint(g);
         assignment1.view();

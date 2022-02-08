@@ -4,7 +4,8 @@ import java.awt.Color;
 
 public enum MyColor {
    GREEN(Color.green, "Green", "g"), RED(Color.red, "Red", "r"), 
-   BLUE(Color.blue, "Blue", "b"), YELLOW(Color.yellow, "Yellow", "y");
+   BLUE(Color.blue, "Blue", "b"), YELLOW(Color.yellow, "Yellow", "y"),
+   WHITE(Color.white, "White", "w"), GRAY(Color.gray, "Gray", "gr");
    private Color color;
    private String name;
    private String shortName;
