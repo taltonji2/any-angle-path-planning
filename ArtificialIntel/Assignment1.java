@@ -58,7 +58,7 @@ public class Assignment1
         System.out.println(graph.BFS(g.getStart(), g.getGoal()));
         if (graph.BFS(g.getStart(), g.getGoal()))
         {
-            assignment1.doAStar();
+            assignment1.doThetaStar();
         }
        
     }

@@ -21,7 +21,7 @@ public class Bresenham {
 
         while (true) 
         {
-            line.add(grid[x0][y0]);
+            line.add(grid[x0-1][y0-1]);
 
             if (x0 == x1 && y0 == y1) 
                 break;

@@ -1,6 +1,7 @@
 package ArtificialIntel.Algo;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.PriorityQueue;
 
 import ArtificialIntel.Data.Cell;
@@ -64,8 +65,7 @@ public class ThetaStar {
 
     public void updateVertex(Cell s, Cell c)
     {
-        System.out.println(s.parent == null);
-        if (lineOfSight(s.parent, c))
+        if (lineOfSight(g, s.parent, c))
         {
              if (s.parent.g + c(s.parent, c) < c.g)
              {
@@ -97,9 +97,19 @@ public class ThetaStar {
         }
     }
 
-    public boolean lineOfSight(Cell s, Cell s1)
+    public boolean lineOfSight(Grid g, Cell s1, Cell s2)
     {
-        int x0 = s.getX();
+        List<Cell> line = Bresenham.findLine(g.cells, s1.getX(), s1.getY(), s2.getX(), s2.getY());
+
+        for(Cell c : line)
+        {
+            if (c.IsFree() == false)
+            {
+                return false;
+            }
+        }
+
+       /*  int x0 = s.getX();
         int y0 = s.getY();
         int x1 = s1.getX();
         int y1 = s1.getY();
@@ -176,7 +186,7 @@ public class ThetaStar {
                 }
                 y0 = y0 + sy;
             }
-        }
+        } */
         return true;
     }
 
