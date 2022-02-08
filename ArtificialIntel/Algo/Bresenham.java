@@ -7,7 +7,7 @@ import ArtificialIntel.Data.Cell;
 
 public class Bresenham {
     /** function findLine() - to find that belong to line connecting the two points **/ 
-
+    // https://stackoverflow.com/questions/8113629/simplified-bresenhams-line-algorithm-what-does-it-exactly-do 
     public static List<Cell> findLine(Cell[][] grid, int x0, int y0, int x1, int y1) 
     {                    
 
