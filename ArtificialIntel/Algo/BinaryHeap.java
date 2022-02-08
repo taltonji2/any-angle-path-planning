@@ -108,7 +108,7 @@ class  MinHeap {
                     swap(pos, leftChild(pos));
                     minHeapify(leftChild(pos));
                 }
- 
+                
                 // Swap with the right child and heapify
                 // the right child
                 else {

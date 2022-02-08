@@ -49,17 +49,17 @@ public class Assignment1
     {
         Assignment1 assignment1 = new Assignment1();
         Assignment1.g = assignment1.restoreGrid();
-        //CreateGui.createAndShowGui(Assignment1.g);
-        assignment1.InitializeGUI(g);
-        assignment1.paint(g);
-        assignment1.view();
+        CreateGui.createAndShowGui(Assignment1.g);
+        //assignment1.InitializeGUI(g);
+        //assignment1.paint(g);
+        //assignment1.view();
         Graph graph = new Graph();
         graph.Load(g);
         System.out.println(graph.BFS(g.getStart(), g.getGoal()));
-        if (graph.BFS(g.getStart(), g.getGoal()))
-        {
-            assignment1.doThetaStar();
-        }
+        // if (graph.BFS(g.getStart(), g.getGoal()))
+        // {
+        //     assignment1.doThetaStar();
+        // }
        
     }
     public void doAStar()
@@ -195,8 +195,4 @@ public class Assignment1
             v1 = v2;
         }
     }
-
-    private void view() { jFrame.setVisible( true ); }
-
-    
 }
