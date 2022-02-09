@@ -76,14 +76,9 @@ public class AStar
         System.out.println(c.g);
         if (s.g + c(s, c) < c.g)
         {
+            fringe.remove(c);
             c.g = s.g + c(s, c);
             c.parent = s;
-            if (fringe.contains(c))
-            {
-                System.out.println("Removing");
-                fringe.remove(c);
-                System.out.println("Removed " + c.getX() + ", " + c.getY());
-            }
             c.h = h(c);
             c.f = c.g + c.h;
             fringe.add(c);

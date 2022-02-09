@@ -9,13 +9,13 @@ import ArtificialIntel.Data.Grid;
 
 public class ThetaStar {
     Cell start, goal;
-    Grid g;
-    PriorityQueue<Cell> fringe = new PriorityQueue<Cell>(1, (Cell c1, Cell c2) -> Double.compare(f(c1), f(c2)));
+    Grid grid;
+    PriorityQueue<Cell> fringe = new PriorityQueue<Cell>(1, (Cell c1, Cell c2) -> Double.compare(c1.f, c2.f));
     ArrayList<Cell> closed = new ArrayList<Cell>();
     
     public boolean doThetaStar(Cell s, Cell g, Grid grid)
     {
-        this.g = grid;
+        this.grid = grid;
         start = grid.getStart();
         goal = grid.getGoal();
         start.parent = start;
@@ -31,12 +31,12 @@ public class ThetaStar {
         {
             s = fringe.poll();
             System.out.println("Visiting (" + s.getX() + ", " + s.getY() + ")");
-            if (s.equals(goal))
+            if (s.equals(goal))     //when on same vertex does not fire;
             {
                 System.out.println("Found it!");
                 return true;
             }
-            //System.out.println("Goal not found yet");
+            System.out.println("Goal not found yet");
             closed.add(s);
             System.out.println(s.neighbors.size());
             
@@ -53,7 +53,7 @@ public class ThetaStar {
                     updateVertex(s, c);
                     System.out.print("Fringe at end of iteration: ");
                     for (Cell ce : fringe) {
-                        System.out.print("(" + c.getX() + ", " + c.getY() + ") ");
+                        System.out.print("(" + ce.getX() + ", " + ce.getY() + ") ");
                     }
                     System.out.println();
                 }
@@ -65,31 +65,28 @@ public class ThetaStar {
 
     public void updateVertex(Cell s, Cell c)
     {
-        if (lineOfSight(g, s.parent, c))
+        System.out.println("S: (" + s.getX() + ", " + s.getY() + ") ");
+        System.out.println("S Parent: (" + s.parent.getX() + ", " + s.parent.getY() + ") ");
+        System.out.println("C: (" + c.getX() + ", " + c.getY() + ") ");
+        if (lineOfSight(grid, s.parent, c))
         {
              if (s.parent.g + c(s.parent, c) < c.g)
              {
-                 c.g = s.parent.g + c(s.parent, c);
-                 c.parent = s.parent;
-                 if (fringe.contains(c))
-                 {
-                     fringe.remove(c);
-                 }
-                 c.h = h(c);
-                 c.f = c.g + c.h;
-                 fringe.add(c);
+                fringe.remove(c);
+                c.g = s.parent.g + c(s.parent, c);
+                c.parent = s.parent;
+                c.h = h(c);
+                c.f = c.g + c.h;
+                fringe.add(c);
              }
         }
         else
         {
             if (s.g + c(s, c) < c.g)
             {
+                fringe.remove(c);
                 c.g = s.g + c(s, c);
                 c.parent = s;
-                if (fringe.contains(c))
-                {
-                    fringe.remove(c);
-                }
                 c.h = h(c);
                 c.f = c.g + c.h;
                 fringe.add(c);
@@ -99,25 +96,15 @@ public class ThetaStar {
 
     public boolean lineOfSight(Grid g, Cell s1, Cell s2)
     {
-        List<Cell> line = Bresenham.findLine(g.cells, s1.getX(), s1.getY(), s2.getX(), s2.getY());
-
-        for(Cell c : line)
-        {
-            if (c.IsFree() == false)
-            {
-                return false;
-            }
-        }
-
-       /*  int x0 = s.getX();
-        int y0 = s.getY();
-        int x1 = s1.getX();
-        int y1 = s1.getY();
+        System.out.println("Running line of sight for (" + s1.getX() + ", " + s1.getY() + ") and (" + s2.getX() + ", " + s2.getY() + ")");
+        int x0 = s1.getX() - 1;
+        int y0 = s1.getY() - 1;
+        int x1 = s2.getX() - 1;
+        int y1 = s2.getY() - 1;
         int f = 0;
         int dy = y1 - y0;
         int dx = x1 - x0;
-        int sy = 0;
-        int sx = 0;
+        int sy, sx;
         if (dy < 0)
         {
             dy *= -1;
@@ -143,19 +130,22 @@ public class ThetaStar {
                 f = f + dy;
                 if (f >= dx)
                 {
-                    if (g.cells[x0 + ((sx - 1)/2)][y0 + (sy - 1)/2] != null)
+                    if (grid.cells[x0 + ((sx - 1)/2)][y0 + ((sy - 1)/2)].IsFree() == false)
                     {
+                        System.out.println("Failure 1");
                         return false;
                     }
                     y0 = y0 + sy;
                     f = f - dx;
                 }
-                if (f != 0 && g.cells[x0 + ((sx - 1)/2)][y0 + (sy - 1)/2] != null)
+                if (f != 0 && grid.cells[x0 + ((sx - 1)/2)][y0 + ((sy - 1)/2)].IsFree() == false)
                 {
+                    System.out.println("Failure 2");
                     return false;
                 }
-                if (dy == 0 && g.cells[x0 + ((sx - 1)/2)][y0] != null && g.cells[x0 + ((sx - 1)/2)][y0 - 1] != null)
+                if (dy == 0 && grid.cells[x0 + ((sx - 1)/2)][y0].IsFree() == false && grid.cells[x0 + ((sx - 1)/2)][y0 - 1].IsFree() == false)
                 {
+                    System.out.println("Failure 3");
                     return false;
                 }
                 x0 = x0 + sx;
@@ -168,25 +158,27 @@ public class ThetaStar {
                 f = f + dx;
                 if (f >= dy)
                 {
-                    if (g.cells[x0 + ((sx - 1)/2)][y0 + (sy - 1)/2] != null)
+                    if (grid.cells[x0 + ((sx - 1)/2)][y0 + ((sy - 1)/2)].IsFree() == false)
                     {
+                        System.out.println("Failure 4");
                         return false;
                     }
                     x0 = x0 + sx;
                     f = f - dy;
-                    
                 }
-                if (f != 0 && g.cells[x0 + ((sx - 1)/2)][y0 + (sy - 1)/2] != null)
+                if (f != 0 && grid.cells[x0 + ((sx - 1)/2)][y0 + ((sy - 1)/2)].IsFree() == false)
                 {
+                    System.out.println("Failure 5");
                     return false;
                 }
-                if (dx == 0 && g.cells[x0][y0 + (sy - 1)/2] != null && g.cells[x0 - 1][y0 + (sy - 1)/2] != null)
+                if (dx == 0 && grid.cells[x0][y0 + ((sy - 1)/2)].IsFree() == false && grid.cells[x0 - 1][y0 + ((sy - 1)/2)].IsFree() == false)
                 {
+                    System.out.println("Failure 6");
                     return false;
                 }
                 y0 = y0 + sy;
             }
-        } */
+        }
         return true;
     }
 
