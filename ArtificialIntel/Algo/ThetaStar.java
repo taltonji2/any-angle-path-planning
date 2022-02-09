@@ -65,31 +65,28 @@ public class ThetaStar {
 
     public void updateVertex(Cell s, Cell c)
     {
+        System.out.println("S: (" + s.getX() + ", " + s.getY() + ") ");
+        System.out.println("S Parent: (" + s.parent.getX() + ", " + s.parent.getY() + ") ");
+        System.out.println("C: (" + c.getX() + ", " + c.getY() + ") ");
         if (lineOfSight(grid, s.parent, c))
         {
              if (s.parent.g + c(s.parent, c) < c.g)
              {
-                 c.g = s.parent.g + c(s.parent, c);
-                 c.parent = s.parent;
-                 if (fringe.contains(c))
-                 {
-                     fringe.remove(c);
-                 }
-                 c.h = h(c);
-                 c.f = c.g + c.h;
-                 fringe.add(c);
+                fringe.remove(c);
+                c.g = s.parent.g + c(s.parent, c);
+                c.parent = s.parent;
+                c.h = h(c);
+                c.f = c.g + c.h;
+                fringe.add(c);
              }
         }
         else
         {
             if (s.g + c(s, c) < c.g)
             {
+                fringe.remove(c);
                 c.g = s.g + c(s, c);
                 c.parent = s;
-                if (fringe.contains(c))
-                {
-                    fringe.remove(c);
-                }
                 c.h = h(c);
                 c.f = c.g + c.h;
                 fringe.add(c);
@@ -99,7 +96,7 @@ public class ThetaStar {
 
     public boolean lineOfSight(Grid g, Cell s1, Cell s2)
     {
-        System.out.println("Running line of sight for (" + s1.getX() + ", " + s1.getY() + ") and (" + s1.getX() + ", " + s1.getY() + ")");
+        System.out.println("Running line of sight for (" + s1.getX() + ", " + s1.getY() + ") and (" + s2.getX() + ", " + s2.getY() + ")");
         int x0 = s1.getX() - 1;
         int y0 = s1.getY() - 1;
         int x1 = s2.getX() - 1;
