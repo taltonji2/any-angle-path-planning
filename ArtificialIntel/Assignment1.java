@@ -5,7 +5,6 @@ import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
-import java.util.Stack;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -43,7 +42,7 @@ public class Assignment1
     Assignment1()
     {
 
-        sizeTile = 50;
+        sizeTile = 45;
         //sizeTile = getInt( "How many pixels per square? [1 - 100]?" );
         //algo = getAlgo( "Which operation?   \'0\' A*     \'1\' Theta*" );
     }
@@ -53,23 +52,26 @@ public class Assignment1
      */
     public static void main(String[] args) 
     {
+
         Assignment1 assignment1 = new Assignment1();
         Assignment1.g = assignment1.restoreGrid();
         Graph graph = new Graph();
         graph.Load(g);
         System.out.println(graph.BFS(g.getStart(), g.getGoal()));
       
+        //A*
         if (graph.BFS(g.getStart(), g.getGoal()))
         {
             assignment1.InitializeGUI(g);
             assignment1.paint(g);
             assignment1.view();
         }
-      
-       
-        //if (graph.BFS(g.getStart(), g.getGoal()))
+        //Theta*
+        if (graph.BFS(g.getStart(), g.getGoal()))
         {
-            // assignment1.doAStar();
+            assignment1.InitializeGUI(g);
+            assignment1.paint(g);
+            assignment1.view();
         }
     }
     private void view() { jFrame.setVisible( true ); }
@@ -96,12 +98,18 @@ public class Assignment1
         }
         return grid;
     }
+
     private int getInt( String question )
     {
         String intString = JOptionPane.showInputDialog( question );
         return Integer.parseInt( intString );
     }
     private int getAlgo( String question )
+    {
+        String intString = JOptionPane.showInputDialog( question );
+        return Integer.parseInt( intString );
+    }
+    private int getText( String question )
     {
         String intString = JOptionPane.showInputDialog( question );
         return Integer.parseInt( intString );
@@ -122,9 +130,14 @@ public class Assignment1
 
         JScrollPane scrollFrame = new JScrollPane(gridPanel);
         gridPanel.setAutoscrolls(true);
-        
+        gridPanel.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseReleased(MouseEvent e) {
+                Pop();
+            }
+        });
         jFrame.add(scrollFrame);
-        jFrame.setSize(1000,500); 
+        jFrame.setPreferredSize(new Dimension (600,600)); 
         jFrame.setDefaultCloseOperation( JFrame.EXIT_ON_CLOSE );
     }
     private void paint(Grid grid)
@@ -197,30 +210,4 @@ public class Assignment1
         jFrame.pack();
         jFrame.setVisible(true);
     }
-
-    // private void paintPath(Graphics g2, Grid g,  Stack<Cell> path)
-    // {
-    //     g2.setColor(Color.white);  
-    //     Cell cell1;
-    //     Cell cell2;
-    //     try {
-    //         while(!path.empty())
-    //         {
-                
-    //             cell1 = path.pop();
-    //             g2.drawString(String.valueOf(cell1.x + " " + cell1.y), cell1.x  * sizeTile + sizeTile/g.getWidth(), cell1.y  * sizeTile);
-    //             cell2 = cell1;
-    //             g2.fillOval((cell2.x * sizeTile) - (sizeTile/16), (cell2.y * sizeTile)- (sizeTile/16), sizeTile/8, sizeTile/8);
-    //             cell1 = path.pop();
-    //             g2.drawLine(cell2.x * sizeTile, cell2.y * sizeTile, cell1.x * sizeTile, cell1.y * sizeTile); 
-                
-    //         }
-    //     } catch (NullPointerException e)
-    //     {
-    //         System.out.println(e);
-    //     }
-    // }
-
-    
-
 }

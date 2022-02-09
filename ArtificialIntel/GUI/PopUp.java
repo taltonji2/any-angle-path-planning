@@ -19,7 +19,7 @@ public class PopUp {
         JTextPane jTextPane = new JTextPane();
         //Loop through cell data and set text to 4 vertext information returned from Cell and Grid.cells[][] 
         
-        jTextPane.setText("t");
+        jTextPane.setText("Hello");
         jTextPane.setEditable(false);
         jPanel.add(jTextPane, BorderLayout.CENTER);
         jFrame.pack();
