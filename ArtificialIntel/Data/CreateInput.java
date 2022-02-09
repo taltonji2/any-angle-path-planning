@@ -12,8 +12,8 @@ import java.util.concurrent.ThreadLocalRandom;
 public class CreateInput {
     int numOfGridFiles = 1;
     int getNumOfGridFiles(){ return this.numOfGridFiles;}
-    int columns = 4; //x
-    int rows = 8; //y
+    static int columns = 50; //x
+    static int rows = 100; //y
     int numOfCells = rows * columns;
     double numOfCellsBlocked = numOfCells * .10; //10% blocked
     
@@ -21,7 +21,7 @@ public class CreateInput {
     //if no valid path then regenerate random bocked.
 
     public static void main(String[] args) {
-        CreateInput createInput = new CreateInput(8,4);
+        CreateInput createInput = new CreateInput(rows,columns);
         
     }
 
