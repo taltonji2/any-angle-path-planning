@@ -64,6 +64,7 @@ public class Assignment1
             assignment1.InitializeGUI(g);
             assignment1.paint(g);
             assignment1.view();
+            assignment1.doThetaStar();
         }
       
        
