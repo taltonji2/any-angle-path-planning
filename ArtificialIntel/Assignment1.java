@@ -1,6 +1,7 @@
 package ArtificialIntel;
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
@@ -11,13 +12,19 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JTextPane;
+
 import ArtificialIntel.Data.Cell;
 import ArtificialIntel.Data.Grid;
 import ArtificialIntel.Data.GridStorage;
-import ArtificialIntel.Data.Vertex;
 import ArtificialIntel.Algo.AStar;
+import ArtificialIntel.Algo.AStarTrace;
 import ArtificialIntel.Algo.Graph;
 import ArtificialIntel.Algo.ThetaStar;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+
+
 
 
 /**
@@ -48,14 +55,18 @@ public class Assignment1
     {
         Assignment1 assignment1 = new Assignment1();
         Assignment1.g = assignment1.restoreGrid();
-        assignment1.InitializeGUI(g);
-        assignment1.paint(g);
-        assignment1.view();
         Graph graph = new Graph();
         graph.Load(g);
         System.out.println(graph.BFS(g.getStart(), g.getGoal()));
-        graph.BFS(g.getStart(), g.getGoal());
-        //assignment1.doAStar();
+      
+        if (graph.BFS(g.getStart(), g.getGoal()))
+        {
+            assignment1.InitializeGUI(g);
+            assignment1.paint(g);
+            assignment1.view();
+        }
+      
+       
         //if (graph.BFS(g.getStart(), g.getGoal()))
         {
             // assignment1.doAStar();
@@ -68,28 +79,11 @@ public class Assignment1
         AStar as = new AStar();
         as.doAStar(g.getStart(), g.getGoal(), g);
     }
+    
     public void doThetaStar()
     {
         ThetaStar as = new ThetaStar();
         as.doThetaStar(g.getStart(), g.getGoal(), g);
-    }
-    protected void InitializeGUI(Grid grid){
-        int imageSize = Math.max(grid.getWidth(), grid.getHeight()) * sizeTile;
-        image = new BufferedImage( imageSize, imageSize, BufferedImage.TYPE_INT_ARGB );
-        imageIcon = new ImageIcon( image );
-        jFrame = new JFrame( "Artificial Intel" );
-        
-        JLabel picLabel = new JLabel(new ImageIcon(image));
-        JPanel gridPanel = new JPanel();
-        gridPanel.setLayout(new BorderLayout());
-        gridPanel.add(picLabel, BorderLayout.CENTER);
-
-        JScrollPane scrollFrame = new JScrollPane(gridPanel);
-        gridPanel.setAutoscrolls(true);
-        
-        jFrame.add(scrollFrame);
-        jFrame.setSize(1000,500); 
-        jFrame.setDefaultCloseOperation( JFrame.EXIT_ON_CLOSE );
     }
     protected Grid restoreGrid(){
         Grid grid = null;
@@ -114,6 +108,25 @@ public class Assignment1
     }
 
    
+
+    protected void InitializeGUI(Grid grid){
+        int imageSize = Math.max(grid.getWidth(), grid.getHeight()) * sizeTile;
+        image = new BufferedImage( imageSize, imageSize, BufferedImage.TYPE_INT_ARGB );
+        imageIcon = new ImageIcon( image );
+        jFrame = new JFrame( "Artificial Intel" );
+        
+        JLabel picLabel = new JLabel(new ImageIcon(image));
+        JPanel gridPanel = new JPanel();
+        gridPanel.setLayout(new BorderLayout());
+        gridPanel.add(picLabel, BorderLayout.CENTER);
+
+        JScrollPane scrollFrame = new JScrollPane(gridPanel);
+        gridPanel.setAutoscrolls(true);
+        
+        jFrame.add(scrollFrame);
+        jFrame.setSize(1000,500); 
+        jFrame.setDefaultCloseOperation( JFrame.EXIT_ON_CLOSE );
+    }
     private void paint(Grid grid)
     {
         Graphics graphics = image.getGraphics();
@@ -152,48 +165,62 @@ public class Assignment1
                 graphics.drawLine(x, y2, x, y);
             }
         }
-        
-        
-        Stack<Vertex> path = new Stack<Vertex>();
-        Vertex v; 
-        v = new Vertex(g.getStart().x,g.getStart().y); 
-        path.push(v);
-        v = new Vertex(3,6); 
-        path.push(v);
-        v = new Vertex(3,5); 
-        path.push(v);
-        v = new Vertex(3,4);
-        path.push(v);
-        v = new Vertex(3,3); 
-        path.push(v);
-        v = new Vertex(3,2); 
-        path.push(v);
-        paintPath(graphics, g, path); 
-        graphics.drawString(String.valueOf(grid.getStart().x + " " + grid.getStart().y), grid.getStart().x  * sizeTile + sizeTile/g.getWidth(), grid.getStart().y  * sizeTile);
-        
-
         graphics.setColor(Color.BLUE);
         graphics.drawLine(grid.getStart().x * sizeTile, grid.getStart().y * sizeTile, grid.getGoal().x * sizeTile, grid.getGoal().y * sizeTile);
         graphics.setColor(Color.GREEN);
         graphics.fillOval((grid.getStart().x * sizeTile) - (sizeTile/8), (grid.getStart().y * sizeTile)- (sizeTile/8), sizeTile/4, sizeTile/4);
         graphics.setColor(Color.RED);
-        graphics.fillOval((grid.getGoal().x * sizeTile) - (sizeTile/8), (grid.getGoal().y * sizeTile)- (sizeTile/8), sizeTile/4, sizeTile/4);       
+        graphics.fillOval((grid.getGoal().x * sizeTile) - (sizeTile/8), (grid.getGoal().y * sizeTile)- (sizeTile/8), sizeTile/4, sizeTile/4);      
+
+
+        graphics.setColor( Color.blue );
+        AStarTrace ast = new AStarTrace();
+        ast.doAStarTrace(g.getStart(), g.getGoal(), g, graphics, sizeTile);
+        
+   
         jFrame.pack();
         jFrame.setVisible(true);
     }
 
-    private void paintPath(Graphics g2, Grid g,  Stack<Vertex> path)
-    {
-        Vertex v1 = new Vertex(g.getGoal().x, g.getGoal().y);
-        g2.setColor(Color.RED);  
-        while(!path.empty())
-        {
-            g2.drawString(String.valueOf(v1.x + " " + v1.y), v1.x  * sizeTile + sizeTile/g.getWidth(), v1.y  * sizeTile);
-            Vertex v2 = path.pop();
-            g2.drawLine(v1.x * sizeTile, v1.y * sizeTile, v2.x * sizeTile, v2.y * sizeTile); 
-            g2.fillOval((v2.x * sizeTile) - (sizeTile/16), (v2.y * sizeTile)- (sizeTile/16), sizeTile/8, sizeTile/8);
-            
-            v1 = v2;
-        }
+    public static void Pop() {         //Needs access to singleton grid to pull cell data    
+        JFrame jFrame = new JFrame();
+        jFrame.setPreferredSize(new Dimension(250,200));
+        JPanel jPanel = new JPanel();
+        jFrame.add(jPanel);
+        jPanel.setLayout(new BorderLayout());
+        JTextPane jTextPane = new JTextPane();
+        //Loop through cell data and set text to 4 vertext information returned from Cell and Grid.cells[][] 
+        
+        jTextPane.setText("t");
+        jTextPane.setEditable(false);
+        jPanel.add(jTextPane, BorderLayout.CENTER);
+        jFrame.pack();
+        jFrame.setVisible(true);
     }
+
+    // private void paintPath(Graphics g2, Grid g,  Stack<Cell> path)
+    // {
+    //     g2.setColor(Color.white);  
+    //     Cell cell1;
+    //     Cell cell2;
+    //     try {
+    //         while(!path.empty())
+    //         {
+                
+    //             cell1 = path.pop();
+    //             g2.drawString(String.valueOf(cell1.x + " " + cell1.y), cell1.x  * sizeTile + sizeTile/g.getWidth(), cell1.y  * sizeTile);
+    //             cell2 = cell1;
+    //             g2.fillOval((cell2.x * sizeTile) - (sizeTile/16), (cell2.y * sizeTile)- (sizeTile/16), sizeTile/8, sizeTile/8);
+    //             cell1 = path.pop();
+    //             g2.drawLine(cell2.x * sizeTile, cell2.y * sizeTile, cell1.x * sizeTile, cell1.y * sizeTile); 
+                
+    //         }
+    //     } catch (NullPointerException e)
+    //     {
+    //         System.out.println(e);
+    //     }
+    // }
+
+    
+
 }

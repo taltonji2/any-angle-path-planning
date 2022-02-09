@@ -1,6 +1,8 @@
 package ArtificialIntel.Algo;
 import java.util.ArrayList;
 import java.util.PriorityQueue;
+import java.awt.*;
+import java.awt.Color;
 /*
 *       start       Node       target
 *         |----------|---------|
@@ -12,20 +14,22 @@ import java.util.PriorityQueue;
 import ArtificialIntel.Data.Cell;
 import ArtificialIntel.Data.Grid;
 
-public class AStar
-{
+public class AStarTrace {
     Cell start, goal;
     Grid grid;
     PriorityQueue<Cell> fringe = new PriorityQueue<Cell>(1, (Cell c1, Cell c2) -> Double.compare(c1.f, c2.f));
     ArrayList<Cell> closed = new ArrayList<Cell>();
-    
-    public boolean doAStar(Cell s, Cell g, Grid grid)
+
+    public boolean doAStarTrace(Cell s, Cell g, Grid grid, Graphics graphics, int sizeTile)
     {
+
         this.grid = grid;
         start = grid.getStart();
         goal = grid.getGoal();
         start.parent = start;
         s = start;
+        graphics.drawString(String.valueOf(s.x + " " + s.y), s.x  * sizeTile + sizeTile/grid.getWidth(), s.y  * sizeTile);
+        
         s.g = 0;
         s.neighbors.remove(start);
         System.out.println("Start: (" + start.getX() + ", " + start.getY() + ")");
@@ -36,6 +40,8 @@ public class AStar
         while (!fringe.isEmpty())
         {
             s = fringe.poll();
+            graphics.drawString(String.valueOf(s.x + " " + s.y), s.x  * sizeTile + sizeTile/grid.getWidth(), s.y  * sizeTile);
+            graphics.fillOval((s.x * sizeTile) - (sizeTile/16), (s.y * sizeTile)- (sizeTile/16), sizeTile/8, sizeTile/8);
             System.out.println("Visiting (" + s.getX() + ", " + s.getY() + ")");
             if (s.equals(goal))     //when on same vertex does not fire;
             {
@@ -141,3 +147,4 @@ public class AStar
     }
 
 }
+

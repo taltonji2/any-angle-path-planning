@@ -4,7 +4,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import javax.swing.JLabel;
 
-public class MyMouseListener extends MouseAdapter {
+/* public class MyMouseListener extends MouseAdapter {
    private ColorGrid colorGrid;
 
    public MyMouseListener(ColorGrid colorGrid) {
@@ -17,4 +17,4 @@ public class MyMouseListener extends MouseAdapter {
          colorGrid.labelPressed((JLabel)e.getSource());
       } 
    }
-}
+} */

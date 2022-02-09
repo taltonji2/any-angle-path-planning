@@ -2,6 +2,7 @@ package ArtificialIntel.Algo;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Stack;
 
 import ArtificialIntel.Data.Cell;
 import ArtificialIntel.Data.Grid;
@@ -115,5 +116,41 @@ public class Graph {
             }
         }
         return false;
+    }
+
+    public Stack<Cell> BFSStack(Cell start, Cell goal)
+    {
+        // Mark all the vertices as not visited
+        clear();
+    
+        // Create a queue for BFS
+        List<Cell> queue = new ArrayList<Cell>();  
+        Stack<Cell> stack = new Stack<Cell>();
+        // Mark the current node as visited and enqueue it
+        start.visited = true;
+        stack.push(start);
+        queue.add(start);
+    
+        while(!queue.isEmpty())
+        {
+            // Dequeue a vertex from queue and print it
+            start = queue.get(0);
+            queue.remove(0);
+    
+            // Get all adjacent vertices of the dequeued
+            // vertex s. If a adjacent has not been visited,
+            // then mark it visited and enqueue it
+            for(Cell c : start.getNeighbors()){
+                if(c.visited == false){
+                    
+                    c.visited = true;
+                    stack.push(start);
+                    if(c.equals(goal))
+                        return stack;
+                    queue.add(c);
+                }
+            }
+        }
+        return null;
     }
 }
