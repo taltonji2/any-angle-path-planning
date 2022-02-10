@@ -38,7 +38,7 @@ public class CreateInput {
         {
             try{
                 String currentDirectory = System.getProperty("user.dir"); //pc
-                String fileName = currentDirectory + "\\" + "resources\\" + "grid" + i + ".txt"; //pc
+                String fileName = currentDirectory + "/" + "resources/" + "grid" + i + ".txt"; //pc
                 //String fileName = "/Users/timothy/Any-Angle-Path-Planning/resources/" + "grid" + i + ".txt"; //mac
                 File myObj = new File(fileName);
                 Grid grid = createGrid ();
