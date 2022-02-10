@@ -22,7 +22,7 @@ public class AStarTrace {
 
     public boolean doAStarTrace(Cell s, Cell g, Grid grid, Graphics graphics, int sizeTile)
     {
-
+        graphics.setColor(Color.BLUE);
         this.grid = grid;
         start = grid.getStart();
         goal = grid.getGoal();

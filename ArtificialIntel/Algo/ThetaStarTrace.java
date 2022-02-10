@@ -1,27 +1,33 @@
 package ArtificialIntel.Algo;
 
+
 import java.util.ArrayList;
-import java.util.PriorityQueue;
 import java.awt.*;
+import java.util.PriorityQueue;
+
 import ArtificialIntel.Data.Cell;
 import ArtificialIntel.Data.Grid;
 
-public class ThetaStar {
+public class ThetaStarTrace {
+   
+
     Cell start, goal;
     Grid grid;
     PriorityQueue<Cell> fringe = new PriorityQueue<Cell>(1, (Cell c1, Cell c2) -> Double.compare(c1.f, c2.f));
     ArrayList<Cell> closed = new ArrayList<Cell>();
     
-    public boolean doThetaStar(Cell s, Cell g, Grid grid)
+    public boolean doThetaStar(Cell s, Cell g, Grid grid,  Graphics graphics, int sizeTile)
     {
-        
+        graphics.setColor(Color.BLUE);
         this.grid = grid;
         start = grid.getStart();
         goal = grid.getGoal();
         start.parent = start;
         s = start;
         s.g = 0;
-      
+        graphics.drawString(String.valueOf(s.x + " " + s.y), s.x  * sizeTile + sizeTile/grid.getWidth(), s.y  * sizeTile);
+        s.neighbors.remove(start);
+        s.neighbors.remove(start);
         System.out.println("Start: (" + start.getX() + ", " + start.getY() + ")");
         System.out.println("Goal: (" + goal.getX() + ", " + goal.getY() + ")");
         fringe.add(s);
@@ -30,7 +36,7 @@ public class ThetaStar {
         while (!fringe.isEmpty())
         {
             s = fringe.poll();
-           
+            graphics.drawString(String.valueOf(s.x + " " + s.y), s.x  * sizeTile + sizeTile/grid.getWidth(), s.y  * sizeTile);
             System.out.println("Visiting (" + s.getX() + ", " + s.getY() + ")");
             if (s.equals(goal))     //when on same vertex does not fire;
             {
@@ -229,3 +235,5 @@ public class ThetaStar {
         
     }
 }
+
+

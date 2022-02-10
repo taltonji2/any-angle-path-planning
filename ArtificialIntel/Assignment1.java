@@ -12,14 +12,13 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextPane;
-
 import ArtificialIntel.Data.Cell;
 import ArtificialIntel.Data.Grid;
 import ArtificialIntel.Data.GridStorage;
 import ArtificialIntel.Algo.AStar;
 import ArtificialIntel.Algo.AStarTrace;
 import ArtificialIntel.Algo.Graph;
-import ArtificialIntel.Algo.ThetaStar;
+import ArtificialIntel.Algo.ThetaStarTrace;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
@@ -43,8 +42,9 @@ public class Assignment1
     {
 
         sizeTile = 45;
+        
         //sizeTile = getInt( "How many pixels per square? [1 - 100]?" );
-        //algo = getAlgo( "Which operation?   \'0\' A*     \'1\' Theta*" );
+        
     }
     
     /**
@@ -57,23 +57,10 @@ public class Assignment1
         Assignment1.g = assignment1.restoreGrid();
         Graph graph = new Graph();
         graph.Load(g);
-        System.out.println(graph.BFS(g.getStart(), g.getGoal()));
-      
+        performAlgo( "Which operation?   \'0\' A*     \'1\' Theta*", graph, assignment1 );
         //A*
-        if (graph.BFS(g.getStart(), g.getGoal()))
-        {
-            assignment1.InitializeGUI(g);
-            assignment1.paint(g);
-            assignment1.view();
-            assignment1.doThetaStar();
-        }
-        //Theta*
-        if (graph.BFS(g.getStart(), g.getGoal()))
-        {
-            assignment1.InitializeGUI(g);
-            assignment1.paint(g);
-            assignment1.view();
-        }
+       
+
     }
     private void view() { jFrame.setVisible( true ); }
 
@@ -83,11 +70,6 @@ public class Assignment1
         as.doAStar(g.getStart(), g.getGoal(), g);
     }
     
-    public void doThetaStar()
-    {
-        ThetaStar as = new ThetaStar();
-        as.doThetaStar(g.getStart(), g.getGoal(), g);
-    }
     protected Grid restoreGrid(){
         Grid grid = null;
         try{
@@ -105,10 +87,41 @@ public class Assignment1
         String intString = JOptionPane.showInputDialog( question );
         return Integer.parseInt( intString );
     }
-    private int getAlgo( String question )
+    private static void performAlgo( String question, Graph graph, Assignment1 assignment1 )
     {
         String intString = JOptionPane.showInputDialog( question );
-        return Integer.parseInt( intString );
+        //A*
+        if (intString.equals("0"))
+        {
+            if (graph.BFS(g.getStart(), g.getGoal()))
+            {
+           
+            Image image = assignment1.InitializeGUI(g);
+            AStarTrace ast = new AStarTrace();
+            assignment1.paint(g);
+            ast.doAStarTrace(g.getStart(), g.getGoal(), g, image.getGraphics(), sizeTile);
+            assignment1.view();
+            
+            } else
+            {
+                System.out.println("No possible path");
+            }
+        }
+        if (intString.equals("1"))
+        {
+        //Theta*
+            if (graph.BFS(g.getStart(), g.getGoal()))
+            {
+                Image image = assignment1.InitializeGUI(g);
+                ThetaStarTrace tst = new ThetaStarTrace();
+                assignment1.paint(g);
+                tst.doThetaStar(g.getStart(), g.getGoal(), g, image.getGraphics(), sizeTile);
+                assignment1.view();
+            } else
+            {
+                System.out.println("No possible path");
+            }
+        }
     }
     private int getText( String question )
     {
@@ -118,7 +131,7 @@ public class Assignment1
 
    
 
-    protected void InitializeGUI(Grid grid){
+    protected Image InitializeGUI(Grid grid){
         int imageSize = Math.max(grid.getWidth(), grid.getHeight()) * sizeTile;
         image = new BufferedImage( imageSize, imageSize, BufferedImage.TYPE_INT_ARGB );
         imageIcon = new ImageIcon( image );
@@ -140,6 +153,7 @@ public class Assignment1
         jFrame.add(scrollFrame);
         jFrame.setPreferredSize(new Dimension (600,600)); 
         jFrame.setDefaultCloseOperation( JFrame.EXIT_ON_CLOSE );
+        return image;
     }
     private void paint(Grid grid)
     {
@@ -189,7 +203,7 @@ public class Assignment1
 
         graphics.setColor( Color.blue );
         AStarTrace ast = new AStarTrace();
-        ast.doAStarTrace(g.getStart(), g.getGoal(), g, graphics, sizeTile);
+       
         
    
         jFrame.pack();
