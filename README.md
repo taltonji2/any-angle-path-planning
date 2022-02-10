@@ -12,6 +12,8 @@ Compile ArtificalIntel and run Assignment1.java
 
 UPON RUNNING:
 A prompt asking for either 1 or 0 will appear to run A* or Theta* respectively
+A window with a grid will then appear, clicking the grid will result in the running of the algorithm
+and resizing the window allows for the path to appear. 
 To run another algorithm you must rerun Assignment1.java and choose the appropriate option.
 The algo will run and then a visualization of the graph should appear.
 It will not focus on the start or goal so you will have to scroll to the respective vertices.

@@ -88,13 +88,15 @@ public class Assignment1
             Image image = pair.getKey();
             JPanel jPanel = pair.getValue();
             AStarTrace ast = new AStarTrace();
-            assignment1.paint(g);
+            
             jPanel.addMouseListener(new MouseAdapter() { //need jpanel for MouseListener
                 @Override
                 public void mouseReleased(MouseEvent e) {
                     PopUp.Pop(ast.doAStarTrace(g.getStart(), g.getGoal(), g, image.getGraphics(), sizeTile));
                 }
             });
+            assignment1.paint(g);
+            jPanel.repaint();
             assignment1.view();
             
             } else
@@ -119,6 +121,8 @@ public class Assignment1
                         PopUp.Pop(tst.doThetaStarTrace(g.getStart(), g.getGoal(), g, image.getGraphics(), sizeTile));
                     }
                 });
+                assignment1.paint(g);
+                jPanel.repaint();
                 assignment1.view();
             } else
             {
