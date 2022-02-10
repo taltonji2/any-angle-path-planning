@@ -5,6 +5,8 @@ import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
+
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -15,15 +17,14 @@ import javax.swing.JTextPane;
 import ArtificialIntel.Data.Cell;
 import ArtificialIntel.Data.Grid;
 import ArtificialIntel.Data.GridStorage;
+import ArtificialIntel.Data.Pair;
+import ArtificialIntel.GUI.PopUp;
 import ArtificialIntel.Algo.AStar;
 import ArtificialIntel.Algo.AStarTrace;
 import ArtificialIntel.Algo.Graph;
 import ArtificialIntel.Algo.ThetaStarTrace;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-
-
-
 
 /**
  *
@@ -50,17 +51,15 @@ public class Assignment1
     /**
      * @param args the command line arguments: Unused.
      */
+
     public static void main(String[] args) 
     {
-
         Assignment1 assignment1 = new Assignment1();
         Assignment1.g = assignment1.restoreGrid();
         Graph graph = new Graph();
         graph.Load(g);
-        performAlgo( "Which operation?   \'0\' A*     \'1\' Theta*", graph, assignment1 );
+        performAlgo( "Select Algo                0: A*     1: Theta*", graph, assignment1 );
         //A*
-       
-
     }
     private void view() { jFrame.setVisible( true ); }
 
@@ -82,11 +81,6 @@ public class Assignment1
         return grid;
     }
 
-    private int getInt( String question )
-    {
-        String intString = JOptionPane.showInputDialog( question );
-        return Integer.parseInt( intString );
-    }
     private static void performAlgo( String question, Graph graph, Assignment1 assignment1 )
     {
         String intString = JOptionPane.showInputDialog( question );
@@ -95,11 +89,17 @@ public class Assignment1
         {
             if (graph.BFS(g.getStart(), g.getGoal()))
             {
-           
-            Image image = assignment1.InitializeGUI(g);
+            Pair<Image, JPanel> pair = assignment1.InitializeGUI(g);
+            Image image = pair.getKey();
+            JPanel jPanel = pair.getValue();
             AStarTrace ast = new AStarTrace();
             assignment1.paint(g);
-            ast.doAStarTrace(g.getStart(), g.getGoal(), g, image.getGraphics(), sizeTile);
+            jPanel.addMouseListener(new MouseAdapter() { //need jpanel for MouseListener
+                @Override
+                public void mouseReleased(MouseEvent e) {
+                    PopUp.Pop(ast.doAStarTrace(g.getStart(), g.getGoal(), g, image.getGraphics(), sizeTile));
+                }
+            });
             assignment1.view();
             
             } else
@@ -112,10 +112,17 @@ public class Assignment1
         //Theta*
             if (graph.BFS(g.getStart(), g.getGoal()))
             {
-                Image image = assignment1.InitializeGUI(g);
+                Pair<Image, JPanel> pair = assignment1.InitializeGUI(g);
+                Image image = pair.getKey();
+                JPanel jPanel = pair.getValue();
                 ThetaStarTrace tst = new ThetaStarTrace();
                 assignment1.paint(g);
-                tst.doThetaStar(g.getStart(), g.getGoal(), g, image.getGraphics(), sizeTile);
+                jPanel.addMouseListener(new MouseAdapter() { //need jpanel for MouseListener
+                    @Override
+                    public void mouseReleased(MouseEvent e) {
+                        PopUp.Pop(tst.doThetaStarTrace(g.getStart(), g.getGoal(), g, image.getGraphics(), sizeTile));
+                    }
+                });
                 assignment1.view();
             } else
             {
@@ -123,15 +130,9 @@ public class Assignment1
             }
         }
     }
-    private int getText( String question )
-    {
-        String intString = JOptionPane.showInputDialog( question );
-        return Integer.parseInt( intString );
-    }
 
-   
-
-    protected Image InitializeGUI(Grid grid){
+    protected Pair<Image, JPanel> InitializeGUI(Grid grid){
+        Pair<Image, JPanel> pair = null;
         int imageSize = Math.max(grid.getWidth(), grid.getHeight()) * sizeTile;
         image = new BufferedImage( imageSize, imageSize, BufferedImage.TYPE_INT_ARGB );
         imageIcon = new ImageIcon( image );
@@ -144,16 +145,12 @@ public class Assignment1
 
         JScrollPane scrollFrame = new JScrollPane(gridPanel);
         gridPanel.setAutoscrolls(true);
-        gridPanel.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseReleased(MouseEvent e) {
-                Pop();
-            }
-        });
+        
         jFrame.add(scrollFrame);
         jFrame.setPreferredSize(new Dimension (600,600)); 
         jFrame.setDefaultCloseOperation( JFrame.EXIT_ON_CLOSE );
-        return image;
+        pair = new Pair<Image, JPanel>(image,gridPanel);
+        return pair;
     }
     private void paint(Grid grid)
     {
@@ -199,29 +196,7 @@ public class Assignment1
         graphics.fillOval((grid.getStart().x * sizeTile) - (sizeTile/8), (grid.getStart().y * sizeTile)- (sizeTile/8), sizeTile/4, sizeTile/4);
         graphics.setColor(Color.RED);
         graphics.fillOval((grid.getGoal().x * sizeTile) - (sizeTile/8), (grid.getGoal().y * sizeTile)- (sizeTile/8), sizeTile/4, sizeTile/4);      
-
-
         graphics.setColor( Color.blue );
-        AStarTrace ast = new AStarTrace();
-       
-        
-   
-        jFrame.pack();
-        jFrame.setVisible(true);
-    }
-
-    public static void Pop() {         //Needs access to singleton grid to pull cell data    
-        JFrame jFrame = new JFrame();
-        jFrame.setPreferredSize(new Dimension(250,200));
-        JPanel jPanel = new JPanel();
-        jFrame.add(jPanel);
-        jPanel.setLayout(new BorderLayout());
-        JTextPane jTextPane = new JTextPane();
-        //Loop through cell data and set text to 4 vertext information returned from Cell and Grid.cells[][] 
-        
-        jTextPane.setText("t");
-        jTextPane.setEditable(false);
-        jPanel.add(jTextPane, BorderLayout.CENTER);
         jFrame.pack();
         jFrame.setVisible(true);
     }

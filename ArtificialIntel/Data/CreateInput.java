@@ -3,7 +3,6 @@ package ArtificialIntel.Data;
 import java.io.File;  
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 
 

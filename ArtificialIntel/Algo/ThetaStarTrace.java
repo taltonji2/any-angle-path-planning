@@ -15,8 +15,9 @@ public class ThetaStarTrace {
     Grid grid;
     PriorityQueue<Cell> fringe = new PriorityQueue<Cell>(1, (Cell c1, Cell c2) -> Double.compare(c1.f, c2.f));
     ArrayList<Cell> closed = new ArrayList<Cell>();
+    ArrayList<Cell> path = new ArrayList<Cell>();
     
-    public boolean doThetaStar(Cell s, Cell g, Grid grid,  Graphics graphics, int sizeTile)
+    public ArrayList<Cell> doThetaStarTrace(Cell s, Cell g, Grid grid,  Graphics graphics, int sizeTile)
     {
         graphics.setColor(Color.BLUE);
         this.grid = grid;
@@ -36,12 +37,13 @@ public class ThetaStarTrace {
         while (!fringe.isEmpty())
         {
             s = fringe.poll();
+            path.add(s);
             graphics.drawString(String.valueOf(s.x + " " + s.y), s.x  * sizeTile + sizeTile/grid.getWidth(), s.y  * sizeTile);
             System.out.println("Visiting (" + s.getX() + ", " + s.getY() + ")");
             if (s.equals(goal))     //when on same vertex does not fire;
             {
-                System.out.println("Found it!");
-                return true;
+                System.out.println("Found Goal");
+                return path;
             }
             System.out.println("Goal not found yet");
             closed.add(s);
@@ -67,7 +69,7 @@ public class ThetaStarTrace {
             }
         }
         System.out.println("Goal not reached");
-        return false;
+        return path;
     }
 
     public void updateVertex(Cell s, Cell c)

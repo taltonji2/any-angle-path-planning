@@ -3,6 +3,7 @@ import java.util.ArrayList;
 import java.util.PriorityQueue;
 import java.awt.*;
 import java.awt.Color;
+import javax.swing.JPanel;
 /*
 *       start       Node       target
 *         |----------|---------|
@@ -19,8 +20,9 @@ public class AStarTrace {
     Grid grid;
     PriorityQueue<Cell> fringe = new PriorityQueue<Cell>(1, (Cell c1, Cell c2) -> Double.compare(c1.f, c2.f));
     ArrayList<Cell> closed = new ArrayList<Cell>();
+    ArrayList<Cell> path = new ArrayList<Cell>();
 
-    public boolean doAStarTrace(Cell s, Cell g, Grid grid, Graphics graphics, int sizeTile)
+    public ArrayList<Cell> doAStarTrace(Cell s, Cell g, Grid grid, Graphics graphics, int sizeTile)
     {
         graphics.setColor(Color.BLUE);
         this.grid = grid;
@@ -40,15 +42,16 @@ public class AStarTrace {
         while (!fringe.isEmpty())
         {
             s = fringe.poll();
+            path.add(s);
             graphics.drawString(String.valueOf(s.x + " " + s.y), s.x  * sizeTile + sizeTile/grid.getWidth(), s.y  * sizeTile);
             graphics.fillOval((s.x * sizeTile) - (sizeTile/16), (s.y * sizeTile)- (sizeTile/16), sizeTile/8, sizeTile/8);
             System.out.println("Visiting (" + s.getX() + ", " + s.getY() + ")");
             if (s.equals(goal))     //when on same vertex does not fire;
             {
-                System.out.println("Found it!");
-                return true;
+                System.out.println("Found Goal");
+                return path; 
             }
-            System.out.println("Goal not found yet");
+            System.out.println("Goal not found");
             closed.add(s);
             System.out.println(s.neighbors.size());
             
@@ -72,7 +75,7 @@ public class AStarTrace {
             }
         }
         System.out.println("Goal not reached");
-        return false;
+        return path;
     }
 
     public void updateVertex(Cell s, Cell c)
