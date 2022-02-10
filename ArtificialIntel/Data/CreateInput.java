@@ -46,9 +46,7 @@ public class CreateInput {
                 if (myObj.createNewFile())
                 {
                     System.out.println("File Created: " + myObj.getName());
-                } else {
-                    System.out.println("File already exists.");
-                }
+                } 
             } catch (IOException e) {
                 System.out.println("An error occured.");
                 e.printStackTrace();

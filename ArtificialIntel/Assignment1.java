@@ -5,15 +5,12 @@ import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
-import java.util.ArrayList;
-
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.JTextPane;
 import ArtificialIntel.Data.Cell;
 import ArtificialIntel.Data.Grid;
 import ArtificialIntel.Data.GridStorage;
@@ -41,11 +38,8 @@ public class Assignment1
 
     Assignment1()
     {
-
         sizeTile = 45;
-        
         //sizeTile = getInt( "How many pixels per square? [1 - 100]?" );
-        
     }
     
     /**
@@ -87,7 +81,8 @@ public class Assignment1
         //A*
         if (intString.equals("0"))
         {
-            if (graph.BFS(g.getStart(), g.getGoal()))
+            boolean b = graph.BFS(g.getStart(), g.getGoal());
+            if (b)
             {
             Pair<Image, JPanel> pair = assignment1.InitializeGUI(g);
             Image image = pair.getKey();
@@ -110,7 +105,8 @@ public class Assignment1
         if (intString.equals("1"))
         {
         //Theta*
-            if (graph.BFS(g.getStart(), g.getGoal()))
+            boolean b = graph.BFS(g.getStart(), g.getGoal());
+            if (b)
             {
                 Pair<Image, JPanel> pair = assignment1.InitializeGUI(g);
                 Image image = pair.getKey();
