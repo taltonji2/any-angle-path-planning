@@ -1,4 +1,4 @@
-package ArtificialIntel.Data;
+package src;
 
 import java.io.File;  
 import java.io.FileWriter;
@@ -11,19 +11,16 @@ import java.util.concurrent.ThreadLocalRandom;
 public class CreateInput {
     int numOfGridFiles = 1;
     int getNumOfGridFiles(){ return this.numOfGridFiles;}
-    static int columns = 50; //x
-    static int rows = 100; //y
+    static int columns = 8; //x
+    static int rows = 4; //y
     int numOfCells = rows * columns;
     double numOfCellsBlocked = numOfCells * .10; //10% blocked
     
     //check if has path with algo
     //if no valid path then regenerate random bocked.
-
     public static void main(String[] args) {
-        CreateInput createInput = new CreateInput(rows,columns);
-        
+        CreateInput createInput = new CreateInput(rows,columns);  
     }
-
     CreateInput(int rows, int columns) 
     {
         this.rows = rows;
@@ -38,7 +35,7 @@ public class CreateInput {
         {
             try{
                 String currentDirectory = System.getProperty("user.dir"); //pc
-                String fileName = currentDirectory + "\\" + "resources\\" + "grid" + i + ".txt"; //pc
+                String fileName = currentDirectory + "/" + "grid" + i + ".txt"; //pc
                 //String fileName = "/Users/timothy/Any-Angle-Path-Planning/resources/" + "grid" + i + ".txt"; //mac
                 File myObj = new File(fileName);
                 Grid grid = createGrid ();
@@ -91,17 +88,17 @@ public class CreateInput {
         while(count < numOfCellsBlocked)
         {
             Vertex v = RandomPoint(columns, rows);
-            if(v.y == rows + 1)
+            if(v.getY() == rows + 1)
             {
                 continue;
             }
-            if(v.x == columns + 1)
+            if(v.getX() == columns + 1)
             {
                 continue;
             }
-            if(grid.cells[v.x-1][v.y-1].bFree == true)
+            if(grid.cells[v.getX()-1][v.getY()-1].bFree == true)
             {
-                grid.cells[v.x-1][v.y-1].bFree = false;
+                grid.cells[v.getX()-1][v.getY()-1].bFree = false;
                 count++; 
             } 
         }
@@ -113,16 +110,16 @@ public class CreateInput {
         try {
             FileWriter myWriter = new FileWriter(filename);
             Vertex v = RandomPoint(columns, rows);
-            myWriter.write(v.x + " " + v.y + "\n");
+            myWriter.write(v.getX() + " " + v.getY() + "\n");
             v = RandomPoint(columns, rows);
-            myWriter.write(v.x + " " + v.y + "\n");
+            myWriter.write(v.getX() + " " + v.getY() + "\n");
             myWriter.write(columns + " " + rows + "\n");
             for(int i = 0; i < grid.cells.length; i++)
             {
                 for(int j = 0; j < grid.cells[i].length; j++)
                 {
                     int booleanInt = grid.cells[i][j].bFree ? 0 : 1;
-                    myWriter.write(grid.cells[i][j].x + " " + grid.cells[i][j].y + " " + booleanInt + "\n");
+                    myWriter.write(grid.cells[i][j].getX() + " " + grid.cells[i][j].getY() + " " + booleanInt + "\n");
                 }
             }
             myWriter.close();
@@ -132,7 +129,4 @@ public class CreateInput {
             e.printStackTrace();
           }
     }
-
-
-
 }
