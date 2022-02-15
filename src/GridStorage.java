@@ -1,4 +1,5 @@
-package ArtificialIntel.Data;
+package src;
+
 import java.io.*;
 import java.util.ArrayList;
 

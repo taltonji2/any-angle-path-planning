@@ -1,3 +1,5 @@
+package src;
+
 /*
  * Copyright (c) 2010, 2015, Oracle and/or its affiliates. All rights reserved.
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
@@ -24,9 +26,6 @@
  */
 
 //package javafx.util;
-package ArtificialIntel.Data;
-
-
 import java.io.Serializable;
 //import javafx.beans.NamedArg;
 

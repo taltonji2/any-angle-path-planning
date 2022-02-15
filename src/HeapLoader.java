@@ -1,7 +1,4 @@
-package ArtificialIntel.Algo;
-
-import ArtificialIntel.Data.Cell;
-import ArtificialIntel.Data.Grid;
+package src;
 
 public class HeapLoader {
  
@@ -26,43 +23,40 @@ public class HeapLoader {
         MinHeap heap = new MinHeap(arrayHeapElements);
         return heap;
     }
-
+    //Create 8 loadSuccessors for propensity Directionals
     public static void LoadSuccessors(MinHeap heap, Grid grid, Cell current){
         Cell cellStart = grid.getStart();
-
-        Cell cellNorth = grid.north(current);
+        Cell cellNorth = grid.getNorth(current);
         if(cellNorth != null && cellNorth !=cellStart)
             heap.insert(cellNorth);
 
-        Cell cellSouth = grid.south(current);
+        Cell cellSouth = grid.getSouth(current);
         if(cellSouth != null && cellSouth !=cellStart)
             heap.insert(cellSouth);
             
-        Cell cellEast = grid.east(current);
+        Cell cellEast = grid.getEast(current);
         if(cellEast != null && cellEast !=cellStart)
             heap.insert(cellEast);
 
-        Cell cellWest = grid.west(current);
+        Cell cellWest = grid.getWest(current);
         if(cellWest != null && cellWest !=cellStart)
             heap.insert(cellWest);
 
-        Cell cellNorthEast = grid.northEast(current);
+        Cell cellNorthEast = grid.getNorthEast(current);
         if(cellNorthEast != null && cellNorthEast !=cellStart)
             heap.insert(cellNorthEast);
             
-        Cell cellNorthWest = grid.northWest(current);
-        if(cellNorthWest != null && cellNorthWest !=cellStart)
+        Cell cellNorthWest = grid.getNorthWest(current);
+        if(cellNorthWest != null && cellNorthWest != cellStart)
             heap.insert(cellNorthWest);
 
-        Cell cellSouthEast = grid.southEast(current);
-        if(cellSouthEast != null && cellSouthEast !=cellStart)
+        Cell cellSouthEast = grid.getSouthEast(current);
+        if(cellSouthEast != null && cellSouthEast != cellStart)
             heap.insert(cellSouthEast);
 
-        Cell cellSouthWest = grid.southWest(current);
+        Cell cellSouthWest = grid.getSouthWest(current);
         if(cellSouthWest != null && cellSouthWest !=cellStart)
             heap.insert(cellSouthWest);
     }
-
 }
 
-//Create 8 loadSuccessors for propensity Directionals

@@ -1,6 +1,4 @@
-package ArtificialIntel.Algo;
-
-import ArtificialIntel.Data.Grid;
+package src;
 
 class  MinHeap {
     IBinaryHeapElement [] heap;
@@ -182,7 +180,6 @@ class  MinHeap {
         IBinaryHeapElement popped = heap[FRONT];
         heap[FRONT] = heap[size--];
         minHeapify(FRONT);
- 
         return popped;
     }
 

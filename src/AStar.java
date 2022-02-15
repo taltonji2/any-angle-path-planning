@@ -1,62 +1,54 @@
-package ArtificialIntel.Algo;
+package src;
+
 import java.util.ArrayList;
 import java.util.PriorityQueue;
 /*
-*       start       Node       target
+*       start       Node       goal
 *         |----------|---------|
-*              g(Node)      h(Node)
+*             g(n)      h(n)
 *         |--------------------|
 *                  f() 
 */
-
-import ArtificialIntel.Data.Cell;
-import ArtificialIntel.Data.Grid;
-
 public class AStar
 {
     Cell start, goal;
-    Grid grid;
-    PriorityQueue<Cell> fringe = new PriorityQueue<Cell>(1, (Cell c1, Cell c2) -> Double.compare(c1.f, c2.f));
+    PriorityQueue<Cell> fringe = new PriorityQueue<Cell>(1, (Cell c1, Cell c2) -> Double.compare(c1.getFCost(), c2.getFCost()));
     ArrayList<Cell> closed = new ArrayList<Cell>();
     
-    public boolean doAStar(Cell s, Cell g, Grid grid)
+    public void doAStar(Grid grid)
     {
-        this.grid = grid;
         start = grid.getStart();
         goal = grid.getGoal();
-        start.parent = start;
-        s = start;
-        s.g = 0;
-        s.neighbors.remove(start);
+        start.setParent(start);
+        start.setGCost(0);
+        start.setHCost(h(start));
+        //start.neighbors.remove(start);          //this 
+        start.getNeighbors().remove(start);     //to this 
         System.out.println("Start: (" + start.getX() + ", " + start.getY() + ")");
         System.out.println("Goal: (" + goal.getX() + ", " + goal.getY() + ")");
-        fringe.add(s);
-        s.h = h(s);
-        s.f = s.g + s.h;
+        fringe.add(start);
         while (!fringe.isEmpty())
         {
-            s = fringe.poll();
-            System.out.println("Visiting (" + s.getX() + ", " + s.getY() + ")");
-            if (s.equals(goal))     //when on same vertex does not fire;
+            start = fringe.poll();
+            System.out.println("Visiting (" + start.getX() + ", " + start.getY() + ")");
+            if (start.equals(goal))     //when on same vertex does not fire;
             {
                 System.out.println("Found it!");
-                return true;
             }
             System.out.println("Goal not found yet");
-            closed.add(s);
-            System.out.println(s.neighbors.size());
-            
-            for (Cell c : s.neighbors) 
+            closed.add(start);
+            System.out.println(start.getNeighbors().size());
+            for (Cell c : start.getNeighbors()) 
             {
-                if (c.IsFree())
+                if (c.getIsCellBlocked())
                 {
                     System.out.println("Visiting neighbor (" + c.getX() + ", " + c.getY() + ")");
                     if (!fringe.contains(c))
                     {
-                        c.g = Integer.MAX_VALUE;
-                        c.parent = null;
+                        c.setGCost(Integer.MAX_VALUE);
+                        c.setParent(null);
                     }
-                    updateVertex(s, c);
+                    updateVertex(start, c);
                     System.out.print("Fringe at end of iteration: ");
                     for (Cell ce : fringe) {
                         System.out.print("(" + ce.getX() + ", " + ce.getY() + ") ");
@@ -66,21 +58,19 @@ public class AStar
             }
         }
         System.out.println("Goal not reached");
-        return false;
     }
 
     public void updateVertex(Cell s, Cell c)
     {
-        System.out.println(s.g);
+        System.out.println(s.getGCost());
         System.out.println(c(s, c));
-        System.out.println(c.g);
-        if (s.g + c(s, c) < c.g)
+        System.out.println(c.getGCost());
+        if (s.getGCost() + c(s, c) < c.getGCost())
         {
             fringe.remove(c);
-            c.g = s.g + c(s, c);
-            c.parent = s;
-            c.h = h(c);
-            c.f = c.g + c.h;
+            c.setGCost(s.getGCost() + c(s, c));
+            c.setParent(s);
+            c.setHCost(h(c)); 
             fringe.add(c);
             System.out.println("Added " + c.getX() + ", " + c.getY());
         }
@@ -97,11 +87,11 @@ public class AStar
         {
             return 1;
         }
-        if (c1.getX() == c2.getX() && c1.getY() < c2.getY()) //c1 is under c2
+        if (c1.getX() == c2.getX() && c1.getY() < c2.getY()) //c1 is above c2
         {
             return 1;
         }
-        if (c1.getX() == c2.getX() && c1.getY() > c2.getY()) //c1 is above c2
+        if (c1.getX() == c2.getX() && c1.getY() > c2.getY()) //c1 is under c2
         {
             return 1;
         }
@@ -118,9 +108,9 @@ public class AStar
         Cell start = Grid.Instance().getStart();
         if (cell.equals(start))
         {
-            start.setCost(0);
+            start.setGCost(0);
         }
-        return cell.g;
+        return cell.getGCost();
     }
 
     public static double h(Cell c)
