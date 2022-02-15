@@ -1,4 +1,4 @@
-package src;
+
 
 import java.util.ArrayList;
 
@@ -38,6 +38,10 @@ public class Cell extends Vertex implements IBinaryHeapElement{
     public double getFCost()
     {
         return f;
+    }
+    public void setFCost(double cost)
+    {
+        f = cost;
     }
     public void visit()
     {

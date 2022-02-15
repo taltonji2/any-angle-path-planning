@@ -1,4 +1,4 @@
-package src;
+
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,10 +11,16 @@ public class BFS {
         queue.add(current);
         while(!queue.isEmpty())
         {
-            System.out.println(current.getX() + " " + current.getY());
+            //System.out.print("Queue at start iteration: ");
+            for (Cell cell : queue) {
+                //System.out.print("(" + cell.getX() + " " + cell.getY() + ")");
+            }
+            //System.out.println();
             current = queue.get(0);
+            //System.out.println("Visiting: " + current.getX() + " " + current.getY());
             for(Cell c : current.getNeighbors()){
                 if(c.isVisited() == false){
+                    //System.out.println("Visiting neighbor: " + c.getX() + " " + c.getY());
                     if(c.equals(grid.getGoal()))
                     {
                         queue.add(c);
@@ -25,6 +31,11 @@ public class BFS {
                 }
             }
             queue.remove(0);
+            //System.out.print("Queue after iteration: ");
+            for (Cell cell : queue) {
+                //System.out.print("(" + cell.getX() + " " + cell.getY() + ")");
+            }
+            //System.out.println();
         }
         return false;
     }
