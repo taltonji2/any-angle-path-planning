@@ -44,6 +44,10 @@ public class Cell extends Vertex implements Comparable<Cell>{
     {
         return f;
     }
+    public void setFCost(double cost)
+    {
+        f = cost;
+    }
     public void visit()
     {
         visited = true;

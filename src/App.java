@@ -1,3 +1,8 @@
+<<<<<<< HEAD
+=======
+
+
+>>>>>>> cc6b5e9cdf01138176b2ef94cf19148063f06662
 public class App {
     public static void main(String[] args) throws Exception {
         
@@ -7,12 +12,13 @@ public class App {
         grid.LoadAdj();
         
         DisplayGrid displayGrid = new DisplayGrid(grid);
-        
         BFS bfs = new BFS();
         AStar a = new AStar();
+        ThetaStar t = new ThetaStar();
         if(bfs.doBFS(grid))
         {
-            a.doAStar(grid);
+            //a.doAStar(grid);
+            t.doThetaStar(grid);
         }
     }
 }
