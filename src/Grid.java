@@ -1,4 +1,4 @@
-package src;
+
 
 public class Grid{
     private static Grid s_THIS;

@@ -1,7 +1,4 @@
-package src;
-
 import java.io.*;
-import java.util.ArrayList;
 
 class GridFileFormatException extends Exception{
     String message;

@@ -1,5 +1,3 @@
-package src;
-
 import java.util.ArrayList;
 import java.util.List;
 public class BFS { 
@@ -11,7 +9,7 @@ public class BFS {
         queue.add(current);
         while(!queue.isEmpty())
         {
-            System.out.println(current.getX() + " " + current.getY());
+            //System.out.println(current.getX() + " " + current.getY());
             current = queue.get(0);
             for(Cell c : current.getNeighbors()){
                 if(c.isVisited() == false){

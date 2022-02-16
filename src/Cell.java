@@ -1,15 +1,20 @@
-package src;
+
 
 import java.util.ArrayList;
 
-public class Cell extends Vertex implements IBinaryHeapElement{ 
+public class Cell extends Vertex implements Comparable<Cell>{ 
     private Cell parent;
-    private double g = 0;
+    private double g = Integer.MAX_VALUE;
     private double h = 0;
-    private double f = g + h;
+    private double f = 0;
     private boolean visited; 
     protected boolean bFree = true;
     private ArrayList<Cell> neighbors = new ArrayList<Cell>();
+
+    public void setFCost()
+    {
+        f = g + h;
+    }
 
     public Cell getParent()
     {
@@ -88,5 +93,18 @@ public class Cell extends Vertex implements IBinaryHeapElement{
         double thisF = this.f;
         double cellF = cell.f;
         return thisF == cellF;
+    }
+
+    @Override
+    public int compareTo(Cell otherCell) {
+        if (this.getFCost() < otherCell.getFCost())
+        {
+            return -1;
+        }
+        if (this.getFCost() > otherCell.getFCost())
+        {
+            return 1;
+        }
+        return 0;
     }
 }

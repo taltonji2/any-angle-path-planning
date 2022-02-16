@@ -1,5 +1,3 @@
-package src;
-
 public class Vertex{
     
     private int x;

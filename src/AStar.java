@@ -1,5 +1,3 @@
-package src;
-
 import java.util.ArrayList;
 import java.util.PriorityQueue;
 /*
@@ -9,10 +7,10 @@ import java.util.PriorityQueue;
 *         |--------------------|
 *                  f() 
 */
-public class AStar
+public class AStar 
 {
     Cell start, goal;
-    PriorityQueue<Cell> fringe = new PriorityQueue<Cell>(1, (Cell c1, Cell c2) -> Double.compare(c1.getFCost(), c2.getFCost()));
+    PriorityQueue<Cell> fringe = new PriorityQueue<Cell>();
     ArrayList<Cell> closed = new ArrayList<Cell>();
     
     public void doAStar(Grid grid)
@@ -22,6 +20,7 @@ public class AStar
         start.setParent(start);
         start.setGCost(0);
         start.setHCost(h(start));
+        start.setFCost();
         //start.neighbors.remove(start);          //this 
         start.getNeighbors().remove(start);     //to this 
         System.out.println("Start: (" + start.getX() + ", " + start.getY() + ")");
@@ -29,77 +28,73 @@ public class AStar
         fringe.add(start);
         while (!fringe.isEmpty())
         {
-            start = fringe.poll();
-            System.out.println("Visiting (" + start.getX() + ", " + start.getY() + ")");
-            if (start.equals(goal))     //when on same vertex does not fire;
+            Cell current = fringe.poll();
+            System.out.println("Visiting (" + current.getX() + ", " + current.getY() + ")");
+            if (current.equals(goal))     //when on same vertex does not fire;
             {
+                closed.add(current);
                 System.out.println("Found it!");
-            }
-            System.out.println("Goal not found yet");
-            closed.add(start);
-            System.out.println(start.getNeighbors().size());
-            for (Cell c : start.getNeighbors()) 
-            {
-                if (c.getIsCellBlocked())
+                for(Cell c : closed)
                 {
-                    System.out.println("Visiting neighbor (" + c.getX() + ", " + c.getY() + ")");
-                    if (!fringe.contains(c))
-                    {
-                        c.setGCost(Integer.MAX_VALUE);
-                        c.setParent(null);
-                    }
-                    updateVertex(start, c);
-                    System.out.print("Fringe at end of iteration: ");
-                    for (Cell ce : fringe) {
-                        System.out.print("(" + ce.getX() + ", " + ce.getY() + ") ");
-                    }
-                    System.out.println();
+                    System.out.println("Path: " + c.getX() + " " + c.getY());
+                }
+                break;
+            }
+            closed.add(current);
+            System.out.println(current.getNeighbors().size());
+            for (Cell successor : current.getNeighbors()) 
+            {
+                if (!fringe.contains(successor) && !closed.contains(successor))
+                {
+                    updateCostAndAddToFringe(current, successor);
                 }
             }
+            System.out.print("Fringe at end of iteration: ");
+                for (Cell ce : fringe) {
+                    System.out.print("(" + ce.getX() + ", " + ce.getY() + ") " + ce.getFCost() + "  ");
+                }
+                System.out.println();
         }
-        System.out.println("Goal not reached");
     }
-
-    public void updateVertex(Cell s, Cell c)
+    public void updateCostAndAddToFringe(Cell current, Cell successor)
     {
-        System.out.println(s.getGCost());
-        System.out.println(c(s, c));
-        System.out.println(c.getGCost());
-        if (s.getGCost() + c(s, c) < c.getGCost())
+        System.out.println("Cost from current to successor: " + c(current, successor));
+        System.out.println("Current g " + current.getGCost());
+        System.out.println("Successor g " +successor.getGCost());
+        if (current.getGCost() + c(current, successor) < successor.getGCost())
         {
-            fringe.remove(c);
-            c.setGCost(s.getGCost() + c(s, c));
-            c.setParent(s);
-            c.setHCost(h(c)); 
-            fringe.add(c);
-            System.out.println("Added " + c.getX() + ", " + c.getY());
+            successor.setGCost(current.getGCost() + c(current, successor));
+            successor.setParent(current);
+            successor.setHCost(h(successor)); 
+            successor.setFCost();
+            fringe.add(successor);
+            System.out.println("Added " + successor.getX() + ", " + successor.getY() + " to fringe");
         }
-
     }
 
-    public double c(Cell c1, Cell c2) 
+    public double c(Cell current, Cell successor) 
     {
-        if (c1.getX() < c2.getX() && c1.getY() == c2.getY()) //c1 is to the left of c2
+        if (successor.getX() < current.getX() && successor.getY() == current.getY()) //Successor is to the left
         {
             return 1;   
         }
-        if (c1.getX() > c2.getX() && c1.getY() == c2.getY()) //c1 is to the right of c2
+        if (successor.getX() > current.getX() && successor.getY() == current.getY()) //Successor is to the right
         {
             return 1;
         }
-        if (c1.getX() == c2.getX() && c1.getY() < c2.getY()) //c1 is above c2
+        if (successor.getX() == current.getX() && successor.getY() < current.getY()) //Successor is above
         {
             return 1;
         }
-        if (c1.getX() == c2.getX() && c1.getY() > c2.getY()) //c1 is under c2
+        if (successor.getX() == current.getX() && successor.getY() > current.getY()) //Successor is under
         {
             return 1;
         }
-        if (c1.getX() == c2.getX() && c1.getY() == c2.getY()) //c1 is c2
+        if (successor.getX() == current.getX() && successor.getY() == current.getY()) //Successor is Current
         {
             return 0;
         }
-        return Math.sqrt(2);
+        return Math.sqrt(2); //diagonal
     }
 
     //determines cost of cell relative to start
