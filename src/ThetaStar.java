@@ -1,5 +1,3 @@
-
-
 import java.util.ArrayList;
 import java.util.PriorityQueue;
 /*
@@ -23,7 +21,7 @@ public class ThetaStar
         goal = grid.getGoal();
         start.setParent(start);
         start.setGCost(0);
-        start.setHCost(h(start)); 
+        start.setHCost(start); 
         start.getNeighbors().remove(start); 
         System.out.println("Start: (" + start.getX() + ", " + start.getY() + ")");
         System.out.println("Goal: (" + goal.getX() + ", " + goal.getY() + ")");
@@ -34,7 +32,7 @@ public class ThetaStar
         {
             for (int j = 0; j < n; j++)
             {
-                if (grid.cells[j][i].getIsCellBlocked() == false)
+                if (grid.cells[j][i].getIsCellFree() == false)
                 {
                     System.out.print("(" + grid.cells[j][i].getX() + " " + grid.cells[j][i].getY() + ") B ");
                 }
@@ -65,7 +63,7 @@ public class ThetaStar
             System.out.println(start.getNeighbors().size());
             for (Cell c : start.getNeighbors()) 
             {
-                if (c.getIsCellBlocked())
+                if (c.getIsCellFree())
                 {
                     System.out.println("Visiting neighbor (" + c.getX() + ", " + c.getY() + ")");
                     if (!fringe.contains(c))
@@ -97,7 +95,7 @@ public class ThetaStar
                 fringe.remove(c);
                 c.setGCost(s.getParent().getGCost() + c(s.getParent(), c));
                 c.setParent(s.getParent());
-                c.setHCost(h(c));
+                c.setHCost(c);
                 c.setFCost(c.getGCost() + c.getHCost());
                 fringe.add(c);
             }
@@ -109,7 +107,7 @@ public class ThetaStar
                 fringe.remove(c);
                 c.setGCost(s.getGCost() + c(s, c));
                 c.setParent(s);
-                c.setHCost(h(c));
+                c.setHCost(c);
                 c.setFCost(c.getGCost() + c.getHCost());
                 fringe.add(c);
             }

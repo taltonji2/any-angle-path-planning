@@ -1,24 +1,23 @@
-<<<<<<< HEAD
-=======
+import java.util.ArrayList;
 
-
->>>>>>> cc6b5e9cdf01138176b2ef94cf19148063f06662
 public class App {
     public static void main(String[] args) throws Exception {
         
         String currentDirectory = System.getProperty("user.dir");
         String fileName = currentDirectory + "/grid0.txt";
         Grid grid = GridStorage.restoreGrid(fileName);
+        grid.createEdgeCells();
         grid.LoadAdj();
         
         DisplayGrid displayGrid = new DisplayGrid(grid);
         BFS bfs = new BFS();
         AStar a = new AStar();
-        ThetaStar t = new ThetaStar();
         if(bfs.doBFS(grid))
         {
-            //a.doAStar(grid);
-            t.doThetaStar(grid);
+            ArrayList<Cell> openlist = a.doAStar(grid);
+            displayGrid.paintPath(openlist);
+        } else {
+            System.out.println("No Such Path");
         }
     }
 }

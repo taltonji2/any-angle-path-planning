@@ -11,8 +11,8 @@ import java.util.concurrent.ThreadLocalRandom;
 public class CreateInput {
     int numOfGridFiles = 1;
     int getNumOfGridFiles(){ return this.numOfGridFiles;}
-    static int columns = 8; //x
-    static int rows = 4; //y
+    static int columns = 100; //x
+    static int rows = 50; //y
     int numOfCells = rows * columns;
     double numOfCellsBlocked = numOfCells * .10; //10% blocked
     

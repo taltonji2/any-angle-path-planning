@@ -1,8 +1,3 @@
-<<<<<<< HEAD
-=======
-
-
->>>>>>> cc6b5e9cdf01138176b2ef94cf19148063f06662
 import java.io.*;
 
 class GridFileFormatException extends Exception{
@@ -38,9 +33,8 @@ public class GridStorage {
 
         Pair<Integer, Integer> dimensions = restoreIntegerPair(bufferedReader);
 
-        grid = Grid.Instance(dimensions.getKey(),dimensions.getValue());
+        grid = Grid.Instance(dimensions.getKey()+1,dimensions.getValue()+1);
         
-
         Cell cell = restoreCell(bufferedReader); 
         int cellCount = 0;
         while(cell != null){

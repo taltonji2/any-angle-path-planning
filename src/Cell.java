@@ -5,17 +5,17 @@ import java.util.ArrayList;
 public class Cell extends Vertex implements Comparable<Cell>{ 
     private Cell parent;
     private double g = Integer.MAX_VALUE;
-    private double h = 0;
+    private double h;
     private double f = 0;
     private boolean visited; 
-    protected boolean bFree = true;
+    protected boolean bFree;
+    protected boolean bEdgeCell;
     private ArrayList<Cell> neighbors = new ArrayList<Cell>();
 
     public void setFCost()
     {
         f = g + h;
     }
-
     public Cell getParent()
     {
         return parent;
@@ -32,9 +32,14 @@ public class Cell extends Vertex implements Comparable<Cell>{
     {
         return g;
     }
-    public void setHCost(double cost) //incomplete
+    public void setHCost(Cell cell) 
     {
-        h = cost;
+        h = Math.sqrt(2) * Math.min(Math.abs(cell.getX() - Grid.Instance().getGoal().getX()), 
+        Math.abs(cell.getY() - Grid.Instance().getGoal().getY())) 
+        + Math.max(Math.abs(cell.getX() - Grid.Instance().getGoal().getX()), 
+        Math.abs(cell.getY() - Grid.Instance().getGoal().getY())) 
+        - Math.min(Math.abs(cell.getX() - Grid.Instance().getGoal().getX()), 
+        Math.abs(cell.getY() - Grid.Instance().getGoal().getY()));
     }
     public double getHCost()
     {
@@ -60,7 +65,7 @@ public class Cell extends Vertex implements Comparable<Cell>{
     {
         visited = b;
     }
-    public boolean getIsCellBlocked()
+    public boolean getIsCellFree()
     {
         return bFree;
     }
@@ -75,7 +80,9 @@ public class Cell extends Vertex implements Comparable<Cell>{
 
     protected Cell(int x, int y, int free){
         super(x, y);
-        bFree = free == 0;
+        if(free == 0)
+        {bFree = true;}
+        else {bFree = false;}
     }
     //
     // cell < othercell
@@ -111,4 +118,6 @@ public class Cell extends Vertex implements Comparable<Cell>{
         }
         return 0;
     }
+
+    
 }
