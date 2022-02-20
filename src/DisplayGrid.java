@@ -4,6 +4,8 @@ import java.io.*;
 import java.util.ArrayList;
 
 import javax.swing.*;
+import javax.swing.border.EmptyBorder;
+
 import java.awt.image.BufferedImage;
 
 public class DisplayGrid {
@@ -15,15 +17,16 @@ public class DisplayGrid {
     private JLabel jLabel;
     private static JFrame jFrame;
     
-    public DisplayGrid (Grid grid)
+    public DisplayGrid (Grid grid, String algoNum, ArrayList<Cell> closedList)
     {
         this.sizeTile = 30;
         this.grid = grid;
-        initializeGUI(this.grid);
+        initializeGUI(this.grid, algoNum, closedList);
+        inizializeHeuristics(closedList);
         paint(grid);
     }
 
-    protected Graphics initializeGUI(Grid grid){
+    protected Graphics initializeGUI(Grid grid, String algoNum, ArrayList<Cell> closedList){
         int imageSize = Math.max((grid.getWidth() + 4) * sizeTile, (grid.getHeight() + 4) * sizeTile);
         image = new BufferedImage( imageSize, imageSize, BufferedImage.TYPE_INT_ARGB );
         imageIcon = new ImageIcon( image );
@@ -39,11 +42,16 @@ public class DisplayGrid {
         JPanel main = new JPanel(new BorderLayout());
         main.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
-        JLabel name = new JLabel("A*");                                     //Place Algorithm Name
-        JLabel heuristicInfo = new JLabel("[PROGRAM Heuristic]");           //Place Heuristic Information
+        JLabel name;
+        if(algoNum.equals("1"))
+            name = new JLabel("A*"); 
+        else 
+            name = new JLabel("Theta*");
+        JLabel heuristicInfo = new JLabel();       
         heuristicInfo.setAutoscrolls(true);
         name.setFont(new Font(name.getFont().getFamily(), Font.BOLD, 18));
         heuristicInfo.setBorder(BorderFactory.createEmptyBorder(10, 0, 10, 10));
+        
         int eb = 20;
         scrollFrame.setBorder(BorderFactory.createEmptyBorder(eb, eb, eb, eb));
 
@@ -63,17 +71,84 @@ public class DisplayGrid {
         return jFrame.getGraphics();
     }
     
+    public void inizializeHeuristics(ArrayList<Cell> closedList)
+    {
+        final JPanel mainPanel2 = new JPanel();
+        JPanel firstLine = new JPanel();
+        JPanel secLine = new JPanel();
+    
+        mainPanel2.setLayout(new BoxLayout(mainPanel2, BoxLayout.Y_AXIS));
+        mainPanel2.setBorder(new EmptyBorder(new Insets(5, 5, 5, 5)));
+        mainPanel2.add(Box.createVerticalGlue());
+    
+        firstLine.setLayout(new BoxLayout(firstLine, BoxLayout.X_AXIS));
+        firstLine.setBorder(new EmptyBorder(new Insets(5, 5, 5, 5)));
+        firstLine.add(Box.createVerticalGlue());
+    
+        secLine.setLayout(new BoxLayout(secLine, BoxLayout.X_AXIS));
+        secLine.setBorder(new EmptyBorder(new Insets(5, 5, 5, 5)));
+        secLine.add(Box.createVerticalGlue());
+    
+        JTextArea textArea = new JTextArea(addHeuristicInfo(closedList), 10, 40);
+        textArea.setLineWrap(true);
+        JScrollPane scrollPane = new JScrollPane(textArea); 
+        scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+        textArea.setEditable(false);
+    
+        JLabel label1 = new JLabel("Processing results:");
+        
+        firstLine.add(Box.createRigidArea(new Dimension(5,0)));
+        firstLine.add(label1);
+        firstLine.add(Box.createRigidArea(new Dimension(5,0)));
+    
+        secLine.add(textArea);
+        secLine.add(Box.createRigidArea(new Dimension(5,0)));
+    
+        mainPanel2.add(firstLine);
+        mainPanel2.add(Box.createRigidArea(new Dimension(0, 30)));
+        mainPanel2.add(secLine);
+        mainPanel2.add(Box.createRigidArea(new Dimension(0, 20)));
+    
+        JFrame frame = new JFrame("Test results");
+        frame.setSize(400, 300);
+        frame.setLocation(50,50);
+        frame.setVisible( true );
+        frame.add(mainPanel2);
+        frame.pack();
+    }
     void paintPath(ArrayList<Cell> closedList)
     {
         Graphics graphics = image.getGraphics();
         graphics.setColor(Color.RED);
         for(Cell c : closedList)
         {
-
-            graphics.fillOval(((c.getX()) * sizeTile) - (sizeTile/8), 
-            ((c.getY()) * sizeTile) - (sizeTile/8), sizeTile/4, sizeTile/4);      
+            if(c.isVisited())
+                graphics.fillOval(((c.getX()) * sizeTile) - (sizeTile/8), 
+                ((c.getY()) * sizeTile) - (sizeTile/8), sizeTile/4, sizeTile/4);      
         }
             
+    }
+
+    private String addHeuristicInfo(ArrayList<Cell> closedList)
+    {
+        String Heur = "";
+        for(Cell c : closedList)
+        {
+            double g = changeDecimal(c.getGCost(), 4);
+            double h = changeDecimal(c.getHCost(), 4);
+            double f = changeDecimal(c.getFCost(), 4);
+            if(c.isVisited())
+                
+                Heur += "("+c.getX()+","+c.getY()+")     g(): "+g+"     h(): "+h+"    f(): "+f+ " \n"; 
+        }
+        return Heur;
+    }
+    static double changeDecimal(double value, int decimalpoint)
+    {
+        value = value * Math.pow(10, decimalpoint);
+        value = Math.floor(value);
+        value = value / Math.pow(10, decimalpoint);
+        return value;
     }
     private void paint(Grid grid)
     {

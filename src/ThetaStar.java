@@ -14,7 +14,7 @@ public class ThetaStar
     ArrayList<Cell> closed = new ArrayList<Cell>();
     Grid g;
     
-    public void doThetaStar(Grid grid)
+    public ArrayList<Cell> doThetaStar(Grid grid)
     {
         g = grid;
         start = grid.getStart();
@@ -52,7 +52,7 @@ public class ThetaStar
             {
                 System.out.println("Found it!");
                 System.out.println(start.getFCost() + " " + start.getGCost() + " " + start.getHCost());
-                return;
+                return closed;
             }
             else if (closed.contains(start))
             {
@@ -81,6 +81,7 @@ public class ThetaStar
             }
         }
         System.out.println("Goal not reached");
+        return closed;
     }
 
     public void updateVertex(Cell s, Cell c)
