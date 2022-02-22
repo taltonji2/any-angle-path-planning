@@ -25,16 +25,12 @@ public class GridStorage {
         if(pair == null)
             throw new GridFileFormatException("missing vertex start");
         Vertex vertexStart = new Vertex(pair.getKey(), pair.getValue());
-        
         pair = restoreIntegerPair(bufferedReader);
         if(pair == null)
             throw new GridFileFormatException("missing vertex goal");
         Vertex vertexGoal = new Vertex(pair.getKey(), pair.getValue());
-
         Pair<Integer, Integer> dimensions = restoreIntegerPair(bufferedReader);
-
         grid = Grid.Instance(dimensions.getKey()+1,dimensions.getValue()+1);
-        
         Cell cell = restoreCell(bufferedReader); 
         int cellCount = 0;
         while(cell != null){
@@ -42,6 +38,8 @@ public class GridStorage {
             grid.add(cell);
             cell = restoreCell(bufferedReader);
         }
+
+        createEdgeCells();
         grid.setStart(grid.cells[vertexStart.getX()-1][vertexStart.getY()-1]);
         grid.setGoal(grid.cells[vertexGoal.getX()-1][vertexGoal.getY()-1]); 
 
@@ -58,6 +56,26 @@ public class GridStorage {
                 bufferedReader.close();
         }
     return grid;
+    }
+
+    public static void createEdgeCells()
+    {
+        //Vertical
+        for (int j = 0; j < Grid.Instance().cells[Grid.Instance().getWidth()-1].length; j++)
+        {
+            int x  = Grid.Instance().getWidth();
+            Cell c = new Cell(x, j+1, 1);
+            c.bEdgeCell = true;
+            Grid.Instance().cells[x-1][j] = c;
+        }
+
+        for (int i = 0; i < Grid.Instance().cells.length; i++) 
+        {
+            int y = Grid.Instance().getHeight();
+            Cell c = new Cell(i+1, y, 1);
+            c.bEdgeCell = true;
+            Grid.Instance().cells[i][y-1] = c;
+        }
     }
     
     //reads grid txt file and restores integer pairs for start and target vertex

@@ -9,18 +9,14 @@ public class Grid{
     public static double getDistanceFromStartGoalLine(Cell cell) {
     {
         //returns the distance between the infinite line(x1,y1)(x2,y2) and a point(x,y)
-        
-
             double A = cell.getX() - start.getX(); // position of point rel one end of line
             double B = cell.getY() - start.getY();
             double C = goal.getX() - start.getX(); // vector along line
             double D = goal.getY() - start.getY();
             double E = -D; // orthogonal vector
             double F = C;
-
             double dot = A * E + B * F;
             double len_sq = E * E + F * F;
-
             return Math.abs(dot) / Math.sqrt(len_sq);
         }
     }
@@ -148,26 +144,6 @@ public class Grid{
     {
             v.getNeighbors().add(w); 
     }
-    
-    public void createEdgeCells()
-    {
-        //Vertical
-        for (int j = 0; j < this.cells[this.getWidth()-1].length; j++)
-        {
-            int x  = this.getWidth();
-            Cell c = new Cell(x, j+1, 1);
-            c.bEdgeCell = true;
-            this.cells[x-1][j] = c;
-        }
-
-        for (int i = 0; i < this.cells.length; i++) 
-        {
-            int y = this.getHeight();
-            Cell c = new Cell(i+1, y, 1);
-            c.bEdgeCell = true;
-            this.cells[i][y-1] = c;
-        }
-    }
 
     public void LoadAdj()
     {
@@ -197,14 +173,9 @@ public class Grid{
                             addEdge(cell, north);
                         }
                     }
-                    //Cases where x <= 1
-                    else if(north.getIsCellFree() == true || cell.getIsCellFree() == true)
+                    //Cases where x == 1
+                    else if(north.getIsCellFree() == true && cell.getIsCellFree() == true)
                         addEdge(cell, north);
-                    else if(getNorthWest(cell) != null)
-                    {
-                        if(cell.bEdgeCell == true && getNorthWest(cell).bFree == true)
-                            addEdge(cell, north);
-                    }  
                 }
                 Cell south = this.getSouth(cell);
                 if(south!=null){
@@ -215,7 +186,7 @@ public class Grid{
                             addEdge(cell, south);
                         }
                     }
-                    else if(cell.getIsCellFree() == true)
+                    else if(cell.getIsCellFree())
                         addEdge(cell, south);
                 }
                 Cell east = this.getEast(cell);

@@ -26,9 +26,9 @@ public class BFS {
             }
             queue.remove(0);
             //System.out.print("Queue after iteration: ");
-            for (Cell cell : queue) {
+            //for (Cell cell : queue) {
                 //System.out.print("(" + cell.getX() + " " + cell.getY() + ")");
-            }
+            //}
             //System.out.println();
         }
         return false;

@@ -128,7 +128,6 @@ public class DisplayGrid {
         }
             
     }
-
     private String addHeuristicInfo(ArrayList<Cell> closedList)
     {
         String Heur = "";
@@ -172,7 +171,6 @@ public class DisplayGrid {
               
             }
         }
-
         // this loop just draws lines around every cell
         for ( int row = 0; row < grid.getHeight()-1; row++ )
         {
@@ -206,14 +204,16 @@ public class DisplayGrid {
             int displayCol = col+1;    
             graphics.drawString(Integer.toString(displayCol), displayCol * sizeTile , (displayRow) * sizeTile);
         }
-
+        //Line which passes through Start and Goal
         graphics.setColor(Color.BLUE);
         graphics.drawLine((grid.getStart().getX()) * sizeTile, (grid.getStart().getY())
         * sizeTile, (grid.getGoal().getX())
          * sizeTile, (grid.getGoal().getY()) * sizeTile);
+        //Start
         graphics.setColor(Color.GREEN);
         graphics.fillOval(((grid.getStart().getX()) * sizeTile) - (sizeTile/8), ((grid.getStart().getY()) * sizeTile
         )- (sizeTile/8), sizeTile/4, sizeTile/4);
+        //Goal
         graphics.setColor(Color.RED);
         graphics.fillOval(((grid.getGoal().getX()) * sizeTile) - (sizeTile/8), ((grid.getGoal().getY()) * sizeTile) 
         - (sizeTile/8), sizeTile/4, sizeTile/4);      

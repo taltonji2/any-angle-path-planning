@@ -7,12 +7,19 @@ import java.util.PriorityQueue;
 *         |--------------------|
 *           f(n) = g(n) + h(n)
 */
+
+//... Issues
+//... No Such Path when goal and start are the same
+//... TODO:
+//... problem Q3
+//... Have a fully functional A*
+//... Implement Theta*
+
 public class AStar 
 {
     Cell start, goal;
     PriorityQueue<Cell> fringe = new PriorityQueue<Cell>();
     ArrayList<Cell> closed = new ArrayList<Cell>();
-    //ArrayList<Cell> dump = new ArrayList<Cell>();
     Double newCost;
     Double minF;
     public ArrayList<Cell> doAStar(Grid grid)
@@ -30,7 +37,7 @@ public class AStar
         while (!fringe.isEmpty())
         {
             Cell current = fringe.poll();
-           
+            
             System.out.println("");
             System.out.println("Visiting (" + current.getX() + ", " + current.getY() + ")");
             if (current.equals(goal))     //when on same vertex does not fire;
@@ -42,7 +49,6 @@ public class AStar
                 break;
             }
 
-            
             closed.add(current);
             fringe.removeIf(n -> (n.isVisited() == true));
 
@@ -68,46 +74,61 @@ public class AStar
                     }
                     
                     successor.visit();
-                    fringe.add(successor);
-
-                    
-                    if(fringe.size() > 1)
+                    fringe.add(successor);                    
+                    if(fringe.size() > 1 && !fringe.peek().equals(successor))
                     {
-                        if(successor.getFCost() == fringe.peek().getFCost())
+                        if(thresholdBasedFloatsComparison(successor.getFCost(), fringe.peek().getFCost()))
                         {
-                            Double sucD = Grid.getDistanceFromStartGoalLine(successor);
-                            Double fringeD = Grid.getDistanceFromStartGoalLine(fringe.peek());
-                            compareDistance(sucD, fringeD, successor, fringe.peek());
+                            // ... compare g() cost
+                            compareGCost(successor);
                         }
                     }
                     System.out.println("Added " + "("+successor.getX() + ", " + successor.getY()+ ")" + " " + successor.getFCost() + " to fringe");
                 }
             }
-            System.out.print("Fringe at end of iteration: ");
-                for (Cell ce : fringe) {
-                    System.out.println("");
-                    System.out.println("(" + ce.getX() + "," + ce.getY() + ") " + ce.getFCost() + "  ");
-                }
-                System.out.println();
+            // System.out.print("Fringe at end of iteration: ");
+            //     for (Cell ce : fringe) {
+            //         System.out.println("");
+            //         System.out.println("(" + ce.getX() + "," + ce.getY() + ") " + ce.getFCost() + "  ");
+            //     }
+            //     System.out.println();
         }
         return closed;
     }
-   
     
-    public void compareDistance(Double d1, Double d2, Cell successor, Cell fringeMin) {
-        if (d1 > d2) { // successor is further than min
-            fringe.remove(successor); 
-        } else if (d1 < d2) {
-            // successor is closer than min
-            fringe.remove();
-        } 
-        else if (successor.getGCost() > fringeMin.getGCost())
+    //Tie break is based on distance to straight line
+    // public void compareDistance(Double d1, Double d2, Cell successor, Cell fringeMin) {
+    //     if (d1 > d2) { // successor is further than min
+    //         fringe.remove(successor); 
+    //     } else if (d1 < d2) {
+    //         // successor is closer than min
+    //         fringe.remove();
+    //     } 
+    //     else if (successor.getGCost() > fringeMin.getGCost())
+    //     {
+    //         fringe.remove();
+    //     }
+    // }
+    
+    public void compareGCost(Cell successor)
+    {
+        if(!thresholdBasedFloatsComparison(successor.getGCost(), fringe.peek().getGCost()) 
+        && successor.getGCost() > fringe.peek().getGCost())
         {
+            //... Successor value is larger
             fringe.remove();
         }
     }
 
-    
+    private static Boolean thresholdBasedFloatsComparison(double d1, double d2) 
+    {
+    final double THRESHOLD = .0001;
+    if (Math.abs(d1 - d2) < THRESHOLD)
+        return true;
+    else
+        return false;
+    }
+
     public double c(Cell current, Cell successor) 
     {
         if (successor.getX() < current.getX() && successor.getY() == current.getY()) //Successor is to the left

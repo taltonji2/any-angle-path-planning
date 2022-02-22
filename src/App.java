@@ -18,7 +18,6 @@ public class App {
             String currentDirectory = System.getProperty("user.dir");
             String fileName = currentDirectory + "/grid0.txt";
             Grid grid = GridStorage.restoreGrid(fileName);
-            grid.createEdgeCells();
             grid.LoadAdj();
             
             BFS bfs = new BFS();
