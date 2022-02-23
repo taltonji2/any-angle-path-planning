@@ -72,57 +72,61 @@ public class AStar
                     
                     successor.visit();
                     fringe.add(successor);                    
-                    if(fringe.size() > 1 && !fringe.peek().equals(successor))
+                    if(fringe.size() > 1 && !fringe.peek().equals(successor) && thresholdBasedFloatsComparison(successor.getFCost(), fringe.peek().getFCost()))
                     {
-                        if(thresholdBasedFloatsComparison(successor.getFCost(), fringe.peek().getFCost()))
-                        {
-                            // ... compare g() cost
-                            compareGCost(successor);
-                        }
+                        // ... compare g() cost
+                        compareGCost(successor);
                     }
                     System.out.println("Added " + "("+successor.getX() + ", " + successor.getY()+ ")" + " " + successor.getFCost() + " to fringe");
                 }
             }
-            // System.out.print("Fringe at end of iteration: ");
-            //     for (Cell ce : fringe) {
-            //         System.out.println("");
-            //         System.out.println("(" + ce.getX() + "," + ce.getY() + ") " + ce.getFCost() + "  ");
-            //     }
-            //     System.out.println();
+            System.out.print("----------------------------------------");
         }
         return closed;
     }
     
-    //Tie break is based on distance to straight line
-    // public void compareDistance(Double d1, Double d2, Cell successor, Cell fringeMin) {
-    //     if (d1 > d2) { // successor is further than min
-    //         fringe.remove(successor); 
-    //     } else if (d1 < d2) {
-    //         // successor is closer than min
-    //         fringe.remove();
-    //     } 
-    //     else if (successor.getGCost() > fringeMin.getGCost())
-    //     {
-    //         fringe.remove();
-    //     }
-    // }
-    
+    //Tie Break based on higher g()
     public void compareGCost(Cell successor)
     {
-        if(!thresholdBasedFloatsComparison(successor.getGCost(), fringe.peek().getGCost()) 
-        && successor.getGCost() > fringe.peek().getGCost())
+        if(!thresholdBasedFloatsComparison(successor.getGCost(), fringe.peek().getGCost())) 
         {
-            //... Successor value is larger
-            fringe.remove();
+            if (successor.getGCost() > fringe.peek().getGCost() && isSuccessorCloserThanMinInDistance(Grid.getDistanceFromStartGoalLine(successor), Grid.getDistanceFromStartGoalLine(fringe.peek()), successor) == 1)
+            {
+                //... Successor value is larger ... Successor is closer to Line
+                fringe.remove();
+            } else
+            {
+                //... Fringe value is larger
+                fringe.remove(successor); 
+            }
+        } else
+        {
+            //next level compare
+            isSuccessorCloserThanMinInDistance(Grid.getDistanceFromStartGoalLine(successor), Grid.getDistanceFromStartGoalLine(fringe.peek()), successor);
         }
     }
+
+    //Tie break is based on distance to straight line
+    public int isSuccessorCloserThanMinInDistance(Double d1, Double d2, Cell successor) {
+         if (d1 > d2) 
+         { // successor is further than min
+             return 0;
+         } else {
+             // successor is closer than min
+             return 1;
+         }
+    }
+    
+    
 
     private static Boolean thresholdBasedFloatsComparison(double d1, double d2) 
     {
     final double THRESHOLD = .0001;
     if (Math.abs(d1 - d2) < THRESHOLD)
+    //... float values are the same  
         return true;
     else
+    //... float values are NOT the same
         return false;
     }
 
@@ -141,3 +145,8 @@ public class AStar
         return Math.sqrt(2); //diagonal
     }
 }
+
+//...IDEA
+//... Cell backup to revert back to if the chosen heuristic turns out bad
+//... remove from closed the worse heuristic
+//... set current as the backup cell
