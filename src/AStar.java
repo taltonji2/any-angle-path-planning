@@ -10,10 +10,7 @@ import java.util.PriorityQueue;
 
 //... Issues
 //... No Such Path when goal and start are the same
-//... TODO:
-//... problem Q3
-//... Have a fully functional A*
-//... Implement Theta*
+
 
 public class AStar 
 {
