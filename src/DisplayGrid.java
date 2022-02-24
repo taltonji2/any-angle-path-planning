@@ -1,11 +1,8 @@
 
 import java.awt.*;
-import java.io.*;
 import java.util.ArrayList;
-
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
-
 import java.awt.image.BufferedImage;
 
 public class DisplayGrid {
@@ -89,31 +86,29 @@ public class DisplayGrid {
         secLine.setBorder(new EmptyBorder(new Insets(5, 5, 5, 5)));
         secLine.add(Box.createVerticalGlue());
     
-        JTextArea textArea = new JTextArea(addHeuristicInfo(closedList), 10, 40);
+        JTextArea textArea = new JTextArea(addHeuristicInfo(closedList), 40, 40);
         textArea.setLineWrap(true);
-        JScrollPane scrollPane = new JScrollPane(textArea); 
-        scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
         textArea.setEditable(false);
-    
+        JScrollPane scrollPane = new JScrollPane(textArea); 
+        scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
         JLabel label1 = new JLabel("Processing results:");
         
         firstLine.add(Box.createRigidArea(new Dimension(5,0)));
         firstLine.add(label1);
         firstLine.add(Box.createRigidArea(new Dimension(5,0)));
-    
-        secLine.add(textArea);
         secLine.add(Box.createRigidArea(new Dimension(5,0)));
     
         mainPanel2.add(firstLine);
         mainPanel2.add(Box.createRigidArea(new Dimension(0, 30)));
         mainPanel2.add(secLine);
         mainPanel2.add(Box.createRigidArea(new Dimension(0, 20)));
-    
+        mainPanel2.add(scrollPane);
+        
         JFrame frame = new JFrame("Test results");
-        frame.setSize(400, 300);
+        frame.setSize(300, 300);
         frame.setLocation(50,50);
-        frame.setVisible( true );
         frame.add(mainPanel2);
+        frame.setVisible( true );
         frame.pack();
     }
     void paintPath(ArrayList<Cell> closedList)

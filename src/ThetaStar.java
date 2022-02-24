@@ -21,7 +21,7 @@ public class ThetaStar
         goal = grid.getGoal();
         start.setParent(start);
         start.setGCost(0);
-        start.setHCost(start); 
+        //start.setHCost(start); 
         start.getNeighbors().remove(start); 
         System.out.println("Start: (" + start.getX() + ", " + start.getY() + ")");
         System.out.println("Goal: (" + goal.getX() + ", " + goal.getY() + ")");
@@ -96,7 +96,7 @@ public class ThetaStar
                 fringe.remove(c);
                 c.setGCost(s.getParent().getGCost() + c(s.getParent(), c));
                 c.setParent(s.getParent());
-                c.setHCost(c);
+               // c.setHCost(c);
                 c.setFCost(c.getGCost() + c.getHCost());
                 fringe.add(c);
             }
@@ -108,7 +108,7 @@ public class ThetaStar
                 fringe.remove(c);
                 c.setGCost(s.getGCost() + c(s, c));
                 c.setParent(s);
-                c.setHCost(c);
+               // c.setHCost(c);
                 c.setFCost(c.getGCost() + c.getHCost());
                 fringe.add(c);
             }
