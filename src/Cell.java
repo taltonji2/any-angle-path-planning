@@ -32,7 +32,7 @@ public class Cell extends Vertex implements Comparable<Cell>{
     {
         return g;
     }
-    public void setHCost(Cell cell) 
+    public void setHCostAstar(Cell cell) 
     {
         h = Math.sqrt(2) * Math.min(Math.abs(cell.getX() - Grid.Instance().getGoal().getX()), 
         Math.abs(cell.getY() - Grid.Instance().getGoal().getY())) 

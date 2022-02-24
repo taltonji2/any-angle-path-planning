@@ -25,7 +25,7 @@ public class AStar
         goal = grid.getGoal();
         start.setParent(start);
         start.setGCost(0);
-        start.setHCost(start);
+        start.setHCostAstar(start);
         start.setFCost();
         start.getNeighbors().remove(start);     
         System.out.println("Start: (" + start.getX() + ", " + start.getY() + ")");
@@ -63,7 +63,7 @@ public class AStar
                     if(newCost < successor.getGCost())
                     {
                         successor.setGCost(newCost);
-                        successor.setHCost(successor); 
+                        successor.setHCostAstar(successor); 
                         successor.setFCost();
                         successor.setParent(current);
                         if(fringe.contains(successor))
