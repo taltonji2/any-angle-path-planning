@@ -22,9 +22,10 @@ public class App {
             
             BFS bfs = new BFS();
             AStar a = new AStar();
+            ThetaStar t = new ThetaStar();
             if(bfs.doBFS(grid))
             {
-                ArrayList<Cell> closedList = a.doAStar(grid);
+                ArrayList<Cell> closedList = t.doThetaStar(grid);
                 DisplayGrid displayGrid = new DisplayGrid(grid, "1", closedList);
                 displayGrid.paintPath(closedList);
             } else {

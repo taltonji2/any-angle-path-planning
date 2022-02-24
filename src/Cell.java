@@ -41,6 +41,10 @@ public class Cell extends Vertex implements Comparable<Cell>{
         - Math.min(Math.abs(cell.getX() - Grid.Instance().getGoal().getX()), 
         Math.abs(cell.getY() - Grid.Instance().getGoal().getY()));
     }
+    public void setHCostThetaStar(Cell cell)
+    {
+        h = Math.sqrt(Math.pow((cell.getX() - Grid.Instance().getGoal().getX()), 2) + Math.pow((cell.getY() - Grid.Instance().getGoal().getY()), 2));
+    }
     public double getHCost()
     {
         return h;

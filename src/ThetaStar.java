@@ -10,78 +10,134 @@ import java.util.PriorityQueue;
 public class ThetaStar
 {
     Cell start, goal;
-    PriorityQueue<Cell> fringe = new PriorityQueue<Cell>(1, (Cell c1, Cell c2) -> Double.compare(c1.getFCost(), c2.getFCost()));
+    PriorityQueue<Cell> fringe = new PriorityQueue<Cell>();
     ArrayList<Cell> closed = new ArrayList<Cell>();
-    Grid g;
+    Double newCost;
+    Double minF;
     
     public ArrayList<Cell> doThetaStar(Grid grid)
     {
-        g = grid;
+        System.out.println("Theta Star");
         start = grid.getStart();
         goal = grid.getGoal();
         start.setParent(start);
         start.setGCost(0);
-        start.setHCost(start); 
-        start.getNeighbors().remove(start); 
+        start.setHCostThetaStar(start);
+        start.setFCost();
+        start.getNeighbors().remove(start);     
         System.out.println("Start: (" + start.getX() + ", " + start.getY() + ")");
         System.out.println("Goal: (" + goal.getX() + ", " + goal.getY() + ")");
         fringe.add(start);
-        int n = grid.cells.length;
-        int m = grid.cells[1].length;
-        for (int i = 0; i < m; i++)
-        {
-            for (int j = 0; j < n; j++)
-            {
-                if (grid.cells[j][i].getIsCellFree() == false)
-                {
-                    System.out.print("(" + grid.cells[j][i].getX() + " " + grid.cells[j][i].getY() + ") B ");
-                }
-                else
-                {
-                    System.out.print("(" + grid.cells[j][i].getX() + " " + grid.cells[j][i].getY() + ") O ");
-                }
-            }
-            System.out.println();
-        }
-
         while (!fringe.isEmpty())
         {
-            start = fringe.poll();
-            System.out.println("Visiting (" + start.getX() + ", " + start.getY() + ")");
-            if (start.equals(goal))     //when on same vertex does not fire;
+            Cell current = fringe.poll();
+            
+            System.out.println("");
+            System.out.println("Visiting (" + current.getX() + ", " + current.getY() + ")");
+            if (current.equals(goal))     //when on same vertex does not fire;
             {
+                closed.add(current);
                 System.out.println("Found it!");
-                System.out.println(start.getFCost() + " " + start.getGCost() + " " + start.getHCost());
-                return closed;
+                for(Cell c : closed)
+                {System.out.println("(" + c.getX() + ", " + c.getY() + ")");}
+                break;
             }
-            else if (closed.contains(start))
+
+            closed.add(current);
+            fringe.removeIf(n -> (n.isVisited() == true));
+
+            System.out.println(current.getNeighbors().size());
+            for (Cell successor : current.getNeighbors()) 
             {
-                continue;
-            }
-            System.out.println("Goal not found yet");
-            closed.add(start);
-            System.out.println(start.getNeighbors().size());
-            for (Cell c : start.getNeighbors()) 
-            {
-                if (c.getIsCellFree())
+                if(!closed.contains(successor))
                 {
-                    System.out.println("Visiting neighbor (" + c.getX() + ", " + c.getY() + ")");
-                    if (!fringe.contains(c))
+                    newCost = current.getGCost() + c(current,successor);
+                    if (!fringe.contains(successor))
                     {
-                        c.setGCost(Integer.MAX_VALUE);
-                        c.setParent(null);
+                        successor.setGCost(Integer.MAX_VALUE);
+                        successor.setParent(null);
                     }
-                    updateVertex(start, c);
-                    System.out.print("Fringe at end of iteration: ");
-                    for (Cell ce : fringe) {
-                        System.out.print("(" + ce.getX() + ", " + ce.getY() + ") ");
+                    if (lineOfSight(current.getParent(), successor))
+                    {
+                        newCost = current.getParent().getGCost() + c(current.getParent(),successor);
+                        if(newCost < successor.getGCost())
+                        {
+                            successor.setGCost(newCost);
+                            successor.setHCostThetaStar(successor); 
+                            successor.setFCost();
+                            successor.setParent(current.getParent());
+                            if(fringe.contains(successor))
+                                fringe.remove(successor);
+                        }
                     }
-                    System.out.println();
+                    else
+                    {
+                        newCost = current.getGCost() + c(current,successor);
+                        if(newCost < successor.getGCost())
+                        {
+                            successor.setGCost(newCost);
+                            successor.setHCostThetaStar(successor); 
+                            successor.setFCost();
+                            successor.setParent(current);
+                            if(fringe.contains(successor))
+                                fringe.remove(successor);
+                        }
+                    }
+                    successor.visit();
+                    fringe.add(successor);                    
+                    if(fringe.size() > 1 && !fringe.peek().equals(successor) && thresholdBasedFloatsComparison(successor.getFCost(), fringe.peek().getFCost()))
+                    {
+                        // ... compare g() cost
+                        compareGCost(successor);
+                    }
+                    System.out.println("Added " + "("+successor.getX() + ", " + successor.getY()+ ")" + " " + successor.getFCost() + " to fringe");
                 }
             }
+            System.out.print("----------------------------------------");
         }
-        System.out.println("Goal not reached");
         return closed;
+    }
+
+    //Tie Break based on higher g()
+    public void compareGCost(Cell successor)
+    {
+        if(!thresholdBasedFloatsComparison(successor.getGCost(), fringe.peek().getGCost())) 
+        {
+            if (successor.getGCost() > fringe.peek().getGCost())
+            {
+                //... Successor value is larger ... Successor is closer to Line
+                fringe.remove();
+            } else
+            {
+                //... Fringe value is larger
+                fringe.remove(successor); 
+            }
+        } else
+        {
+            //next level compare
+            //isSuccessorCloserThanMinInDistance(Grid.getDistanceFromStartGoalLine(successor), Grid.getDistanceFromStartGoalLine(fringe.peek()), successor);
+        }
+    }
+
+    public int isSuccessorCloserThanMinInDistance(Double d1, Double d2, Cell successor) {
+        if (d1 > d2) 
+        { // successor is further than min
+            return 0;
+        } else {
+            // successor is closer than min
+            return 1;
+        }
+   }
+
+    private static Boolean thresholdBasedFloatsComparison(double d1, double d2) 
+    {
+    final double THRESHOLD = .0001;
+    if (Math.abs(d1 - d2) < THRESHOLD)
+    //... float values are the same  
+        return true;
+    else
+    //... float values are NOT the same
+        return false;
     }
 
     public void updateVertex(Cell s, Cell c)
@@ -96,7 +152,7 @@ public class ThetaStar
                 fringe.remove(c);
                 c.setGCost(s.getParent().getGCost() + c(s.getParent(), c));
                 c.setParent(s.getParent());
-                c.setHCost(c);
+                c.setHCostThetaStar(c);
                 c.setFCost(c.getGCost() + c.getHCost());
                 fringe.add(c);
             }
@@ -108,7 +164,7 @@ public class ThetaStar
                 fringe.remove(c);
                 c.setGCost(s.getGCost() + c(s, c));
                 c.setParent(s);
-                c.setHCost(c);
+                c.setHCostThetaStar(c);
                 c.setFCost(c.getGCost() + c.getHCost());
                 fringe.add(c);
             }
@@ -150,18 +206,18 @@ public class ThetaStar
                 f = f + dy;
                 if (f >= dx)
                 {
-                    if (g.cells[x0 + ((sx - 1)/2)][y0 + ((sy - 1)/2)].bFree == false) //if the cell is blocked
+                    if (Grid.Instance().cells[x0 + ((sx - 1)/2)][y0 + ((sy - 1)/2)].bFree == false) //if the cell is blocked
                     {
                         return false;
                     }
                     y0 = y0 + sy;
                     f = f - dx;
                 }
-                if (f != 0 && g.cells[x0 + ((sx - 1)/2)][y0 + ((sy - 1)/2)].bFree == false) //if the cell is blocked
+                if (f != 0 && Grid.Instance().cells[x0 + ((sx - 1)/2)][y0 + ((sy - 1)/2)].bFree == false) //if the cell is blocked
                 {
                     return false;
                 }
-                if (dy == 0 && g.cells[x0 + ((sx - 1)/2)][y0].bFree == false && g.cells[x0 + ((sx - 1)/2)][y0 - 1].bFree == false) //if the cell is blocked
+                if (dy == 0 && Grid.Instance().cells[x0 + ((sx - 1)/2)][y0].bFree == false && Grid.Instance().cells[x0 + ((sx - 1)/2)][y0 - 1].bFree == false) //if the cell is blocked
                 {
                     return false;
                 }
@@ -175,18 +231,18 @@ public class ThetaStar
                 f = f + dx;
                 if (f >= dy)
                 {
-                    if (g.cells[x0 + ((sx - 1)/2)][y0 + ((sy - 1)/2)].bFree == false)
+                    if (Grid.Instance().cells[x0 + ((sx - 1)/2)][y0 + ((sy - 1)/2)].bFree == false)
                     {
                         return false;
                     }
                     x0 = x0 + sx;
                     f = f - dy;
                 }
-                if (f != 0 && g.cells[x0 + ((sx - 1)/2)][y0 + ((sy - 1)/2)].bFree == false)
+                if (f != 0 && Grid.Instance().cells[x0 + ((sx - 1)/2)][y0 + ((sy - 1)/2)].bFree == false)
                 {
                     return false;
                 }
-                if (dx == 0 && g.cells[x0][y0 + ((sy - 1)/2)].bFree == false && g.cells[x0 - 1][y0 + ((sy - 1)/2)].bFree == false)
+                if (dx == 0 && Grid.Instance().cells[x0][y0 + ((sy - 1)/2)].bFree == false && Grid.Instance().cells[x0 - 1][y0 + ((sy - 1)/2)].bFree == false)
                 {
                     return false;
                 }
